@@ -209,4 +209,4 @@ Python          3 hrs 24 mins   🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜�
 
 <!-- TODO(scotttodd): switch to <picture> once better supported? https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/ -->
 
-![IREE Architecture](https://github.com/user-attachments/assets/bb14fb2f-336c-4d6c-ac59-a7b907edee9e)
+[![IREE Architecture](https://github.com/user-attachments/assets/bb14fb2f-336c-4d6c-ac59-a7b907edee9e)](https://iree.dev/)
