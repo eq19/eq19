@@ -51,4 +51,4 @@ We are going to assign prime identity as a per IREE model that attempts to stimu
 
 [![IREE Architecture](https://github.com/user-attachments/assets/bb14fb2f-336c-4d6c-ac59-a7b907edee9e)](https://github.com/iree-org/iree?tab=readme-ov-file)
 
-[IREE (Intermediate Representation Execution Environment)](https://iree.dev/) is an MLIR-based end-to-end compiler and runtime that lowers Machine Learning (ML) models to a unified IR.
+[IREE (Intermediate Representation Execution Environment)](https://iree.dev/) is an MLIR-based end-to-end compiler and runtime that lowers **Machine Learning (ML)** models to a unified IR.
