@@ -48,3 +48,5 @@ Python          3 hrs 24 mins   🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜�
 <!-- TODO(scotttodd): switch to <picture> once better supported? https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/ -->
 
 [![IREE Architecture](https://github.com/user-attachments/assets/bb14fb2f-336c-4d6c-ac59-a7b907edee9e)](https://iree.dev/)
+
+IREE (Intermediate Representation Execution Environment1) is an MLIR-based end-to-end compiler and runtime that lowers Machine Learning (ML) models to a unified IR that scales up to meet the needs of the datacenter and down to satisfy the constraints and special considerations of mobile and edge deployments
