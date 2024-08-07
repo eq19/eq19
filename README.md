@@ -45,6 +45,8 @@ Python          3 hrs 24 mins   🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜�
 
 ### 🏠 [Architecture Overview](https://iree.dev/)
 
+We are going to assign prime identity as a standard model that attempts to stimulate a quantum field model called eQuantum for the four (4) known fundamental forces.
+
 <!-- TODO(scotttodd): switch to <picture> once better supported? https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/ -->
 
 [![IREE Architecture](https://github.com/user-attachments/assets/bb14fb2f-336c-4d6c-ac59-a7b907edee9e)](https://iree.dev/)
