@@ -45,7 +45,7 @@ Python          3 hrs 24 mins   🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜�
 
 ### 🏠 [Architecture Overview](https://iree.dev/)
 
-Assign prime identity as standard model per the IREE scheme that attempts to stimulate a quantum field model called **eQuantum** for [the four (4) known fundamental forces](https://en.wikipedia.org/wiki/Fundamental_interaction).
+Assign prime identity as standard model per the IREE scheme that attempt to stimulate a quantum field model called **eQuantum** for [the four (4) known fundamental forces](https://en.wikipedia.org/wiki/Fundamental_interaction).
 
 <!-- TODO(scotttodd): switch to <picture> once better supported? https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/ -->
 
