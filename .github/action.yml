@@ -35,10 +35,10 @@ runs:
         git config --global --add safe.directory "${{ github.workspace }}"
         
         if [ "$RUNNER_OS" == "Windows" ]; then
-          BASE="D:/a/_actions/eq19/eq19/main/.github"
+          BASE="D:/a/_actions/eq19/eq19/v1/.github"
           $BASE/entrypoint/init.sh
         else
-          BASE=/home/runner/work/_actions/eq19/eq19/main/.github 
+          BASE=/home/runner/work/_actions/eq19/eq19/v1/.github 
           REMOTE_REPO="https://${{ inputs.actor }}:${{ inputs.token }}@github.com/${{ github.repository }}.git"
 
           cd "${{ github.workspace }}" && rm -rf .github
