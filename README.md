@@ -43,7 +43,7 @@ Python          3 hrs 24 mins   🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜�
 
 ---
 
-### 🏠 [Architecture Overview](https://github.com/eq19/eq19/blob/main/.github/workflows/main.yml)
+### 🏠 [Architecture Overview](https://github.com/eq19/eq19/blob/v1/.github/workflows/main.yml)
 
 Assign prime identity as _[Standard Model](https://github.com/flav-io/flavio)_ that attempts to [stimulate](https://github.com/featureform/featureform) a quantum field model called **eQuantum** for [the four (4) known fundamental forces](https://en.wikipedia.org/wiki/Fundamental_interaction) per the IREE's plan:
 
