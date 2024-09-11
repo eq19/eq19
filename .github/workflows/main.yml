@@ -87,7 +87,7 @@ jobs:
     outputs:
       # ♻️ Simulate Gell-Mann Matrices
       id: ${{ join(steps.build-parser.outputs.*, '\n') }}
-      spin: ${{ join(steps.feed-mapping.outputs.*, '\n') }}
+      grid: ${{ join(steps.feed-mapping.outputs.*, '\n') }}
       target: ${{ join(steps.set-lexering.outputs.*, '\n') }}
 
   setup-parser:
