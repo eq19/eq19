@@ -7,11 +7,14 @@ set_target() {
   # Get Structure
   if [[ $2 == *"github.io"* ]]; then
     [[ -n "$CELL" ]] && SPIN=$(( $CELL * 13 ))
-    pinned_repos.rb ${OWNER} publicly | yq eval -P | sed "s/ /, /g" > ${RUNNER_TEMP}/pinned_repo
-    QUERY='{"query":"{\n organization(login: \"'${OWNER}'\") {\n pinnedItems(first: 6, types: REPOSITORY) {\n nodes {\n ... on Repository {\n name\n }\n }\n }\n }\n}"'
-    curl -s -X POST "${GITHUB_GRAPHQL_URL}" -H "Authorization: bearer ${TOKEN}" --data-raw "${QUERY}" | jq --raw-output '.data.organization.pinnedItems.nodes[].name' | yq eval -P | sed "s/ /, /g" > ${RUNNER_TEMP}/pinned_repos
-    [[ "${OWNER}" != "eq19" ]] && sed -i "1s|^|maps, feed, lexer, parser, syntax, grammar, |" ${RUNNER_TEMP}/pinned_repo
-    IFS=', '; array=($(cat ${RUNNER_TEMP}/pinned_repo))
+    if [[ "${OWNER}" == "eq19" ]]; then
+      echo "maps, feed, lexer, parser, syntax, grammar" > ${RUNNER_TEMP}/pinned_repos
+    else
+      QUERY='{"query":"{\n organization(login: \"'${OWNER}'\") {\n pinnedItems(first: 6, types: REPOSITORY) {\n nodes {\n ... on Repository {\n name\n }\n }\n }\n }\n}"'
+      curl -s -X POST "${GITHUB_GRAPHQL_URL}" -H "Authorization: bearer ${TOKEN}" --data-raw "${QUERY}" | jq --raw-output '.data.organization.pinnedItems.nodes[].name' | yq eval -P | sed "s/ /, /g" > ${RUNNER_TEMP}/pinned_repos
+      sed -i "1s|^|maps, feed, lexer, parser, syntax, grammar, |" ${RUNNER_TEMP}/pinned_repos
+    fi
+    IFS=', '; array=($(cat ${RUNNER_TEMP}/pinned_repos))
   else
     gh api -H "${HEADER}" /user/orgs  --jq '.[].login' | sort -uf | yq eval -P | sed "s/ /, /g" > ${RUNNER_TEMP}/user_orgs
     IFS=', '; array=($(cat ${RUNNER_TEMP}/user_orgs))
@@ -34,7 +37,7 @@ set_target() {
   elif [[ "${array[-1]}" == "$1" ]]; then
     SPAN=${#array[@]}; echo $2 | sed "s|${OWNER}.github.io|${ENTRY}.github.io|g"
     if [[ -n "$CELL" ]]; then
-      if [[ "${ENTRY}" != "eq19" ]]; then
+      if [[ "${ENTRY}" == "eq19" ]]; then
         echo "maps, feed, lexer, parser, syntax, grammar" > ${RUNNER_TEMP}/pinned_repos
       else
         QUERY='{"query":"{\n organization(login: \"'${ENTRY}'\") {\n pinnedItems(first: 6, types: REPOSITORY) {\n nodes {\n ... on Repository {\n name\n }\n }\n }\n }\n}"'
