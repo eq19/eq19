@@ -18,8 +18,7 @@ set_target() {
     echo "[" > ${RUNNER_TEMP}/orgs.json
     for ((i=0; i < ${#array[@]}; i++)); do
       QUERY='{"query":"{\n organization(login: \"'${array[$i]}'\") {\n pinnedItems(first: 6, types: REPOSITORY) {\n nodes {\n ... on Repository {\n name\n }\n }\n }\n }\n}"'
-      curl -s -X POST "${GITHUB_GRAPHQL_URL}" -H "Authorization: bearer ${TOKEN}" --data-raw "${QUERY}" | jq --raw-output '.data.organization.pinnedItems' | yq eval -P | sed "s/name: //g"
-      IFS=', '; pr=($(pinned_repos.rb ${array[$i]} public | yq eval -P | sed "s/ /, /g"))      
+      IFS=', '; pr=($(curl -s -X POST "${GITHUB_GRAPHQL_URL}" -H "Authorization: bearer ${TOKEN}" --data-raw "${QUERY}" | jq --raw-output '.data.organization.pinnedItems' | yq eval -P | sed "s/name: /, /g"))
       gh api -H "${HEADER}" /orgs/${array[$i]} | jq '. +
         {"key1": ["maps","feed","lexer","parser","syntax","grammar"]} +
         {"key2": ["'${pr[0]}'","'${pr[1]}'","'${pr[2]}'","'${pr[3]}'","'${pr[4]}'","'${pr[5]}'"]}' >> ${RUNNER_TEMP}/orgs.json
