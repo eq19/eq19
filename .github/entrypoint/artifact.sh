@@ -9,7 +9,7 @@ set_target() {
     [[ -n "$CELL" ]] && SPIN=$(( $CELL * 13 ))
     pinned_repos.rb ${OWNER} publicly | yq eval -P | sed "s/ /, /g" > ${RUNNER_TEMP}/pinned_repo
     QUERY='{"query":"{\n organization(login: \"'${OWNER}'\") {\n pinnedItems(first: 6, types: REPOSITORY) {\n nodes {\n ... on Repository {\n name\n }\n }\n }\n }\n}"'
-    curl -s -X POST "${GITHUB_GRAPHQL_URL}" -H "Authorization: bearer ${TOKEN}" --data-raw "${QUERY}" | jq --raw-output '.data.organization.pinnedItems' | yq eval -P | sed "s/name: //g" > nodes.yaml
+    curl -s -X POST "${GITHUB_GRAPHQL_URL}" -H "Authorization: bearer ${TOKEN}" --data-raw "${QUERY}" | jq --raw-output '.data.organization.pinnedItems.nodes[].name' | yq eval -P | sed "s/ /, /g" > ${RUNNER_TEMP}/pinned_repos
     [[ "${OWNER}" != "eq19" ]] && sed -i "1s|^|maps, feed, lexer, parser, syntax, grammar, |" ${RUNNER_TEMP}/pinned_repo
     IFS=', '; array=($(cat ${RUNNER_TEMP}/pinned_repo))
   else
