@@ -10,7 +10,7 @@ set_target() {
     pinned_repos.rb ${OWNER} publicly | yq eval -P | sed "s/ /, /g" > ${RUNNER_TEMP}/pinned_repo
     [[ "${OWNER}" != "eq19" ]] && sed -i "1s|^|maps, feed, lexer, parser, syntax, grammar, |" ${RUNNER_TEMP}/pinned_repo
     QUERY='{"query":"{\n  user(login: \"'${OWNER}'\") {\n pinnedItems(first: 6, types: REPOSITORY) {\n nodes {\n ... on Repository {\n name\n }\n }\n }\n }\n}"'
-    curl -s -X POST "${GITHUB_GRAPHQL_URL}" -H "Authorization: bearer ${TOKEN}" --data-raw '${QUERY}' | jq --raw-output '.data.user.pinnedItems' | yq eval -P | sed "s/name: //g" > nodes.yaml
+    curl -s -X POST "${GITHUB_GRAPHQL_URL}" -H "Authorization: bearer ${TOKEN}" --data-raw "${QUERY}" | jq --raw-output '.data.user.pinnedItems' | yq eval -P | sed "s/name: //g" > nodes.yaml
     IFS=', '; array=($(cat ${RUNNER_TEMP}/pinned_repo))
   else
     gh api -H "${HEADER}" /user/orgs  --jq '.[].login' | sort -uf | yq eval -P | sed "s/ /, /g" > ${RUNNER_TEMP}/user_orgs
