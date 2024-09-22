@@ -117,7 +117,6 @@ PATTERN='sort_by(.created_at)|.[] | select(.public == true).files.[] | select(.f
 HEADER="Accept: application/vnd.github+json" && echo ${TOKEN} | gh auth login --with-token
 gh api -H "${HEADER}" "/users/eq19/gists" --jq "${PATTERN}" > ${RUNNER_TEMP}/gist_files
 
-mv ${GITHUB_WORKSPACE}/.github/templates/_config.yml ${RUNNER_TEMP}/_config.yml
 sudo gem install nokogiri --platform=ruby &>/dev/null
 
 # Capture the string and return status
