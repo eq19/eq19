@@ -24,7 +24,7 @@ set_target() {
         {"key2": ["'${pr[0]}'","'${pr[1]}'","'${pr[2]}'","'${pr[3]}'","'${pr[4]}'","'${pr[5]}'"]}' >> ${RUNNER_TEMP}/orgs.json
       if [[ "$i" -lt "${#array[@]}-1" ]]; then echo "," >> ${RUNNER_TEMP}/orgs.json; fi
     done
-    echo "]" >> ${RUNNER_TEMP}/orgs.json
+    echo "]" >> ${RUNNER_TEMP}/orgs.json && cat ${RUNNER_TEMP}/orgs.json
   fi
   
   # Iterate the Structure
