@@ -122,6 +122,7 @@ jekyll_build() {
   [[ -d ${RUNNER_TEMP}/$1/docs ]] && mv -f ${RUNNER_TEMP}/$1/docs .
   mv -f ${RUNNER_TEMP}/$1/.jekyll-metadata . &>/dev/null
   mv -f ${RUNNER_TEMP}/$1/.sass-cache . &>/dev/null
+  mv -f ${RUNNER_TEMP}/$1/.git . &>/dev/null
 }
 
 # Get structure on gist files
