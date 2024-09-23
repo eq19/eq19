@@ -121,6 +121,7 @@ jekyll_build() {
   git clone --single-branch -b gh-pages https://github.com/${OWNER}/$1 ${RUNNER_TEMP}/$1 &>/dev/null
   [[ -f ${RUNNER_TEMP}/$1/.jekyll-metadata ]] && mv -f ${RUNNER_TEMP}/$1/.jekyll-metadata .
   [[ -d ${RUNNER_TEMP}/$1/.sass-cache ]] && mv -f ${RUNNER_TEMP}/$1/.sass-cache .
+  [[ -d ${RUNNER_TEMP}/$1/docs ]] && mv -f ${RUNNER_TEMP}/$1/docs .
 }
 
 # Get structure on gist files
