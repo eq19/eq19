@@ -34,7 +34,7 @@ runs:
         git config --global core.autocrlf false
         git config --global --add safe.directory "${{ github.workspace }}"       
        
-        echo 'LATEST_COMMIT='$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message") >> ${GITHUB_ENV}
+        echo 'LATEST_COMMIT=$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message")' >> ${GITHUB_ENV}
 
     - name: 💎 Update workflow conveniently
       id: update
