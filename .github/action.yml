@@ -115,10 +115,3 @@ runs:
             echo "deleted: ${instance_zone}/${instance_name}"
           fi
         done
-
-        HEADER="Accept: application/vnd.github+json"
-        echo ${{ inputs.token }} | gh auth login --with-token
-        #See: https://docs.github.com/en/rest/actions/self-hosted-runners
-        TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
-        RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
-        if (( $TOTAL_COUNT != 0 )); then gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}; fi 
