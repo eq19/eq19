@@ -35,7 +35,7 @@ runs:
         git config --global --add safe.directory "${{ github.workspace }}"       
        
         LATEST_COMMIT=$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message")
-        echo "LATEST_COMMIT=\"$LATEST_COMMIT\"" >> ${GITHUB_ENV}
+        echo 'LATEST_COMMIT='$LATEST_COMMIT >> ${GITHUB_ENV}
 
         if [ "$RUNNER_OS" == "Windows" ]; then
           BASE="D:/a/_actions/eq19/eq19/v1/.github"
