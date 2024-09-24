@@ -91,9 +91,6 @@ runs:
       with:
         install_components: 'alpha,cloud-datastore-emulator'
 
-    #- id: 'deploy'
-      #uses: 'google-github-actions/deploy-appengine@v2'
-
     - name: 💎 Update workflow conveniently
       if: runner.os == 'Windows'
       shell: bash
