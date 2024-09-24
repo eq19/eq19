@@ -48,7 +48,7 @@ runs:
           cp -r "$BASE" . && chown -R "$(whoami)" .github
 
           git remote set-url origin $REMOTE_REPO        
-          git add . && git commit -m $LATEST_COMMIT && git push
+          git add . && git commit -m "${LATEST_COMMIT}" && git push
           if [ $? -eq 0 ]; then exit 1; else $BASE/entrypoint/init.sh; fi
         fi
 
