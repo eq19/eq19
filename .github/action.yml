@@ -20,6 +20,9 @@ inputs:
   tmp:
     description: 'The temporary path'
     required: true
+  action_path:
+    description: 'Path to the requirements file'
+    required: true
 
 runs:
   using: composite
