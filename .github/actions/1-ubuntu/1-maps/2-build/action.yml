@@ -74,7 +74,7 @@ runs:
         for ((i=0; i < ${#array[@]}; i++)); do
           if [ "${array[$i]}" != "latest" ]; then
             HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"${{ inputs.hub_username }}\", \"password\": \"${{ inputs.hub_password }}\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
-            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/${{ inputs.hub_username }}/repositories/$BASE_NAME/tags/${array[$i]}
+            curl -s -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/${{ inputs.hub_username }}/repositories/$BASE_NAME/tags/${array[$i]}
             echo "deleted: ${{ inputs.image_name }}:${array[$i]}"
           fi
         done
