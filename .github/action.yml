@@ -24,7 +24,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: 💎 Get latest commit
+    - name: 💎 Get the latest commit message
       id: commit
       shell: bash
       run: |
