@@ -42,7 +42,6 @@ runs:
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           BASE="D:/a/_actions/eq19/eq19/v1/.github"
-          $BASE/entrypoint/init.sh
         else
           BASE=/home/runner/work/_actions/eq19/eq19/v1/.github 
           REMOTE_REPO="https://${{ inputs.actor }}:${{ inputs.token }}@github.com/${{ github.repository }}.git"
@@ -53,8 +52,25 @@ runs:
           git remote set-url origin $REMOTE_REPO        
           git add . && git commit -m ${{ env.LATEST_COMMIT }} && git push
 
-          if [ $? -eq 0 ]; then exit 1; else $BASE/entrypoint/init.sh; fi
+          if [ $? -eq 0 ]; then exit 1; fi
         fi
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+        allow-prereleases: true
+
+    - uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        python -m pip -q install --upgrade pip setuptools six wheel
+        python -m pip -q install -r ${{ inputs.action_path }}/requirements-dev.txt
+        $BASE/entrypoint/init.sh
 
     - name: View context attributes
       uses: actions/github-script@v7
