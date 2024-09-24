@@ -102,3 +102,23 @@ runs:
       uses: actions/github-script@v7
       with:
         script: console.log(context)
+
+    - name: Remove Existing Self-Hosted Runner
+      if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        for instance_uri in $(gcloud compute instances list --uri 2> /dev/null); do
+          instance_name=${instance_uri##*/}
+          instance_zone_uri=${instance_uri/\/instances\/${instance_name}/}
+          instance_zone=${instance_zone_uri##*/}
+          if [ -n "${instance_name}" ] && [ -n "${instance_zone}" ] && gcloud compute instances delete ${instance_name} --zone ${instance_zone} --quiet; then
+            echo "deleted: ${instance_zone}/${instance_name}"
+          fi
+        done
+
+        HEADER="Accept: application/vnd.github+json"
+        echo ${{ inputs.token }} | gh auth login --with-token
+        #See: https://docs.github.com/en/rest/actions/self-hosted-runners
+        TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
+        RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
+        if (( $TOTAL_COUNT != 0 )); then gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}; fi 
