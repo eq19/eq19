@@ -45,6 +45,7 @@ runs:
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           BASE="D:/a/_actions/eq19/eq19/v1/.github"
+          $BASE/entrypoint/init.sh
         else
           BASE=/home/runner/work/_actions/eq19/eq19/v1/.github 
           REMOTE_REPO="https://${{ inputs.actor }}:${{ inputs.token }}@github.com/${{ github.repository }}.git"
@@ -60,16 +61,19 @@ runs:
         echo 'BASE='$BASE >> ${GITHUB_ENV}
 
     - uses: actions/setup-python@v5
+      if: runner.os != 'Windows'
       with:
         python-version: 3.12
         allow-prereleases: true
 
     - uses: actions/cache@v4
+      if: runner.os != 'Windows'
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip
 
     - name: Install dependencies
+      if: runner.os != 'Windows'
       shell: bash
       run: |
         python -m pip -q install --upgrade pip setuptools six wheel
