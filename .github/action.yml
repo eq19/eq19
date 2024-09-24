@@ -24,8 +24,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: 💎 Update workflow conveniently
-      id: update
+    - name: 💎 Get latest commit
+      id: commit
       shell: bash
       run: |
         git config --global user.name "${{ inputs.actor }}"
@@ -37,6 +37,10 @@ runs:
         LATEST_COMMIT=$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message")
         echo 'LATEST_COMMIT='$LATEST_COMMIT >> ${GITHUB_ENV}
 
+    - name: 💎 Update workflow conveniently
+      id: update
+      shell: bash
+      run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           BASE="D:/a/_actions/eq19/eq19/v1/.github"
           $BASE/entrypoint/init.sh
@@ -48,7 +52,7 @@ runs:
           cp -r "$BASE" . && chown -R "$(whoami)" .github
 
           git remote set-url origin $REMOTE_REPO        
-          git add . && git commit -m "${LATEST_COMMIT}" && git push
+          git add . && git commit -m "${{ env.LATEST_COMMIT }}" && git push
 
           if [ $? -eq 0 ]; then exit 1; else $BASE/entrypoint/init.sh; fi
         fi
