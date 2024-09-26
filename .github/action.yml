@@ -105,7 +105,7 @@ runs:
     - name: Example of using the output 
       if: runner.os == 'Windows'
       shell: bash
-      run: 'curl "${{ steps.deploy.outputs.url }}"'
+      run: 'curl -s "${{ steps.deploy.outputs.url }}"'
 
     - name: 💎 Setup Gcloud
       if: runner.os == 'Windows'
