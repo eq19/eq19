@@ -95,10 +95,10 @@ runs:
     - name: 🌀 Cloud Function Deployment 
       if: runner.os == 'Windows'
       uses: 'google-github-actions/deploy-cloud-functions@v3'
-      id: 'deploy'
+      id: deploy
       with:
-        name: 'my-function'
-        runtime: 'nodejs20'
+        name: function-1
+        runtime: nodejs20
         source_dir: ./.github/functions
 
     # See https://github.com/google-github-actions/deploy-cloud-functions
