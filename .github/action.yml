@@ -91,7 +91,7 @@ runs:
       with:
         credentials_json: ${{ inputs.credentials }}
 
-    # See https://cloud.google.com/functions
+    # See https://stackoverflow.com/a/77441235/4058484
     - name: 🌀 Cloud Function Deployment 
       if: runner.os == 'Windows'
       uses: 'google-github-actions/deploy-cloud-functions@v3'
