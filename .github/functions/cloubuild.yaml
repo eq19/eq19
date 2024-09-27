@@ -3,13 +3,10 @@
     args:
       - '-c'
       - |
-        gcloud functions deploy function-4 \
+        gcloud functions deploy function \
         --gen2 \
         --region=REGION_ID \
-        --trigger-location=TRIGGER_REGION_ID \
-        --runtime=python310 \
+        --runtime=python312 \
         --entry-point=main \
         --source=./ \
-        --trigger-event-filters='type=google.cloud.firestore.document.v1.written' \
-        --trigger-event-filters='database=(default)' \
-        --trigger-event-filters-path-pattern='document=user/{userId}'
+        --trigger-http
