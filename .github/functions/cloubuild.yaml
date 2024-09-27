@@ -3,10 +3,8 @@
     args:
       - '-c'
       - |
-        gcloud functions deploy function \
-        --gen2 \
-        --region=REGION_ID \
-        --runtime=python312 \
-        --entry-point=main \
-        --source=./ \
-        --trigger-http
+        gcloud functions deploy function --gen2 --runtime=python312 --trigger-http \
+          --service-account=project-owner@feedmapping.iam.gserviceaccount.com \
+          --region="us-central1" --no-allow-unauthenticated \
+          --source=./ --entry-point=hello_get
+
