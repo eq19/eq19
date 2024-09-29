@@ -55,8 +55,9 @@ def main(project_id: str) -> None:
         project_id: name of the project to list buckets from.
     """
     access_token = get_access_token()
-    buckets = list_buckets(project_id, access_token)
-    print(buckets)
+    #buckets = list_buckets(project_id, access_token)
+    #print(buckets)
+    return access_token
 
 
 if __name__ == "__main__":
