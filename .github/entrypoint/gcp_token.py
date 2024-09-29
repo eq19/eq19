@@ -3,7 +3,6 @@ import urllib
 import google.auth.transport.requests
 import google.oauth2.id_token
 
-
 def make_authorized_get_request(endpoint, audience):
     """
     make_authorized_get_request makes a GET request to the specified HTTP endpoint
