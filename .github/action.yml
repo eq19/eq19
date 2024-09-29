@@ -111,8 +111,8 @@ runs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
-        python -m pip -q install google.auth requests
-        IDENTITY=$(python ./.github/entrypoint/gcp_access.py feedmapping)
+        #python -m pip -q install google.auth requests
+        IDENTITY=${{ seps.auth.outputs.auth_token }}
         curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
           -H "Authorization: Bearer $IDENTITY" -H "Content-Type: application/json" -d '{}'
 
