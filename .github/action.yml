@@ -107,6 +107,7 @@ runs:
       with:
         token_format: 'id_token'
         credentials_json: ${{ inputs.credentials }}
+        id_token_audience: 'https://us-central1-feedmapping.cloudfunctions.net/function'
 
     - name: Run identity
       if: runner.os == 'Windows'
