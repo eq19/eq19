@@ -45,6 +45,7 @@ def get_access_token() -> str:
     url = f"{METADATA_URL}instance/service-accounts/{SERVICE_ACCOUNT}/token"
 
     # Request an access token from the metadata server.
+    # Ref: https://cloud.google.com/compute/docs/access/authenticate-workloads#applications
     r = requests.get(url, headers=METADATA_HEADERS)
     r.raise_for_status()
 
