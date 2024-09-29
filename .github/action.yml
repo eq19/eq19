@@ -53,7 +53,7 @@ runs:
         echo 'LATEST_COMMIT='$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message") > ${GITHUB_ENV}
         python -m pip -q install google.auth requests
         IDENTITY=$(python ./.github/entrypoint/gcp_token.py)
-        curl -s -X POST ${{ env.DATASET_URL }} \
+        curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
           -H "Authorization: Bearer $IDENTITY" \
           -H "Content-Type: application/json" \
           -d '{}' | jq '.'
