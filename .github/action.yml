@@ -122,7 +122,7 @@ runs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
-        choco install yq &>/dev/null                
+        choco install yq            
         BASE="D:/a/_actions/eq19/eq19/v1/.github"
         $BASE/entrypoint/init.sh
 
