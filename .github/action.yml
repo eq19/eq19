@@ -122,8 +122,8 @@ runs:
       if: runner.os == 'Windows'          
       shell: bash
       run: >
-        curl -s -X POST POST https://compute.googleapis.com/compute/v1/projects/feedmapping/zones/us-central1-a/instances
-        -H "Authorization: Bearer $IDENTITY" -H "Content-Type: application/json" -d 
+        curl -s -H "Authorization: Bearer $IDENTITY" -H "Content-Type: application/json"
+        -X POST https://compute.googleapis.com/compute/v1/projects/feedmapping/zones/us-central1-a/instances -d 
         '{         
           "canIpForward": false,
           "confidentialInstanceConfig": {
