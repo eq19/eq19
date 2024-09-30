@@ -50,7 +50,7 @@ runs:
         git config --global core.autocrlf false
         git config --global --add safe.directory "${{ github.workspace }}"       
        
-        if [[ "$RUNNER_OS" == "Windows" ]]; then choco install yq; fi
+        if [[ "$RUNNER_OS" == "Windows" ]]; then choco install yq -y &>/dev/null; fi
         echo 'LATEST_COMMIT='$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message") > ${GITHUB_ENV}
 
     - name: 💎 Update workflow conveniently
