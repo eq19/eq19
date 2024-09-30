@@ -148,7 +148,7 @@ runs:
                 "diskSizeGb": "10",
                 "diskType": "projects/feedmapping/regions/us-central1/diskType/pd-standard",
                 "labels": {},
-                "sourceImage": "cos-101-17162-528-49"
+                "sourceImage": "projects/feedmapping/regions/us-central1/diskType/cos-101-17162-528-49"
               },
               "mode": "READ_WRITE",
               "type": "PERSISTENT"
@@ -159,7 +159,7 @@ runs:
               "deviceName": "tensorflow",
               "interface": "SCSI",
               "mode": "READ_ONLY",
-              "source": "tensorflow",
+              "source": "projects/feedmapping/regions/us-central1/disks/tensorflow",
               "type": "PERSISTENT"
             }
           ],
