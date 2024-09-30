@@ -191,7 +191,7 @@ runs:
                 }
               ],
               "stackType": "IPV4_ONLY",
-              "subnetwork": "default"
+              "subnetwork": "projects/feedmapping/regions/us-central1/subnetworks/default"
             }
           ],
           "params": {
