@@ -172,7 +172,7 @@ runs:
           "labels": {
             "goog-ec-src": "vm_add-rest"
           },
-          "machineType": "projects/feedmapping/zones/us-central1-a/machineType/e2-micro",
+          "machineType": "zones/us-central1-a/machineType/e2-micro",
           "metadata": {
             "items": [
               {
