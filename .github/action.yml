@@ -148,7 +148,7 @@ runs:
                 "diskSizeGb": "10",
                 "diskType": "projects/feedmapping/regions/us-central1/diskType/pd-standard",
                 "labels": {},
-                "sourceImage": "projects/feedmapping/regions/us-central1/diskType/cos-101-17162-528-49"
+                "sourceImage": "projects/cos-cloud/global/images/cos-101-17162-528-49"
               },
               "mode": "READ_WRITE",
               "type": "PERSISTENT"
