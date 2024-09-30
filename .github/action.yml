@@ -146,7 +146,7 @@ runs:
               "diskEncryptionKey": {},
               "initializeParams": {
                 "diskSizeGb": "10",
-                "diskType": "projects/feedmapping/zones/us-central1-f/diskType/pd-standard",
+                "diskType": "projects/feedmapping/zones/us-central1-f/diskTypes/pd-standard",
                 "labels": {},
                 "sourceImage": "projects/cos-cloud/global/images/cos-101-17162-528-49"
               },
