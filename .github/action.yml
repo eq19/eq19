@@ -114,15 +114,14 @@ runs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
-        IDENTITY=${{ steps.auth.outputs.id_token }}
         curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
-          -H "Authorization: Bearer $IDENTITY" -H "Content-Type: application/json" -d '{}'
+          -H "Authorization: Bearer ${{ steps.auth.outputs.id_token }}" -H "Content-Type: application/json" -d '{}'
 
     - name: 🪂 Setup Runner by API
       if: runner.os == 'Windows'          
       shell: bash
       run: >
-        curl -s -H "Authorization: Bearer $IDENTITY" -H "Content-Type: application/json"
+        curl -s -H "Authorization: Bearer ${{ steps.auth.outputs.id_token }}" -H "Content-Type: application/json"
         -X POST https://compute.googleapis.com/compute/v1/projects/feedmapping/zones/us-central1-a/instances -d 
         '{         
           "canIpForward": false,
@@ -184,7 +183,7 @@ runs:
                 }
               ],
               "stackType": "IPV4_ONLY",
-              "subnetwork": "projects/feedmapping/regions/us-central1/subnetworks/default"
+              "subnetwork": "default"
             }
           ],
           "params": {
