@@ -146,7 +146,7 @@ runs:
               "diskEncryptionKey": {},
               "initializeParams": {
                 "diskSizeGb": "10",
-                "diskType": "pd-standard",
+                "diskType": "projects/feedmapping/regions/us-central1/diskType/pd-standard",
                 "labels": {},
                 "sourceImage": "cos-101-17162-528-49"
               },
@@ -172,7 +172,7 @@ runs:
           "labels": {
             "goog-ec-src": "vm_add-rest"
           },
-          "machineType": "e2-micro",
+          "machineType": "projects/feedmapping/regions/us-central1/machineType/e2-micro",
           "metadata": {
             "items": [
               {
@@ -223,7 +223,7 @@ runs:
               "https-server"
             ]
           },
-          "zone": "us-central1-a"
+          "zone": "projects/feedmapping/zones/us-central1-a"
         }'
         
     - name: 💎 Setup Gcloud
