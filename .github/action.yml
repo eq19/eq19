@@ -134,7 +134,7 @@ runs:
         '{         
           "canIpForward": false,
           "confidentialInstanceConfig": {
-           "enableConfidentialCompute": false
+            "enableConfidentialCompute": false
           },
           "deletionProtection": false,
           "description": "",
@@ -195,7 +195,7 @@ runs:
             }
           ],
           "params": {
-             "resourceManagerTags": {}
+            "resourceManagerTags": {}
           },
           "reservationAffinity": {
             "consumeReservationType": "NO_RESERVATION"
@@ -205,7 +205,7 @@ runs:
             "onHostMaintenance": "MIGRATE",
             "provisioningModel": "STANDARD"
          },
-          "serviceAccounts": [
+         "serviceAccounts": [
             {
               "email": "project-owner@feedmapping.iam.gserviceaccount.com",
               "scopes": [
