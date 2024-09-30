@@ -146,7 +146,7 @@ runs:
               "diskEncryptionKey": {},
               "initializeParams": {
                 "diskSizeGb": "10",
-                "diskType": "projects/feedmapping/regions/us-central1/diskType/pd-standard",
+                "diskType": "projects/feedmapping/zones/us-central1/diskType/pd-standard",
                 "labels": {},
                 "sourceImage": "projects/cos-cloud/global/images/cos-101-17162-528-49"
               },
@@ -159,7 +159,7 @@ runs:
               "deviceName": "tensorflow",
               "interface": "SCSI",
               "mode": "READ_ONLY",
-              "source": "projects/feedmapping/regions/us-central1/disks/tensorflow",
+              "source": "projects/feedmapping/zones/us-central1/disks/tensorflow",
               "type": "PERSISTENT"
             }
           ],
@@ -172,7 +172,7 @@ runs:
           "labels": {
             "goog-ec-src": "vm_add-rest"
           },
-          "machineType": "projects/feedmapping/regions/us-central1/machineType/e2-micro",
+          "machineType": "projects/feedmapping/zones/us-central1/machineType/e2-micro",
           "metadata": {
             "items": [
               {
