@@ -118,14 +118,14 @@ runs:
           -H "Authorization: Bearer ${{ steps.auth.outputs.id_token }}" -H "Content-Type: application/json" -d '{}'
 
     - name: 💎 Setup Gcloud
-      if: runner.os == '-Windows'
+      if: runner.os == 'Windows'
       uses: 'google-github-actions/setup-gcloud@v2'
       with:
         install_components: 'alpha,cloud-datastore-emulator'
 
     # Ref: https://cloud.google.com/compute/docs/instances/create-start-instance
     - name: 💎 Remove Existing Self-Hosted Runner
-      if: runner.os == '-Windows'
+      if: runner.os == 'Windows'
       shell: bash
       run: |
         for instance_uri in $(gcloud compute instances list --uri 2> /dev/null); do
