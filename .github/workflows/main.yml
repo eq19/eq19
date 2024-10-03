@@ -83,7 +83,7 @@ jobs:
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
-          private_key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          #private_key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           initiate_pauli: ${{ toJSON(steps.feed-mapping.outputs) }}
