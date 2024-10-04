@@ -109,7 +109,7 @@ runs:
         credentials_json: ${{ inputs.credentials }}
         id_token_audience: 'https://us-central1-feedmapping.cloudfunctions.net/function'
 
-   - name: 💎 Setup Gcloud
+    - name: 💎 Setup Gcloud
       if: runner.os == 'Windows'
       uses: 'google-github-actions/setup-gcloud@v2'
       with:
