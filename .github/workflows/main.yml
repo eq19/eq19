@@ -141,6 +141,13 @@ jobs:
     if: ${{ always() && contains(needs.*.result, 'failure') }}
 
     steps:
+      - name: 📂 Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          submodules: recursive
+          token: ${{ secrets.ACCESS_TOKEN }}
+
       - name: ⏪ Rewind all jobs
         uses: eq19/eq19.github.io@v1
         with:
