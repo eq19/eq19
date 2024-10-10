@@ -135,3 +135,13 @@ jobs:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           gell_mann: ${{ toJSON(steps.eval-syntax.outputs) }}
  
+  job-failure:
+    runs-on: ubuntu-latest
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
+
+    steps:
+      - name: ⏪ Rewind all jobs
+        uses: eq19/eq19.github.io@v1
+        with:
+          ref: ${{ github.workspace }}
+          token: ${{ secrets.ACCESS_TOKEN }}
