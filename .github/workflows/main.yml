@@ -148,8 +148,8 @@ jobs:
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: ⏪ Rewind all jobs
-        uses: eq19/eq19.github.io@v1
+      - name: ⏪ Rewind
+        uses: eq19/eq19@v1
         with:
           ref: ${{ github.workspace }}
           token: ${{ secrets.ACCESS_TOKEN }}
