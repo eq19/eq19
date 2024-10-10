@@ -137,7 +137,8 @@ jobs:
  
   job-failure:
     runs-on: ubuntu-latest
-    if: failure()
+    needs: [lexering,setup-parser]
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
 
     steps:
       - name: ⏪ Rewind all jobs
