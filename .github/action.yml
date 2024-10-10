@@ -66,7 +66,7 @@ runs:
         git remote set-url origin $REMOTE_REPO        
         #git add . && git commit -m ${{ env.LATEST_COMMIT }} && git push
         git add . && TEST_COMMIT=$(git commit -m "${LATEST_COMMIT}")
-
+        echo $TEST_COMMIT
         if [[ "${TEST_COMMIT}" =~ "nothing to commit" ]] ; then echo "nothing to commit"; else exit 1; fi
 
     - name: Login to DockerHub
