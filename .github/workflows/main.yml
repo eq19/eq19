@@ -137,7 +137,7 @@ jobs:
  
   job-failure:
     runs-on: ubuntu-latest
-    if: ${{ always() && contains(needs.*.result, 'failure') }}
+    if: failure()
 
     steps:
       - name: ⏪ Rewind all jobs
