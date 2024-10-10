@@ -150,8 +150,10 @@ jobs:
       - name: ⏪ Rewind
         shell: bash
         run: |
-          cd ${GITHUB_WORKSPACE}
-  
+          cd ${GITHUB_WORKSPACE} && rm -rf .github
+          BASE=/home/runner/work/_actions/eq19/eq19/v1/.github 
+          cp -r "$BASE" . && chown -R "$(whoami)" .github
+        
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global --add safe.directory "${GITHUB_WORKSPACE}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
