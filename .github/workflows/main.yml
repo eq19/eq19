@@ -144,7 +144,6 @@ jobs:
       - name: 📂 Checkout
         uses: actions/checkout@v4
         with:
-          ref: gh-pages
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
 
