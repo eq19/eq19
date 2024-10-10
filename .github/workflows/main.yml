@@ -137,7 +137,7 @@ jobs:
  
   job-failure:
     runs-on: macos-latest
-    #needs: [lexering,setup-parser]
+    needs: [lexering,setup-parser]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
 
     steps:
