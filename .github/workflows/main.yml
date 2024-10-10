@@ -150,7 +150,7 @@ jobs:
 
       - name: ⏪ Rewind
         shell: bash
-        run:
+        run: |
           cd ${GITHUB_WORKSPACE}
   
           git config --global user.name "${GITHUB_ACTOR}"
