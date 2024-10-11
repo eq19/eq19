@@ -93,6 +93,7 @@ jobs:
       target: ${{ join(steps.set-lexering.outputs.*, '\n') }}
 
   setup-parser:
+    if: always()
     needs: lexering
     strategy:
       matrix:
