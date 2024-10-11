@@ -99,6 +99,7 @@ jobs:
       matrix:
         config:
           - { os: self-hosted, id: 3 }
+          - { os: macos-latest, id: 4 }
 
     # ✔️ Completeness relations
     runs-on: ${{ matrix.config.os }}
@@ -134,31 +135,4 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           gell_mann: ${{ toJSON(steps.eval-syntax.outputs) }}
-        if: ${{ failure() || contains(needs.*.result, 'failure') }}
- 
-  job-conclusion:
-    if: always()
-    runs-on: macos-latest
-    # 👀 to do for (id: 4) 
-    needs: [lexering,setup-parser]
-
-    steps:
-      - name: 📂 Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          submodules: recursive
-          token: ${{ secrets.ACCESS_TOKEN }}
-
-      - name: ⏪ Rewind all jobs
-        if: contains(needs.*.result, 'failure')
-        shell: bash
-        run: |
-          cd ${GITHUB_WORKSPACE}
-
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-
-          REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git remote set-url origin ${REMOTE_REPO} && git add . && git commit --allow-empty -m "rerun actions due to job failure" && git push
+        if: ${{ failure() && runner.os == 'macOS'}}
