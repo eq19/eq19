@@ -104,8 +104,8 @@ jobs:
 
     # ✔️ Completeness relations
     runs-on: ${{ matrix.config.os }}
-    if: ${{ contains(needs.*.result, 'success') ||
-            contains(needs.*.result, 'failure') }}
+    if: ${{ (always() && contains(needs.*.result, 'success')) ||
+            (failure() && contains(needs.*.result, 'failure')) }}
 
     steps:
       - name: 📂 Checkout
