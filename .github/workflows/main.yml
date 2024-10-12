@@ -117,7 +117,7 @@ jobs:
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: 🕸️ Parsering
+      - name: 🕸️ Setup Parser
         if: runner.os != 'macOS'
         uses: eq19/parser@v2
         id: set-parser
