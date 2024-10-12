@@ -94,7 +94,7 @@ jobs:
       spin: ${{ join(steps.feed-mapping.outputs.*, '\n') }}
       target: ${{ join(steps.set-lexering.outputs.*, '\n') }}
 
-  setup-parser:
+  parsering:
     needs: lexering
     strategy:
       matrix:
