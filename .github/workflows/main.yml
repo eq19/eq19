@@ -96,7 +96,6 @@ jobs:
 
   parsering:
     needs: lexering
-    # ✔️ Completeness relations
     runs-on: ${{ matrix.config.os }}
     if: ${{ (always() && contains(needs.*.result, 'success')) ||
             (failure() && contains(needs.*.result, 'failure')) }}
@@ -105,6 +104,8 @@ jobs:
         config:
           - { os: self-hosted, id: 3 }
           - { os: macos-latest, id: 4 }
+
+      # ✔️ Completeness relations    
       max-parallel: ${{ contains(needs.*.result, 'success') && 1 || 2 }}
       fail-fast: ${{ contains(needs.*.result, 'success') && false || true }}
       
