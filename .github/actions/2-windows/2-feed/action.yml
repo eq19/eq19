@@ -66,10 +66,6 @@ inputs:
     description: 'The deploy repository'
     default: ${{ github.repository }}
     required: false
-  initiate_pauli_sum:
-    description: Build args
-    required: false
-    default: ""
 
 outputs:
   spin:
