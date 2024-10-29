@@ -66,10 +66,6 @@ inputs:
     description: 'The deploy repository'
     default: ${{ github.repository }}
     required: false
-  image_name:
-    description: Tag to use for the new image
-    default: ${{ github.action_repository }}
-    required: true
   initiate_pauli_sum:
     description: Build args
     required: false
