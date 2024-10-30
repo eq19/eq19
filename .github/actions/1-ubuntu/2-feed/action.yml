@@ -75,6 +75,15 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: 💎 Set ID Token
+      if: runner.os != 'Windows'
+      id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        token_format: 'id_token'
+        credentials_json: ${{ inputs.credentials }}
+        id_token_audience: 'https://us-central1-feedmapping.cloudfunctions.net/function'
+
     - name: 💎 Set Artifact
       if: runner.os != 'Windows'
       id: artifact
@@ -87,21 +96,13 @@ runs:
         REPO: ${{ github.repository }}
         ACTOR: ${{ github.triggering_actor }}
         OWNER: ${{ github.repository_owner }}
+        BEARER: ${{ steps.auth.outputs.id_token }}
       run: |      
         rm -rf ${{ inputs.action_path }}/.git
         mv -f ${{ inputs.action_path }}/_config.yml ${RUNNER_TEMP}/
         export PATH=$GITHUB_WORKSPACE/.github/entrypoint:$PATH && artifact.sh
         shopt -s dotglob && mv -f ${RUNNER_TEMP}/workdir/* ${{ inputs.action_path }}/
         mkdir -p ${{ github.workspace }}/_site && cp -R ${{ inputs.action_path }}/. ${{ github.workspace }}/_site/       
-
-    - name: 💎 Set ID Token
-      if: runner.os != 'Windows'
-      id: 'auth'
-      uses: 'google-github-actions/auth@v2'
-      with:
-        token_format: 'id_token'
-        credentials_json: ${{ inputs.credentials }}
-        id_token_audience: 'https://us-central1-feedmapping.cloudfunctions.net/function'
 
     #Fill in metadata with ${{ steps.artifact.outputs.orgs_json }}
     - name: Run identity
