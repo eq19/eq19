@@ -68,6 +68,12 @@ branding:
 runs:
   using: composite
   steps:
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ inputs.hub_username }}
+        password: ${{ inputs.hub_token }}
+
     - name: 💎 Set ID Token
       if: runner.os == 'Windows'
       uses: 'google-github-actions/auth@v2'
