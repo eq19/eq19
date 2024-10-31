@@ -93,6 +93,7 @@ runs:
       if: runner.os != 'Windows'
       shell: bash
       run: |
+        #Fill in metadata with ./.github/entrypoint/artifact/python/manual_v2.ipynb
         HEADER="Accept: application/vnd.github+json"
         echo ${{ inputs.token }} | gh auth login --with-token
         python -m pip -q install --upgrade pip setuptools six wheel
