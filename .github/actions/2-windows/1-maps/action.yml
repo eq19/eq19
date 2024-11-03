@@ -92,7 +92,7 @@ runs:
       shell: bash
       env:
         GITHUB_ACCESS_TOKEN: ${{ inputs.token }}
-        BASE="D:/a/_actions/eq19/eq19/v1/.github"
+        BASE: "D:/a/_actions/eq19/eq19/v1/.github"
       run: |
         ${BASE}/entrypoint/init.sh
 
