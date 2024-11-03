@@ -90,6 +90,8 @@ runs:
     - name: 💎 Remove Existing Self-Hosted Runner
       if: runner.os == 'Windows'
       shell: bash
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ inputs.token }}
       run: |
         BASE="D:/a/_actions/eq19/eq19/v1/.github"
         $BASE/entrypoint/config.sh && $BASE/entrypoint/init.sh
