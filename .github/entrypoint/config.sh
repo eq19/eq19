@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 git config --global user.name "${{ inputs.actor }}"
 git config --global user.email "${{ inputs.actor }}@users.noreply.github.com"
