@@ -99,7 +99,7 @@ runs:
       id: 'compute-ssh'
       shell: bash
       run: |
-        localedef -i en_US -f UTF-8 en_US.UTF-8
+        #localedef -i en_US -f UTF-8 en_US.UTF-8
         ssh-keyscan -t rsa ${{ env.IP }} >> $HOME/.ssh/known_hosts
         chmod 600 $HOME/.ssh/id_rsa
         cat << EOL >> $HOME/.ssh/config
