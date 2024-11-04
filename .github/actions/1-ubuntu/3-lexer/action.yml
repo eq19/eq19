@@ -107,10 +107,12 @@ runs:
       if: runner.os != 'Windows'
       id: variables
       shell: bash
-      run: |
-        id=
-        ${{ env.TARGET_REPOSITORY }}
+      env:
+        id: ${{ inputs.id }}
+        TARGET_REPOSITORY: ${{ env.TARGET_REPOSITORY }}
+      run: |        
         BASE_NAME=$(basename ${{ inputs.image_name }})
+        echo 'output_${id}='${TARGET_REPOSITORY} >> ${GITHUB_OUTPUT}    
         IFS=', '; array=($(curl -L -s 'https://registry.hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags?page_size=1024' | jq -rc '."results"[]["name"]' | yq eval -P | sed "s/ /, /g"))
         for ((i=0; i < ${#array[@]}; i++)); do
           if [ "${array[$i]}" != "latest" ]; then
