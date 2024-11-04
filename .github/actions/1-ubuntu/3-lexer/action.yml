@@ -63,6 +63,9 @@ inputs:
     description: 'The deploy repository'
     default: ${{ github.repository }}
     required: false
+  id:
+    description: The id according to os
+    required: true
 
 outputs:
   decays:
