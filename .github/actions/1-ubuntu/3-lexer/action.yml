@@ -65,12 +65,15 @@ inputs:
     required: false
 
 outputs:
-  command:
-    description: 'The command.outputs'
-    value: ${{ steps.command.outputs.stdout }}
   decays:
     description: 'The target service'
     value: ${{ env.PGSERVICEFILE }}
+  command:
+    description: 'The command.outputs'
+    value: ${{ steps.command.outputs.stdout }}
+  output_1:
+    description: 'The target service'
+    value: ${{ steps.variables.outputs.output_1 }}
 
 runs:
   using: composite
