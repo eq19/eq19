@@ -113,7 +113,7 @@ jobs:
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
           ref: ${{ matrix.config.id == 3 && gh-source || gh-pages }}
-          repository: ${{ needs.lexering.outputs.output_1.target.repo }}
+          repository: ${{ needs.lexering.outputs.target.repo.output_1 }}
 
       - name: 🚀 Setup Parser
         uses: eq19/parser@v2
