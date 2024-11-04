@@ -74,13 +74,14 @@ outputs:
   command:
     description: 'The command.outputs'
     value: ${{ steps.command.outputs.stdout }}
-  variables: ${{ join(steps.variables.outputs.*, '\n') }}
+  variables: 
+    description: 'The join outputs'
+    value: ${{ join(steps.variables.outputs.*, '\n') }}
 
 runs:
   using: composite
   steps:
     - name: 🪂 Adapt feed mapping
-      if: runner.os != 'Windows'
       shell: bash
       run: |
         git clone --single-branch -b gh-pages https://github.com/${{ env.TARGET_REPOSITORY }} ${{ inputs.action_path }}/_site &>/dev/null  
@@ -94,7 +95,6 @@ runs:
         cat ${{ inputs.action_path }}/_site/.env && cat ${{ inputs.action_path }}/Dockerfile
 
     - name: 🚀 Initiate Lexer
-      if: runner.os != 'Windows'
       uses: devcontainers/ci@v0.3
       id: set-output
       with:
@@ -108,7 +108,6 @@ runs:
           TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
 
     - name: 💎 Variables
-      if: runner.os != 'Windows'
       id: variables
       shell: bash
       env:
