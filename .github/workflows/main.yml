@@ -39,7 +39,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest, id: 1 }
-          - { os: windows-latest, id: 2 }
+          - { os: macos-latest, id: 2 }
     
     # 🔧 Commutation relations
     runs-on: ${{ matrix.config.os }}
@@ -100,7 +100,7 @@ jobs:
       matrix:
         config:
           - { os: self-hosted, id: 3 }
-          - { os: macos-latest, id: 4 }
+          - { os: windows-latest, id: 4 }
 
       # ✔️ Completeness relations    
       max-parallel: ${{ contains(needs.*.result, 'success') && 1 || 2 }}
