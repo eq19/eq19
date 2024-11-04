@@ -96,6 +96,7 @@ runs:
 
     #Ref: https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
     - name: Configure SSH
+      if: runner.os == '-Linux'           
       id: 'compute-ssh'
       shell: bash
       run: |
