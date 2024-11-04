@@ -74,9 +74,7 @@ outputs:
   command:
     description: 'The command.outputs'
     value: ${{ steps.command.outputs.stdout }}
-  output_1:
-    description: 'The target service'
-    value: ${{ steps.variables.outputs.output_1 }}
+  variables: ${{ join(steps.variables.outputs.*, '\n') }}
 
 runs:
   using: composite
