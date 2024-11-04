@@ -71,9 +71,6 @@ outputs:
   decays:
     description: 'The target service'
     value: ${{ env.PGSERVICEFILE }}
-  repo:
-    description: 'The target repository'
-    value: ${{ env.TARGET_REPOSITORY }}
 
 runs:
   using: composite
