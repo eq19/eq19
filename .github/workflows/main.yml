@@ -115,7 +115,7 @@ jobs:
           #repository: ${{ needs.lexering.outputs.target.repo }}
           ref: ${{ matrix.config.id == 3 && gh-source || gh-pages }}
 
-      - name: ⚧️ Setup Parser
+      - name: 🚀 Setup Parser
         uses: eq19/parser@v2
         id: set-parser
         with:
@@ -131,7 +131,7 @@ jobs:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           gell_mann: ${{ toJSON(steps.set-parser.outputs) }}
   
-      - name: 🚀 Set Grammar Rules
+      - name: ⚧️ Set Grammar Rules
         uses: eq19/grammar@v1
         id: grammar-rules
         if: always()
