@@ -92,7 +92,7 @@ runs:
       run: >
         echo 'function='$(curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function 
         -H "Authorization: Bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json"
-        -d @$TMPDIR/instance) >> ${GITHUB_OUTPUT}
+        -data @$TMPDIR/instance) >> ${GITHUB_OUTPUT}
 
     #Ref: https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
     - name: Configure SSH
