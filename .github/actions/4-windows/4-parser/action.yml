@@ -92,7 +92,7 @@ runs:
         TOKEN: ${{ steps.auth.outputs.id_token }}
       run: |
         #brew install ruby-full
-        gem install faraday-retry github-pages --platform=ruby
+        #gem install faraday-retry github-pages --platform=ruby
         curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
           -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" \
           --data @${{ github.workspace }}/docs/data.json | jq '.'
