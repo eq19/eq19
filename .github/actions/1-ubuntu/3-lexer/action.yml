@@ -69,8 +69,11 @@ outputs:
     description: 'The command.outputs'
     value: ${{ steps.command.outputs.stdout }}
   decays:
-    description: 'The target repository'
+    description: 'The target service'
     value: ${{ env.PGSERVICEFILE }}
+  repo:
+    description: 'The target repository'
+    value: ${{ env.TARGET_REPOSITORY }}
 
 runs:
   using: composite
