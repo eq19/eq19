@@ -43,6 +43,9 @@ jobs:
     
     # 🔧 Commutation relations
     runs-on: ${{ matrix.config.os }}
+    outputs:
+      description: 🏃‍♂️ Simulate Gell-Mann Matrices
+      value: ${{ join(steps.*.outputs.*, '\n') }}
     if: ${{ github.event_name == 'push' ||
         github.event.workflow_run.conclusion == 'success' }}
 
@@ -86,12 +89,6 @@ jobs:
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           initiate_pauli_sum: ${{ toJSON(steps.feed-mapping.outputs) }}
          
-    outputs:
-      # 🏃‍♂️ Simulate Gell-Mann Matrices
-      id: ${{ join(steps.build-parser.outputs.*, '\n') }}
-      spin: ${{ join(steps.feed-mapping.outputs.*, '\n') }}
-      target: ${{ join(steps.set-lexering.outputs.*, '\n') }}
-
   parsering:
     needs: lexering
     continue-on-error: true
