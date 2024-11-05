@@ -65,6 +65,10 @@ branding:
   icon: 'command'
   color: 'yellow'
 
+outputs:
+  description: 'The command.outputs'
+  value: ${{ steps.*.outputs.* }}
+
 runs:
   using: composite
   steps:
