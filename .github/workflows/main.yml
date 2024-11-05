@@ -41,11 +41,11 @@ jobs:
           - { os: ubuntu-latest, id: 1 }
           - { os: macos-latest, id: 2 }
     runs-on: ${{ matrix.config.os }}
-    
-    # 🔧 Commutation relations
     outputs:
       description: 🏃‍♂️ Simulate Gell-Mann
       value: ${{ join(steps.*.outputs.*, '\n') }}
+    
+    # 🔧 Commutation relations
     if: ${{ github.event_name == 'push' ||
         github.event.workflow_run.conclusion == 'success' }}
 
