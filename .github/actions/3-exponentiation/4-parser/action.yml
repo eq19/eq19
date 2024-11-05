@@ -63,9 +63,8 @@ inputs:
     required: false
 
 outputs:
-  site_id:
-    description: "A file path to a results file."
-    value: ${{ env.ID}}
+  description: 'The command.outputs'
+  value: ${{ steps.*.outputs.* }}
 
 runs:
   #using: 'node20'
