@@ -43,7 +43,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     outputs:
       description: 🏃‍♂️ Simulate Gell-Mann
-      value: ${{ join(steps.*.outputs.*, '\n') }}
+      value: ${{ toJSON(steps.*.outputs.*, '\n') }}
     
     # 🔧 Commutation relations
     if: ${{ github.event_name == 'push' ||
