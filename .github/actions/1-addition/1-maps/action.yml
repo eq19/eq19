@@ -62,6 +62,9 @@ inputs:
     description: 'The deploy repository'
     default: ${{ github.repository }}
     required: false
+  id:
+    description: The id according to os
+    required: true
 
 outputs:
   init:
@@ -76,8 +79,7 @@ runs:
       uses: eq19/eq19.github.io@v1
       id: init
       with:
-        tmp: ${{ inputs.tmp }}
-        base: ${{ inputs.base }}
+        id: ${{ inputs.id }}
         token: ${{ inputs.token }}
         actor: ${{ github.actor }}
         credentials: ${{ inputs.credentials }}
