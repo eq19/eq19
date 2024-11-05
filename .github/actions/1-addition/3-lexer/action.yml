@@ -68,15 +68,8 @@ inputs:
     required: true
 
 outputs:
-  decays:
-    description: 'The target service'
-    value: ${{ env.PGSERVICEFILE }}
-  command:
-    description: 'The command.outputs'
-    value: ${{ steps.command.outputs.stdout }}
-  variables: 
-    description: 'The join outputs'
-    value: ${{ join(steps.variables.outputs.*, '\n') }}
+  description: 'The command.outputs'
+  value: ${{ steps.*.outputs.* }}
 
 runs:
   using: composite
