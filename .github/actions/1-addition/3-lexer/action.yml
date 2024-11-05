@@ -73,7 +73,8 @@ outputs:
   variables:
     value: ${{ join(steps.variables.outputs.*, '\n') }}
 
-using: composite
+runs:
+  using: composite
   steps:
     - name: 🪂 Adapt feed mapping
       shell: bash
