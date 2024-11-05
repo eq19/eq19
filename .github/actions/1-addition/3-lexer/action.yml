@@ -68,11 +68,12 @@ inputs:
     required: true
 
 outputs:
-  description: 'The command.outputs'
-  value: ${{ steps.*.outputs.* }}
+  init:
+    value: ${{ join(steps.init.outputs.*, '\n') }}
+  variables:
+    value: ${{ join(steps.variables.outputs.*, '\n') }}
 
-runs:
-  using: composite
+using: composite
   steps:
     - name: 🪂 Adapt feed mapping
       shell: bash
