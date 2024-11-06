@@ -47,13 +47,6 @@ jobs:
         github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Generate output
-        id: gen_output
-        shell: bash
-        run: |
-          id="${{ matrix.config.id }}"
-          echo "output_${id}=${id}" >> "$GITHUB_OUTPUT"
-
       - name: 📂 Checkout
         uses: actions/checkout@v4
         with:
@@ -92,6 +85,13 @@ jobs:
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           initiate_pauli_sum: ${{ toJSON(steps.feed-mapping.outputs) }}
+
+      - name: Generate output
+        id: gen_output
+        shell: bash
+        run: |
+          id="${{ matrix.config.id }}"
+          echo "output_${id}=${id}" >> "$GITHUB_OUTPUT"
 
     outputs:
       output_1: ${{ steps.gen_output.outputs.output_1 }}
