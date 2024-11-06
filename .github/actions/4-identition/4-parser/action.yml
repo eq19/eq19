@@ -81,6 +81,7 @@ runs:
       with:
         cache-version: 1
         bundler-cache: true
+        ruby-version: '3.3'
         
     - name: 💎 Set ID Token
       id: 'auth'
