@@ -80,8 +80,8 @@ runs:
       uses: ruby/setup-ruby@v1
       with:
         cache-version: 1
-        bundler-cache: true
         ruby-version: '3.3'
+        bundler-cache: true
         
     - name: 💎 Set ID Token
       id: 'auth'
