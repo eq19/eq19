@@ -65,9 +65,12 @@ inputs:
     required: false
 
 outputs:
-  all_outputs:
-    description: Collect all outputs
-    value: ${{ toJSON(steps.*.outputs) }}
+  describe:
+    description: Collect describe outputs
+    value: ${{ toJSON(steps.describe.outputs.ip) }}
+  compute:
+    description: Collect compute outputs
+    value: ${{ toJSON(steps.compute.outputs) }}
 
 runs:
   using: composite
@@ -87,7 +90,7 @@ runs:
     #Ref: https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
     - name: Configure SSH
       if: runner.os == '-Linux'           
-      id: 'compute-ssh'
+      id: compute
       shell: bash
       env:
         IP: ${{ steps.describe.outputs.ip }}
