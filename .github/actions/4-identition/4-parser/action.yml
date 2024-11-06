@@ -76,6 +76,12 @@ runs:
   using: composite
   
   steps:
+    - name: 💎 Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        cache-version: 1
+        bundler-cache: true
+        
     - name: 💎 Set ID Token
       id: 'auth'
       uses: 'google-github-actions/auth@v2'
