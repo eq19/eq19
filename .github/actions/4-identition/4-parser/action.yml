@@ -83,6 +83,7 @@ runs:
         ruby-version: '3.3'
         rubygems: latest
         bundler-cache: true
+        working-directory: ${{ github.workspace }}
         
     - name: 💎 Set ID Token
       id: 'auth'
