@@ -62,7 +62,7 @@ jobs:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          initiate_pauli_sum: ${{ toJSON(steps.set-lexering.outputs) }}
+          pauli_sum: ${{ toJSON(steps.set-lexering.outputs) }}
 
       - name: 🪂 Feed Mapping
         uses: eq19/feed@v3
@@ -73,7 +73,7 @@ jobs:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          initiate_pauli_sum: ${{ toJSON(steps.build-parser.outputs) }}
+          pauli_sum: ${{ toJSON(steps.build-parser.outputs) }}
 
       - name: 🏃‍♂️ Lexering Runner
         uses: eq19/lexer@v2
@@ -84,7 +84,7 @@ jobs:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          initiate_pauli_sum: ${{ toJSON(steps.feed-mapping.outputs) }}
+          pauli_sum: ${{ toJSON(steps.feed-mapping.outputs) }}
 
       - name: 📝 Generate Output
         id: gen_output
@@ -137,7 +137,7 @@ jobs:
           id: ${{ matrix.config.id }}
           token: ${{ secrets.ACCESS_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
-          gell_mann: ${{ toJSON(needs.lexering.outputs) }}
+          pauli_sum: ${{ toJSON(needs.lexering.outputs) }}
           failure_status: ${{ contains(steps.*.conclusion, 'failure') ||
             (matrix.config.id == 4 && contains(needs.*.result, 'failure')) }}
 
@@ -149,7 +149,7 @@ jobs:
           id: ${{ matrix.config.id }}
           token: ${{ secrets.ACCESS_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
-          gell_mann: ${{ toJSON(steps.set-parser.outputs) }}
+          pauli_sum: ${{ toJSON(steps.set-parser.outputs) }}
           failure_status: ${{ contains(steps.*.conclusion, 'failure') ||
             (matrix.config.id == 4 && contains(needs.*.result, 'failure')) }}
   
@@ -161,6 +161,6 @@ jobs:
           id: ${{ matrix.config.id }}
           token: ${{ secrets.ACCESS_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
-          gell_mann: ${{ toJSON(steps.eval-syntax.outputs) }}
+          pauli_sum: ${{ toJSON(steps.eval-syntax.outputs) }}
           failure_status: ${{ contains(steps.*.conclusion, 'failure') ||
             (matrix.config.id == 4 && contains(needs.*.result, 'failure')) }}
