@@ -98,8 +98,8 @@ jobs:
       #id: ${{ steps.build-parser.outputs.init }}
       #spin: ${{ steps.feed-mapping.outputs.addition }}
       #target: ${{ steps.set-lexering.outputs.multiplication }}
-      output_1: ${{ steps.gen_output.outputs.output_1 }}
-      output_2: ${{ steps.gen_output.outputs.output_2 }}
+      spin: ${{ steps.gen_output.outputs.output_1 }}
+      target: ${{ steps.gen_output.outputs.output_2 }}
 
   parsering:
     needs: lexering
