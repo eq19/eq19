@@ -118,15 +118,6 @@ jobs:
       fail-fast: ${{ contains(needs.*.result, 'success') && false || true }}
       
     steps:
-      # Will show
-      # {
-      #   "output_1": "1",
-      #   "output_2": "2",
-      # }
-      - shell: bash
-        run: |
-          echo '${{ toJSON(needs.lexering.outputs) }}'  
-
       - name: 📂 Checkout
         uses: actions/checkout@v4
         with:
