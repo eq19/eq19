@@ -43,6 +43,7 @@ jobs:
     steps:
       - name: Generate output
         id: gen_output
+        shell: bash
         run: |
           id="${{ matrix.config.id }}"
           echo "output_${id}=${id}" >> "$GITHUB_OUTPUT"
@@ -59,7 +60,9 @@ jobs:
       #   "output_1": "1",
       #   "output_2": "2",
       # }
-      - run: echo '${{ toJSON(needs.job1.outputs) }}'  
+      - shell: bash
+        run: |
+          echo '${{ toJSON(needs.job1.outputs) }}'  
 
   lexering:
     strategy:
