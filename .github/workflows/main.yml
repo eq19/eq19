@@ -86,7 +86,7 @@ jobs:
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           initiate_pauli_sum: ${{ toJSON(steps.feed-mapping.outputs) }}
 
-      - name: 📝 Generate Output
+      - name: 📝 Generate Outputs
         id: gen_output
         shell: bash
         run: |
