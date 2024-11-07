@@ -116,6 +116,11 @@ jobs:
       max-parallel: ${{ contains(needs.*.result, 'success') && 1 || 2 }}
       fail-fast: ${{ contains(needs.*.result, 'success') && false || true }}
 
+    # 🕸️ Environment
+    env:
+      IP_ADDRESS: '${{ needs.lexering.outputs.target }}'
+      TARGET_REPOSITORY: '${{ needs.lexering.outputs.spin }}'
+
     # ✔️ Completeness status
     if: ${{ (always() && contains(needs.*.result, 'success')) ||
             (failure() && contains(needs.*.result, 'failure')) }}
@@ -126,7 +131,7 @@ jobs:
         with:
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
-          repository: ${{ needs.lexering.outputs.spin }}
+          repository: ${{ env.TARGET_REPOSITORY }}
           ref: ${{ matrix.config.id == 3 && 'gh-source' || 'gh-pages' }}
 
       - name: 🚀 Setup Parser
