@@ -135,7 +135,7 @@ jobs:
           repository: ${{ env.TARGET_REPOSITORY }}
 
       - name: 🚀 Setup Parser
-        uses: eq19/parser@v
+        uses: eq19/parser@v2
         id: set-parser
         if: success()
         with:
