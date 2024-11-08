@@ -105,7 +105,6 @@ runs:
   
         else
 
-
           cd ${{ inputs.workspace }} && rm -rf .git .bundle vendor
           cd $RUNNER_TEMP && git clone --single-branch --branch gh-pages ${{ env.TARGET_REPO }} gh-pages
 
