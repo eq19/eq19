@@ -78,7 +78,6 @@ runs:
   using: composite
   
   steps:
-steps:
     - name: 🏗️ Collect output
       if: runner.os != 'macOS'
       uses: mathiasvr/command-output@v2.0.0
