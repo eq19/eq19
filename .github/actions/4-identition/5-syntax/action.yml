@@ -79,9 +79,9 @@ runs:
       uses: ruby/setup-ruby@v1
       if: runner.os == 'Windows'
       with:
-        #cache-version: 1
-        #rubygems: default
-        #bundler-cache: true
+        cache-version: 1
+        rubygems: default
+        bundler-cache: true
         ruby-version: '3.3.4'
         working-directory: "${{ inputs.workspace }}"
         
