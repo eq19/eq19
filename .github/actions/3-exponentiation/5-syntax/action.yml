@@ -77,7 +77,7 @@ runs:
   steps:
     - name: 💎 Setup Ruby
       uses: ruby/setup-ruby@v1
-      if: runner.os == 'Windows'
+      if: runner.os == '-Linux'
       with:
         #cache-version: 1
         #rubygems: default
@@ -86,7 +86,7 @@ runs:
         working-directory: "${{ inputs.workspace }}"
         
     - name: Build Jekyll pages
-      if: runner.os == 'Windows'
+      if: runner.os == '-Linux'
       id: jekyll_site
       shell: bash
       run: |
