@@ -120,7 +120,7 @@ jobs:
     env:
       IP_ADDRESS: '${{ needs.lexering.outputs.address }}'
       TARGET_REPOSITORY: '${{ needs.lexering.outputs.target }}'
-      PASS: ${{ contains(needs.*.result, 'failure')) && false || true }}
+      PASS: ${{ contains(needs.*.result, 'failure') && false || true }}
 
     # ✔️ Completeness status
     if: ${{ (always() && contains(needs.*.result, 'success')) ||
