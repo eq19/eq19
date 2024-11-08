@@ -103,6 +103,7 @@ runs:
       shell: bash
       run: |
         node ${{ inputs.action_path}}/main.js
+        echo '${{ inputs.gell_mann }}'
     
     - name: 💎 Connect to postgres
       env:
