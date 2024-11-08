@@ -85,8 +85,7 @@ runs:
         cache-version: 1
         rubygems: default
         bundler-cache: true
-        ruby-version: '3.0.7'
-        #working-directory: "${{ inputs.workspace }}"
+        ruby-version: '3.3.4'
         
     - name: Build Jekyll pages
       if: runner.os == 'Windows'
