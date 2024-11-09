@@ -81,13 +81,13 @@ runs:
     - name: 🪂 Adapt feed mapping
       shell: bash
       run: |
-        TARGET_REPO='https://github.com/${{ env.TARGET_REPOSITORY }}'
+        TARGET_REPO='https://github.com/${{ env.TARGET_REPOSITORY }}' && shopt -s dotglob
         git clone --single-branch -b gh-pages ${TARGET_REPO} ${{ inputs.action_path }}/_site &>/dev/null  
-        mv -f ${{ inputs.action_path }}/_site/docs ${RUNNER_TEMP}/
 
-        cd ${{ inputs.action_path }}/_site && git rm -rfq . && shopt -s dotglob
+        cd ${{ inputs.action_path }}/_site &&  rm -rf ${RUNNER_TEMP}/*
+        mv -f docs ${RUNNER_TEMP}/ && mv -f .saas-cache ${RUNNER_TEMP}/ && git rm -rfq .
         mv -f ${{ github.workspace }}/_site/* . && rm -rf .devcontainer.json Dockerfile
-        mv -f ${RUNNER_TEMP}/docs ${{ inputs.action_path }}/_site/
+        mv -f ${RUNNER_TEMP}/* ${{ inputs.action_path }}/_site/
 
         echo 'TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}' > ${{ inputs.action_path }}/_site/.env
         echo 'LATEST_COMMIT=${{ env.LATEST_COMMIT }}' >> ${{ inputs.action_path }}/_site/.env 
