@@ -81,7 +81,8 @@ runs:
     - name: 🪂 Adapt feed mapping
       shell: bash
       run: |
-        git clone --single-branch -b gh-pages https://github.com/${{ env.TARGET_REPOSITORY }} ${{ inputs.action_path }}/_site &>/dev/null  
+        TARGET_REPO='https://github.com/${{ env.TARGET_REPOSITORY }}'
+        git clone --single-branch -b gh-pages ${TARGET_REPO} ${{ inputs.action_path }}/_site &>/dev/null  
         mv -f ${{ inputs.action_path }}/_site/docs ${RUNNER_TEMP}/
 
         cd ${{ inputs.action_path }}/_site && git rm -rfq . && shopt -s dotglob
