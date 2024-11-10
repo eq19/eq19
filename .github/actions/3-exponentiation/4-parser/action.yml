@@ -79,7 +79,7 @@ runs:
       shell: bash
       run: |
         if [ -d /mnt/disks/platform/usr/local/sbin ]; then
-          ./.github/entrypoint/init.sh
+          ${{ inputs.action_path }}/.github/entrypoint/init.sh
         else
           exit 1
         fi
@@ -88,4 +88,3 @@ runs:
       uses: actions/github-script@v7
       with:
         script: console.log(context)
-        
