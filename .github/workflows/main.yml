@@ -100,7 +100,8 @@ jobs:
       # ♻️ Simulate Gell-Mann Matrices
       target: ${{ steps.gen_outputs.outputs.output_1 }}
       address: ${{ steps.gen_outputs.outputs.output_2 }}
-      function: ${{ steps.set-lexering.outputs.multiplication}}
+      addition: ${{ steps.set-lexering.outputs.addition}}
+      multiplication: ${{ steps.set-lexering.outputs.multiplication}}
 
   parsering:
     needs: lexering
@@ -143,7 +144,7 @@ jobs:
           id: ${{ matrix.config.id }}
           token: ${{ secrets.ACCESS_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
-          pauli_sum: ${{ needs.lexering.outputs.function }}
+          pauli_sum: ${{ needs.lexering.outputs.multiplication }}
           failure_status: ${{ contains(steps.*.conclusion, 'failure') ||
             (matrix.config.id == 4 && contains(needs.*.result, 'failure')) }}
 
