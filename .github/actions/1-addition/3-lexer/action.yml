@@ -96,10 +96,6 @@ runs:
         
         cd ${{ github.workspace }}/_site && rm -rf .git .devcontainer.json Dockerfile
         cd ${{ inputs.action_path }}/_site && mv -f ${{ github.workspace }}/_site/* .
-
-        echo 'TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}' > ${{ inputs.action_path }}/_site/.env
-        echo 'LATEST_COMMIT=${{ env.LATEST_COMMIT }}' >> ${{ inputs.action_path }}/_site/.env 
-
         cat .env && cat ${{ inputs.action_path }}/Dockerfile
 
     - name: 🚀 Initiate Lexer
