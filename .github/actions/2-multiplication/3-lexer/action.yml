@@ -95,6 +95,8 @@ runs:
     #Ref: https://gist.github.com/xtrmstep/92aab2d465e348ce1c07ed903ca0dfb8
     - id: describe
       shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
       run: |
         gcloud compute instances describe grid-${{ env.IMAGE_TAG }} --zone=us-central1-a
         ssh-keygen -t rsa -b 4096 -N '' -f $HOME/.ssh/id_rsa -C root
