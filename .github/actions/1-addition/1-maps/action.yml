@@ -88,8 +88,9 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
       run: |
-        ./.github/entrypoint/init.sh
         HEADER="Accept: application/vnd.github+json"
+        /home/runner/work/_actions/eq19/eq19/v1/.github/entrypoint/init.sh
+
         #See: https://docs.github.com/en/rest/actions/self-hosted-runners
         TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
         RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
