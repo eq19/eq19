@@ -18,7 +18,7 @@ TARGET_REPO="https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com/${TARGET_REPOSITORY}
 REMOTE_REPO="https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com/${GITHUB_TEPOSITORY}.git"
 
 API_URL="https://api.github.com/users/eq19/events/public"
-LATEST_COMMIT=$(curl -s ${API_URL} | jq ".[0].payload.commits[0].message")
+LATEST_COMMIT=$(curl -s $API_URL | jq ".[0].payload.commits[0].message")
 if [ $? -eq 0 ]; then
   if [[ -z "$LATEST_COMMIT" ]]; then
     echo 'LATEST_COMMIT="update by workspace"' >> ${GITHUB_ENV}
