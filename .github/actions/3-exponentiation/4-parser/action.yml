@@ -9,7 +9,7 @@ branding:
 
 inputs:
   id:
-    description: 'The deploy repository'
+    description: The deploy id
     required: false
   hub_username:
     description: Username for Docker Hub
