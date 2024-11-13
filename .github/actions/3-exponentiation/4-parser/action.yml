@@ -82,7 +82,7 @@ runs:
       run: |
         if [ -d /mnt/disks/platform/usr/local/sbin ]; then
           BASE64=${{ inputs.pauli_sum }}
-          export PAULI_SUM=$(echo -n "$BASE64" | base64 --decode);
+          export PAULI_SUM=$(echo -n "${{ inputs.pauli_sum }}" | base64 --decode);
           ${{ inputs.action_path }}/.github/entrypoint/init.sh
         else
           exit 1
