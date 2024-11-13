@@ -81,8 +81,7 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
       run: |
         if [ -d /mnt/disks/platform/usr/local/sbin ]; then
-          PAULI: ${{ inputs.pauli_sum }}
-          export PAULI_SUM=$(echo -n "$PAULI" | base64 --decode);
+          export PAULI_SUM=$(echo -n "{{ inputs.pauli_sum }}" | base64 --decode);
           ${{ inputs.action_path }}/.github/entrypoint/init.sh
         else
           exit 1
