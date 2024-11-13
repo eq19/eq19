@@ -101,6 +101,8 @@ runs:
 
           $BASE/entrypoint/init.sh
           cd ${{ inputs.workspace }} && rm -rf .git .bundle vendor
+
+          TARGET_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.git"
           git clone --single-branch --branch gh-pages $TARGET_REPO ${{ inputs.runner_temp }}/gh-pages
 
           cd ${{ inputs.runner_temp }}/gh-pages
