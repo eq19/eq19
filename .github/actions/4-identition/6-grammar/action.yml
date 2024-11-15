@@ -93,7 +93,7 @@ runs:
 
             TARGET_WIKI="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.wiki.git"
             git clone $TARGET_WIKI ${{ inputs.runner_temp }}/wiki
-            la -alR ${{ inputs.runner_temp }}/wiki
+            ls -alR ${{ inputs.runner_temp }}/wiki
 
         fi
 
