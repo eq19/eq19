@@ -96,6 +96,7 @@ runs:
             cd ${{ inputs.runner_temp }}/wiki
 
             ls -al .
+            cat _Sidebar.md
             ls -alR addition
             ls -alR multiplication
             ls -alR exponentiation
