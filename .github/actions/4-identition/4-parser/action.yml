@@ -94,6 +94,7 @@ runs:
     - name: Run identity  
       shell: bash
       env:
+        JOB_ID: ${{ inputs.id }}
         BASE: "D:/a/_actions/eq19/eq19/v1/.github"
         TOKEN: ${{ steps.auth.outputs.id_token }}
       run: |
