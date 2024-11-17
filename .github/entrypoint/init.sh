@@ -41,7 +41,7 @@ if [[ "${JOB_ID}" == "1" ]]; then
   git add . && git commit -m "update workflows" && git push
   if [ $? -eq 0 ]; then exit 1; fi
 
-elif [[ "${JOB_ID}" == "4" ]]; then
+elif [[ "${JOB_ID}" == "3" ]]; then
 
   echo -e "\n$hr\nWORKSPACE\n$hr"
   gist.sh $1 ${OWNER} ${FOLDER}
