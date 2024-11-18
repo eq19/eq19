@@ -66,8 +66,7 @@ if [[ "${JOB_ID}" == "3" ]]; then
   find . -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
   find . -type d -name "${FOLDER}" -prune -exec sh -c 'cat ${RUNNER_TEMP}/README.md >> $1/README.md' sh {} \;
   
-  cp -R ${RUNNER_TEMP}/gistdir/* . && mkdir ${RUNNER_TEMP}/workdir/_data
-  mv -f ${RUNNER_TEMP}/*.json ${RUNNER_TEMP}/workdir/_data/
+  cp -R ${RUNNER_TEMP}/gistdir/* .
 
 fi
 
