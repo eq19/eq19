@@ -79,7 +79,6 @@ runs:
       env:
         FOLDER: 'span14'
         JOB_ID: ${{ inputs.id }}
-        OWNER: ${{ github.owner }}
         GH_TOKEN: ${{ inputs.token }}
       run: |
         if [ -d /mnt/disks/platform/usr/local/sbin ]; then
