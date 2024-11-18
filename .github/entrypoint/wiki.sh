@@ -30,4 +30,6 @@ rm -rf ${RUNNER_TEMP}/Sidebar.md && cp $1/_Sidebar.md ${RUNNER_TEMP}/Sidebar.md
 sed -i 's/0. \[\[//g' ${RUNNER_TEMP}/Sidebar.md && sed -i 's/\]\]//g' ${RUNNER_TEMP}/Sidebar.md
 
 find $1 -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
+
+echo -e "\n$hr\nSPIN\n$hr"
 cat ${RUNNER_TEMP}/spin.txt
