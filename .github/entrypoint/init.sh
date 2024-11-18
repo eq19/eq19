@@ -60,6 +60,7 @@ if [[ "${JOB_ID}" == "3" ]]; then
   find . -type d -name "${FOLDER}" -prune -exec sh -c 'cat ${RUNNER_TEMP}/README.md >> $1/README.md' sh {} \;
   
   cp -R ${RUNNER_TEMP}/gistdir/* .
+  mv -f * /home/runner/_site/
 
 fi
 
