@@ -42,6 +42,10 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
   echo -e "\n$hr\nENVIRONTMENT\n$hr"
   echo 'TARGET_REPO='${TARGET_REPO} >> ${GITHUB_ENV}
   echo 'REMOTE_REPO='${REMOTE_REPO} >> ${GITHUB_ENV}
+
+  if [[ -d /home/runner/_site ]]; then
+    set -a && . /home/runner/_site/.env && set +a
+  fi
   printenv | sort
 
 fi
@@ -49,8 +53,6 @@ fi
 if [[ "${JOB_ID}" == "3" ]]; then
 
   echo -e "\n$hr\nWORKSPACE\n$hr"
-  set -a && . /home/runner/_site/.env && set +a
-
   gist.sh ${TARGET_REPOSITORY} ${FOLDER}
   find ${RUNNER_TEMP}/gistdir -type d -name .git -prune -exec rm -rf {} \;
   
