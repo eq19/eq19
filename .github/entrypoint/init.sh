@@ -49,6 +49,8 @@ fi
 if [[ "${JOB_ID}" == "3" ]]; then
 
   echo -e "\n$hr\nWORKSPACE\n$hr"
+  set -a && . /home/runner/_site/.env && set +a
+
   gist.sh ${TARGET_REPOSITORY} ${FOLDER}
   find ${RUNNER_TEMP}/gistdir -type d -name .git -prune -exec rm -rf {} \;
   
