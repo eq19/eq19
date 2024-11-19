@@ -44,6 +44,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
   echo 'REMOTE_REPO='${REMOTE_REPO} >> ${GITHUB_ENV}
 
   if [[ -f _config.yml ]]; then
+    [[ "$RUNNER_OS" == "Windows" ]] && YQ=$(choco install yq)
     mapfile -t site < <(yq '.' _config.yml) && echo ${site[@]}
   elif [[ -f /home/runner/_site/.env ]]; then
     set -a && . /home/runner/_site/.env && set +a
