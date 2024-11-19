@@ -99,7 +99,6 @@ jekyll_build() {
   
   FOLDER="span$(( 17 - $3 ))"
   echo 'FOLDER='${FOLDER} >> ${RUNNER_TEMP}/.env
-  echo 'TARGET_REPOSITORY='${TARGET_REPOSITORY} >> ${RUNNER_TEMP}/.env
   
   sed -i "1s|^|title: eQuantum\n|" ${RUNNER_TEMP}/_config.yml
   sed -i "1s|^|span: ${FOLDER}\n|" ${RUNNER_TEMP}/_config.yml
