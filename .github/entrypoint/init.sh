@@ -45,7 +45,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 
   if [[ -f _config.yml ]]; then
     mapfile -t ENV < <(yq '.[]' _config.yml)
-    declare -p ENV  
+    declare -p ENV && echo "${ENV[@]}"
   elif [[ -f /home/runner/_site/.env ]]; then
     set -a && . /home/runner/_site/.env && set +a
   fi
