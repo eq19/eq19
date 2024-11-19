@@ -57,6 +57,8 @@ if [[ "${JOB_ID}" == "3" ]]; then
 
   echo -e "\n$hr\nWORKSPACE\n$hr"
   echo ${site[@]}
+  echo $(yq '.repository' _config.yml)
+  echo $(yq '.span' _config.yml)
   gist.sh ${site.repository} ${site.span}
   find ${RUNNER_TEMP}/gistdir -type d -name .git -prune -exec rm -rf {} \;
   
