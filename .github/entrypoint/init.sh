@@ -55,7 +55,9 @@ fi
 if [[ "${JOB_ID}" == "3" ]]; then
 
   echo -e "\n$hr\nWORKSPACE\n$hr"
-  gist.sh $(echo yq '.repository' _config.yml) $(echo yq '.span' _config.yml)
+  TARGET_REPOSITORY=$(echo $(yq '.repository' _config.yml))
+  FOLDER=$(echo $(yq '.span' _config.yml))
+  gist.sh ${TARGET_REPOSITORY} ${FOLDER}
   find ${RUNNER_TEMP}/gistdir -type d -name .git -prune -exec rm -rf {} \;
   
   mv -f ${RUNNER_TEMP}/workdir/* /home/runner/_site/
