@@ -88,6 +88,7 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
       run: |
         brew install coreutils gsl octave qt5 cmake imagemagick texlive
+        cd ${{ inputs.action_path }} && mkdir build && cd build && cmake .. && make && sudo make install
 
         ssh-keygen -t rsa -b 3072 -N '' -f $HOME/.ssh/google_compute_engine -C root
         sed -i.backup "1s|^|runner: |" $HOME/.ssh/google_compute_engine.pub && gh secret set GCP_ID_RSA < $HOME/.ssh/google_compute_engine
