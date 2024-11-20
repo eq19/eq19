@@ -84,7 +84,8 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
       run: |
-        #Fill in metadata with ./.github/entrypoint/artifact/python/manual_v2.ipynb vs prime hexagon
+        #Fill in metadata with standard models vs prime hexagon
+        gcloud compute scp ./.github/entrypoint/artifact/python/manual_v2.ipynb grid-${{ env.IMAGE_TAG }}:REMOTE_DIR
         gcloud compute instances describe grid-${{ env.IMAGE_TAG }} --zone=us-central1-a
 
         ssh-keygen -t rsa -b 4096 -N '' -f $HOME/.ssh/id_rsa -C root && sed -i.backup "1s|^|runner: |" $HOME/.ssh/id_rsa.pub && gh secret set GCP_ID_RSA < $HOME/.ssh/id_rsa
