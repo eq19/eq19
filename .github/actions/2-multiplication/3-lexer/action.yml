@@ -86,7 +86,11 @@ runs:
         CXX: g++-9
         FC: gfortran-9
         GH_TOKEN: ${{ inputs.token }}
+        LDFLAGS: "-L/opt/homebrew/opt/qt@5/lib"
+        CPPFLAGS: "-I/opt/homebrew/opt/qt@5/include"
+        PKG_CONFIG_PATH: "/opt/homebrew/opt/qt@5/lib/pkgconfig"
       run: |
+        export PATH="/opt/homebrew/opt/qt@5/bin:$PATH"
         brew install --quiet coreutils gsl octave qt@5 imagemagick texlive
         cd ${{ inputs.action_path }} && mkdir build && cd build && cmake .. && make && sudo make install && ctest
 
