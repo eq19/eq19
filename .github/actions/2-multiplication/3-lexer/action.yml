@@ -89,6 +89,9 @@ runs:
         LDFLAGS: "-L/opt/homebrew/opt/qt@5/lib"
         CPPFLAGS: "-I/opt/homebrew/opt/qt@5/include"
         PKG_CONFIG_PATH: "/opt/homebrew/opt/qt@5/lib/pkgconfig"
+        CMAKE_CXX_COMPILER: g++-9
+        CMAKE_C_COMPILER: gcc-9
+        CMAKE_Fortran_COMPILER: gfortran-9
       run: |
         export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/qt@5/bin:$PATH"
         brew install --quiet coreutils gsl qt@5 imagemagick texlive octave
