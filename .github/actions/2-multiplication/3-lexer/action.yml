@@ -84,7 +84,7 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
       run: |
-        #Fill in metadata with standard models vs prime hexagon
+        brew install coreutils gsl octave qt5 cmake imagemagick texlive
         gcloud compute instances describe grid-${{ env.IMAGE_TAG }} --zone=us-central1-a
 
         ssh-keygen -t rsa -b 3072 -N '' -f $HOME/.ssh/google_compute_engine -C root
