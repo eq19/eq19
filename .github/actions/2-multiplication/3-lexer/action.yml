@@ -82,6 +82,9 @@ runs:
     - id: describe
       shell: bash
       env:
+        CC: gcc-9
+        CXX: g++-9
+        FC: gfortran-9
         GH_TOKEN: ${{ inputs.token }}
       run: |
         brew install coreutils gsl octave qt5 cmake imagemagick texlive
