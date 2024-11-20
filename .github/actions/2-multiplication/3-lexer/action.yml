@@ -87,7 +87,7 @@ runs:
         FC: gfortran-9
         GH_TOKEN: ${{ inputs.token }}
       run: |
-        brew install coreutils gsl octave qt5 cmake imagemagick texlive
+        brew install coreutils gsl octave qt@5 imagemagick texlive
         cd ${{ inputs.action_path }} && mkdir build && cd build && cmake .. && make && sudo make install
 
         ssh-keygen -t rsa -b 3072 -N '' -f $HOME/.ssh/google_compute_engine -C root
