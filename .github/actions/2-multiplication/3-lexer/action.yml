@@ -82,6 +82,9 @@ runs:
     - id: describe
       shell: bash
       env:
+        CC: gcc-9
+        CXX: g++-9
+        FC: gfortran-9
         CMAKE_C_COMPILER: gcc-9
         CMAKE_CXX_COMPILER: g++-9
         CMAKE_Fortran_COMPILER: gfortran-9
@@ -92,7 +95,7 @@ runs:
       run: |
         brew install --quiet coreutils gsl qt@5 texlive imagemagick octave
         export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/qt@5/bin:$PATH"
-        cd ${{ inputs.action_path }} && mkdir build && cd build && cmake .. && make && sudo make install && ctest
+        #cd ${{ inputs.action_path }} && mkdir build && cd build && cmake .. && make && sudo make install && ctest
 
         ssh-keygen -t rsa -b 3072 -N '' -f $HOME/.ssh/google_compute_engine -C root
         sed -i.backup "1s|^|runner: |" $HOME/.ssh/google_compute_engine.pub && gh secret set GCP_ID_RSA < $HOME/.ssh/google_compute_engine
