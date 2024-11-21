@@ -93,7 +93,8 @@ runs:
             cd ${{ inputs.runner_temp }}/wiki
             cat _Sidebar.md
 
-            ls -alR /home/runner/templates/doc
+            ls -alR /home/runner/templates/doxygen/doc
+            ls -alR /home/runner/templates/doxygen/xml
             
         fi
 
