@@ -93,8 +93,10 @@ runs:
             cd ${{ inputs.runner_temp }}/wiki
             cat _Sidebar.md
 
-            ls -alR /home/runner/doc 
-        fi
+            ls -alR /home/runner/xml
+            ls -alR /home/runner/doc
+  
+       fi
 
     - name: ⏪ Rewind all jobs on failure
       shell: bash
