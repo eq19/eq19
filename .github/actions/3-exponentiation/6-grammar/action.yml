@@ -96,7 +96,7 @@ runs:
             ls -alR /home/runner/xml
             ls -alR /home/runner/doc
   
-       fi
+        fi
 
     - name: ⏪ Rewind all jobs on failure
       shell: bash
