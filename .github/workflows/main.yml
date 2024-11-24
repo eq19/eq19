@@ -122,17 +122,16 @@ jobs:
       fail-fast: ${{ contains(needs.*.result, 'success') && false || true }}
 
     env:
-      ID: ${{ matrix.config.id }}
       IP_ADDRESS: '${{ needs.lexering.outputs.address }}'
       PASS: ${{ contains(needs.*.result, 'success') && true || false }}
 
     # ✔️ Completeness status
     needs: lexering
     runs-on: ${{ matrix.config.os }}
-    continue-on-error: ${{ env.ID == 3 && true || false }}
     if: ${{ (always() && contains(needs.*.result, 'success')) ||
             (failure() && contains(needs.*.result, 'failure')) }}
-      
+    continue-on-error: ${{ matrix.config.id == 3 && true || false }}
+     
     steps:
       - name: 📂 Checkout
         uses: actions/checkout@v4
