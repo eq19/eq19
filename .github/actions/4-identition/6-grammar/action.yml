@@ -99,11 +99,13 @@ runs:
   
         else
 
+          rm -rf ${RUNNER_TEMP//\\//}/gh-pages
           cd ${GITHUB_WORKSPACE//\\//} && rm -rf .git .bundle vendor
-          TARGET_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.git"
-          git clone --single-branch --branch gh-pages $TARGET_REPO ${{ inputs.runner_temp }}/gh-pages
 
-          cd ${{ inputs.runner_temp }}/gh-pages
+          TARGET_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.git"
+          git clone --single-branch --branch gh-pages $TARGET_REPO ${RUNNER_TEMP//\\//}/gh-pages
+
+          cd ${RUNNER_TEMP//\\//}/gh-pages
           find -not -path "./.git/*" -not -name ".git" | grep git
           find -not -path "./.git/*" -not -name ".git" -delete
           
