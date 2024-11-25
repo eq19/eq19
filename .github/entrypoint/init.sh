@@ -71,8 +71,8 @@ elif [[ "${JOB_ID}" == "4" ]]; then
   echo -e "\n$hr\nWORKSPACE\n$hr"
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
-    git clone $WIKI ${TEMP_FOLDER}/wikidir
-    mv -f ${TEMP_FOLDER}/wikidir/Home.md ${TEMP_FOLDER}/wikidir/README.md
+    git clone $WIKI ${RUNNER_TEMP}/wikidir
+    mv -f ${RUNNER_TEMP}/wikidir/Home.md ${RUNNER_TEMP}/wikidir/README.md
     find ${GITHUB_WORKSPACE} -type d -name "${FOLDER}" -prune -exec sh -c 'wiki.sh "$1"' sh {} \;
   fi
 
