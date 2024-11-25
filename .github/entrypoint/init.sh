@@ -73,11 +73,11 @@ elif [[ "${JOB_ID}" == "4" ]]; then
   if [[ "${WIKI}" != "${BASE}" ]]; then
     git clone $WIKI ${TEMP_FOLDER}/wikidir
     mv -f ${TEMP_FOLDER}/wikidir/Home.md ${TEMP_FOLDER}/wikidir/README.md
-    find ${WORKSPACE}-type d -name "${FOLDER}" -prune -exec sh -c 'wiki.sh "$1"' sh {} \;
+    find ${GITHUB_WORKSPACE} -type d -name "${FOLDER}" -prune -exec sh -c 'wiki.sh "$1"' sh {} \;
   fi
 
-  find ${WORKSPACE} -type d -name "${FOLDER}" -prune -exec sh -c 'cat ${TEMP_FOLDER}/README.md >> $1/README.md' sh {} \;
-  find ${WORKSPACE} -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
+  find ${GITHUB_WORKSPACE} -type d -name "${FOLDER}" -prune -exec sh -c 'cat ${TEMP_FOLDER}/README.md >> $1/README.md' sh {} \;
+  find ${GITHUB_WORKSPACE} -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
     
 fi
 
