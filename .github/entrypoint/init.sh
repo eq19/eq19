@@ -75,8 +75,8 @@ elif [[ "${JOB_ID}" == "4" ]]; then
   echo -e "\n${FOLDER}"
   echo -e "\n${RUNNER_TEMP//\\//}"
   echo -e "\n${GITHUB_WORKSPACE//\\//}"
-  echo -e "\${{ }}}"
-  echo -e "\n${GITHUB_WORKSPACE//\\//}"
+  echo -e "\n$TEMP_FOLDER"
+  echo -e "\n$WORKSPACE"
   exit 1
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
