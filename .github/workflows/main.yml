@@ -136,10 +136,10 @@ jobs:
       - name: 📂 Checkout
         uses: actions/checkout@v4
         with:
-          ref: 'gh-source'                  
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
           repository: ${{ env.TARGET_REPOSITORY }}
+          ref: ${{ matrix.config.id == 3 && 'gh-source' || 'gh-pages' }}                  
 
       - name: 🚀 Setup Parser
         if: ${{ env.PASS == 'true' }}
