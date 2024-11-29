@@ -82,6 +82,7 @@ elif [[ "${JOB_ID}" == "4" ]]; then
   shopt -s dotglob
   mv -f ${RUNNER_TEMP//\\//}/gh-source/* . && cat _config.yml
 
+  exit 1
   if [[ "${WIKI}" != "${BASE}" ]]; then
     rm -rf ${RUNNER_TEMP//\\//}/wikidir
 
@@ -95,7 +96,6 @@ elif [[ "${JOB_ID}" == "4" ]]; then
     #echo "action_state=yellow" | Out-File -FilePath $env:GITHUB_ENV -Append # no need for -Encoding utf8
     find . -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
 
-    exit 1
   fi
 
 fi
