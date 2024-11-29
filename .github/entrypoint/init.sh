@@ -70,7 +70,7 @@ elif [[ "${JOB_ID}" == "3" ]]; then
 
 else
 
-  TARGET_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.git"
+  echo "https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.git"
   exit 1
   git clone --single-branch --branch gh-source $TARGET_REPO ${RUNNER_TEMP//\\//}/gh-source
   cd ${RUNNER_TEMP//\\//}/gh-source && rm -rf .git .bundle && pwd && ls -al .
