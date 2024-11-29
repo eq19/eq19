@@ -42,7 +42,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 fi
 
 echo -e "\n$hr\nWORKSPACE\n$hr"
-echo $JOB_ID
+echo "${JOB_ID}"
 if [[ "${JOB_ID}" == "1" ]]; then
 
   cd ${GITHUB_WORKSPACE} && rm -rf .github
