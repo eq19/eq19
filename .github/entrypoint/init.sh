@@ -42,8 +42,6 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 fi
 
 echo -e "\n$hr\nWORKSPACE\n$hr"
-if [[ $JOB_ID == 4 ]]; then echo pass; fi
-exit 1
 if [[ $JOB_ID == 1 ]]; then
 
   cd ${GITHUB_WORKSPACE} && rm -rf .github
