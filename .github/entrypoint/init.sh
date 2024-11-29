@@ -95,6 +95,8 @@ else
 
   fi
 
+   cd ${GITHUB_WORKSPACE//\\//} && pwd && ls -al .
+
 fi
 
 if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
