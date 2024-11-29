@@ -42,7 +42,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 fi
 
 echo -e "\n$hr\nWORKSPACE\n$hr"
-if [[ $JOB_ID == 1 ]]; then
+if [[ "${JOB_ID}" == "1" ]]; then
 
   cd ${GITHUB_WORKSPACE} && rm -rf .github
   cp -r /home/runner/work/_actions/eq19/eq19/v1/.github .
@@ -52,11 +52,11 @@ if [[ $JOB_ID == 1 ]]; then
   git add . && git commit -m "update workflows" && git push
   if [ $? -eq 0 ]; then exit 1; else ls -al ${GITHUB_WORKSPACE};fi
 
-elif [[ $JOB_ID == 2 ]]; then
+elif [[ "${JOB_ID}" == "2" ]]; then
 
   ls -alR ${GITHUB_WORKSPACE}
 
-elif [[ $JOB_ID == 3 ]]; then
+elif [[ "${JOB_ID}" == "3" ]]; then
 
   gist.sh ${TARGET_REPOSITORY} ${FOLDER}
 
