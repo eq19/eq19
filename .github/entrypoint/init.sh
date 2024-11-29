@@ -77,11 +77,11 @@ else
   cd ${GITHUB_WORKSPACE//\\//}
   find -not -path "./.git/*" -not -name ".git" | grep git
   find -not -path "./.git/*" -not -name ".git" -delete
-  pwd && ls -al ${GITHUB_WORKSPACE//\\//}
-  exit 1
   
   shopt -s dotglob
   mv -f ${RUNNER_TEMP//\\//}/gh-source/* . && cat _config.yml
+  pwd && ls -al ${GITHUB_WORKSPACE//\\//}
+  exit 1
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
     rm -rf ${RUNNER_TEMP//\\//}/wikidir
