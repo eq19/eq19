@@ -100,6 +100,8 @@ runs:
 
     - name: ⏪ Rewind all jobs on failure
       shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
       run: |
         if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
       
