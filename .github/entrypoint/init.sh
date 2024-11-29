@@ -72,7 +72,8 @@ else
 
   TARGET_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.git"
   git clone --single-branch --branch gh-source $TARGET_REPO ${RUNNER_TEMP//\\//}/gh-source
-  cd ${RUNNER_TEMP//\\//}/gh-source && rm -rf .git .bundle
+  cd ${RUNNER_TEMP//\\//}/gh-source && rm -rf .git .bundle && pwd && ls -al .
+  exit 1
   
   cd ${GITHUB_WORKSPACE//\\//}
   find -not -path "./.git/*" -not -name ".git" | grep git
@@ -81,7 +82,6 @@ else
   
   shopt -s dotglob
   mv -f ${RUNNER_TEMP//\\//}/gh-source/* . && cat _config.yml
-  exit 1
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
     rm -rf ${RUNNER_TEMP//\\//}/wikidir
