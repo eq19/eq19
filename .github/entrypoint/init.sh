@@ -72,8 +72,8 @@ else
 
   cd ${RUNNER_TEMP//\\//} && rm -rf gh-source
   git clone --single-branch --branch gh-source $TARGET_REPO gh-source
-  exit 1
   cd gh-source && rm -rf .git .bundle && pwd && ls -al .
+  exit 1
   
   cd ${GITHUB_WORKSPACE//\\//}
   find -not -path "./.git/*" -not -name ".git" | grep git
