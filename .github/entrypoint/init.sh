@@ -69,7 +69,6 @@ elif [[ "${JOB_ID}" == "3" ]]; then
   cd /home/runner/_site && cp -R ${RUNNER_TEMP}/gistdir/* . && ls -lR .
 
 else
-  exit 1
 
   TARGET_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.git"
   git clone --single-branch --branch gh-source $TARGET_REPO ${RUNNER_TEMP//\\//}/gh-source
@@ -82,6 +81,7 @@ else
   
   shopt -s dotglob
   mv -f ${RUNNER_TEMP//\\//}/gh-source/* . && cat _config.yml
+  exit 1
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
     rm -rf ${RUNNER_TEMP//\\//}/wikidir
