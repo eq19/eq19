@@ -74,7 +74,7 @@ else
   git clone --single-branch --branch gh-source $TARGET_REPO gh-source
   
   cd ${GITHUB_WORKSPACE//\\//}
-  find -not -path "./.git/*" -not -name ".git" | grep git
+  #find -not -path "./.git/*" -not -name ".git" | grep git
   find -not -path "./.git/*" -not -name ".git" -delete
 
   rm -rf ${RUNNER_TEMP//\\//}/gh-source/.git
