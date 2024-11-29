@@ -42,6 +42,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 fi
 
 echo -e "\n$hr\nWORKSPACE\n$hr"
+echo $JOB_ID
 if [[ "${JOB_ID}" == "1" ]]; then
 
   cd ${GITHUB_WORKSPACE} && rm -rf .github
@@ -68,7 +69,7 @@ elif [[ "${JOB_ID}" == "3" ]]; then
 
   cd /home/runner/_site && cp -R ${RUNNER_TEMP}/gistdir/* . && ls -lR .
 
-elif [[ "$JOB_ID" == "4" ]]; then
+elif [[ $JOB_ID == 4 ]]; then
 
   TARGET_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.git"
   git clone --single-branch --branch gh-source $TARGET_REPO ${RUNNER_TEMP//\\//}/gh-source
