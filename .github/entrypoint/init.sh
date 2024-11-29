@@ -43,6 +43,7 @@ fi
 
 echo -e "\n$hr\nWORKSPACE\n$hr"
 echo "${JOB_ID}"
+exit 1
 if [[ "${JOB_ID}" == "1" ]]; then
 
   cd ${GITHUB_WORKSPACE} && rm -rf .github
