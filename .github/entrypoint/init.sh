@@ -72,16 +72,13 @@ else
 
   cd ${RUNNER_TEMP//\\//} && rm -rf gh-source
   git clone --single-branch --branch gh-source $TARGET_REPO gh-source
-  cd gh-source && rm -rf .git .bundle
   
   cd ${GITHUB_WORKSPACE//\\//}
   find -not -path "./.git/*" -not -name ".git" | grep git
   find -not -path "./.git/*" -not -name ".git" -delete
-  
-  shopt -s dotglob
-  mv -f ${RUNNER_TEMP//\\//}/gh-source/* . && cat _config.yml
-  pwd && ls -al ${GITHUB_WORKSPACE//\\//}
-  exit 1
+
+  rm -rf ${RUNNER_TEMP//\\//}/gh-source/.git
+  shopt -s dotglob && mv -f ${RUNNER_TEMP//\\//}/gh-source/* .
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
     rm -rf ${RUNNER_TEMP//\\//}/wikidir
