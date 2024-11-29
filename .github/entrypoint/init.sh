@@ -42,7 +42,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 fi
 
 echo -e "\n$hr\nWORKSPACE\n$hr"
-echo "${JOB_ID}"
+if [[ $JOB_ID == 4 ]]; then echo pass; fi
 exit 1
 if [[ "${JOB_ID}" == "1" ]]; then
 
