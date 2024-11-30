@@ -25,3 +25,12 @@ jpgUrl = "https://storage.googleapis.com/download.tensorflow.org/example_images/
 
 urllib.request.urlretrieve(tfliteUrl, tfliteFile)
 urllib.request.urlretrieve(jpgUrl, jpgFile)
+
+iree_tflite_compile.compile_file(
+  tfliteFile,
+  input_type="tosa",
+  output_file=bytecodeModule,
+  save_temp_tfl_input=tfliteIR,
+  save_temp_iree_input=tosaIR,
+  target_backends=backends,
+  import_only=False)
