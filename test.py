@@ -20,7 +20,7 @@ backends = ["llvm-cpu"]
 config = "local-task"
 
 #Ref: https://www.tensorflow.org/guide/saved_model
-tfliteUrl = "https://storage.googleapis.com/iree-model-artifacts/tflite-integration-tests/posenet_i8.tflite"
+tfliteUrl = "https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt"
 jpgUrl = "https://storage.googleapis.com/download.tensorflow.org/example_images/grace_hopper.jpg"
 
 urllib.request.urlretrieve(tfliteUrl, tfliteFile)
