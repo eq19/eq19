@@ -21,7 +21,7 @@ backends = ["llvm-cpu"]
 config = "local-task"
 
 tfliteUrl = "https://storage.googleapis.com/iree-model-artifacts/tflite-integration-tests/posenet_i8.tflite"
-jpgUrl = "https://storage.googleapis.com/iree-model-artifacts/tflite-integration-tests/posenet_i8_input.jpg"
+jpgUrl = "https://storage.googleapis.com/download.tensorflow.org/example_images/grace_hopper.jpg"
 
 urllib.request.urlretrieve(tfliteUrl, tfliteFile)
 urllib.request.urlretrieve(jpgUrl, jpgFile)
