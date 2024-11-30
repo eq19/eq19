@@ -20,3 +20,9 @@ bytecodeModule = "/".join([workdir, "iree.vmfb"])
 
 backends = ["llvm-cpu"]
 config = "local-task"
+
+tfliteUrl = "https://storage.googleapis.com/iree-model-artifacts/tflite-integration-tests/posenet_i8.tflite"
+jpgUrl = "https://storage.googleapis.com/iree-model-artifacts/tflite-integration-tests/posenet_i8_input.jpg"
+
+urllib.request.urlretrieve(tfliteUrl, tfliteFile)
+urllib.request.urlretrieve(jpgUrl, jpgFile)
