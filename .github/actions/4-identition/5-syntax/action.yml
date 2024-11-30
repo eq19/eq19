@@ -118,3 +118,5 @@ runs:
         curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
           -H "Authorization: Bearer ${GCP_TOKEN}" -H "Content-Type: application/json" \
           --data @${{ inputs.workspace }}/docs/data.json | jq '.'
+        export PATH=$BASE_GIT/entrypoint:$PATH && github_pages.sh
+                
