@@ -1,5 +1,4 @@
 #Ref: https://iree.dev/guides/ml-frameworks/tflite/#using-the-python-api
-
 import iree.compiler.tflite as iree_tflite_compile
 import iree.runtime as iree_rt
 import numpy
@@ -20,6 +19,7 @@ bytecodeModule = "/".join([workdir, "iree.vmfb"])
 backends = ["llvm-cpu"]
 config = "local-task"
 
+#Ref: https://www.tensorflow.org/guide/saved_model
 tfliteUrl = "https://storage.googleapis.com/iree-model-artifacts/tflite-integration-tests/posenet_i8.tflite"
 jpgUrl = "https://storage.googleapis.com/download.tensorflow.org/example_images/grace_hopper.jpg"
 
