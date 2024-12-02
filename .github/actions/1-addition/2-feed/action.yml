@@ -106,8 +106,6 @@ runs:
         mv -f ${{ inputs.action_path }}/_config.yml ${RUNNER_TEMP}/
         export PATH=$GITHUB_WORKSPACE/.github/entrypoint:$PATH && artifact.sh
 
-        python3 /home/runner/work/_actions/eq19/eq19/v1/test.py
-
         mv -f ${RUNNER_TEMP}/.env ${{ inputs.action_path }}/
         mv -f ${RUNNER_TEMP}/_config.yml ${{ inputs.action_path }}/
  
