@@ -10,9 +10,12 @@
      - https://github.com/CQuIC/pysme/blob/master/src/pysme/gellmann.py
 
 """
-import itertools as it
 import numpy as np
+import itertools as it
+
+from pylab import *
 from sparse import COO
+from pprint import pprint
 
 def gellmann(j, k, d, sparse=False):
     r"""Returns a generalized Gell-Mann matrix of dimension d.
@@ -85,4 +88,4 @@ def get_basis(d, sparse=False):
     return [gellmann(j, k, d, sparse)
             for j, k in it.product(range(1, d + 1), repeat=2)]
 
-print(get_basis(3))
+pprint(get_basis(3))
