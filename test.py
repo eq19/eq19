@@ -85,4 +85,4 @@ def get_basis(d, sparse=False):
     return [gellmann(j, k, d, sparse)
             for j, k in it.product(range(1, d + 1), repeat=2)]
 
-print get_basis(2)
+print(get_basis(2))
