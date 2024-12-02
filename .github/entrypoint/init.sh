@@ -50,7 +50,11 @@ if [[ "${JOB_ID}" == "1" ]]; then
 
   git remote set-url origin ${REMOTE_REPO}        
   git add . && git commit -m "update workflows" && git push
-  if [ $? -eq 0 ]; then exit 1; else ls -al ${GITHUB_WORKSPACE};fi
+  if [ $? -eq 0 ]; then
+    exit 1
+  else
+    ls -al ${GITHUB_WORKSPACE}
+  fi
 
 elif [[ "${JOB_ID}" == "2" ]]; then
 
