@@ -52,7 +52,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     if: ${{ github.event_name == 'push' ||
         github.event.workflow_run.conclusion == 'success' }}
-    continue-on-error: ${{ matrix.config.id == 1 && true || false }}
+    continue-on-error: ${{ matrix.config.id != 1 && true || false }}
 
     steps:
       - name: 📂 Checkout
