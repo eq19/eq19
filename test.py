@@ -1,3 +1,4 @@
+#Ref: https://mathworld.wolfram.com/GeneralizedGell-MannMatrix.html
 #Ref: https://github.com/iree-org/iree/tree/main/integrations/pjrt
 
 import numpy as np
