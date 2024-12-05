@@ -3,6 +3,7 @@ Collection of objects / models for Lattice Gauge Theory
 
 ## Install
 `python3 -m pip install lgt`
+`python3 -m pip install -e /path/to/this/repo`
 
 ## Organization
 ```
