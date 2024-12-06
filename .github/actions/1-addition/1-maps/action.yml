@@ -119,7 +119,7 @@ runs:
       shell: bash
       run: |
         python -m pip -q install --upgrade pip setuptools six wheel
-        python -m pip -q install -e ./.github/entrypoint/artifact/python
+        #python -m pip -q install -e ./.github/entrypoint/artifact/python
         python -m pip -q install -r ${{ inputs.action_path }}/requirements-dev.txt
         
     - name: 🚀 Initiate Lexer
