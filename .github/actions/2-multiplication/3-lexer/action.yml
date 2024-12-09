@@ -84,6 +84,7 @@ runs:
       run: |
         git clone https://github.com/iree-org/iree.git
         cd iree && git submodule update --init
+        cmake -G Ninja -B ../iree-build/ .
         cmake --build ../iree-build/
         ls -al ../iree-build
 
