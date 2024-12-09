@@ -88,7 +88,7 @@ runs:
     - name: configure
       shell: bash
       run: |
-        mkdir ${{ inputs.action_path }/build
+        mkdir ${{ inputs.action_path }}/build
         cd ${{ inputs.action_path }}/build
         echo "GSL prefix: $(brew --prefix gsl)"
         echo "Content of GSL prefix:"
