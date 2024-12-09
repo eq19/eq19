@@ -78,13 +78,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: dependencies
-      shell: bash
-      run: |
-        brew update --quiet
-        brew install --quiet coreutils doxygen pandoc gsl cmake lcov gcc@12 qt@5 texlive imagemagick
-        brew info qt@5
-        brew info gsl
     - name: configure
       shell: bash
       run: |
