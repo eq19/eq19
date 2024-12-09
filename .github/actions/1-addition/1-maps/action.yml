@@ -121,8 +121,9 @@ runs:
         #python -m pip -q install -r ${{ inputs.action_path }}/requirements-dev.txt
         
         #Ref: https://github.com/iree-org/iree-experimental/tree/main
-        git clone https://github.com/iree-org/iree-experimental samples && cd samples
+        git clone https://github.com/iree-org/iree-experimental iree-samples && cd iree-samples
         ./setup_venv.sh && source iree-samples.venv/bin/activate
+        lit -v tflitehub && lit -v -D FEATURES=hugetest tflitehub
 
     - name: 🚀 Initiate Lexer
       uses: devcontainers/ci@v0.3
