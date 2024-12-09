@@ -81,8 +81,8 @@ runs:
     - name: dependencies
       shell: bash
       run: |
-        brew update
-        brew install coreutils gcc@12 gsl qt@5 cmake lcov imagemagick texlive
+        brew update --quiet
+        brew install --quiet coreutils gcc@12 gsl qt@5 cmake lcov imagemagick texlive
         brew info qt@5
         brew info gsl
     - name: configure
