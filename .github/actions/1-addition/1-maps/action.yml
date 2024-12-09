@@ -122,8 +122,8 @@ runs:
         
         #Ref: https://github.com/iree-org/iree-experimental/tree/main
         git clone https://github.com/iree-org/iree-experimental samples && cd samples
+        ./setup_venv.sh && source iree-samples.venv/bin/activate
 
-    
     - name: 🚀 Initiate Lexer
       uses: devcontainers/ci@v0.3
       with:
