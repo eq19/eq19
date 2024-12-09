@@ -82,15 +82,8 @@ runs:
     - id: describe
       shell: bash
       run: |
-        cd /Users/runner/work/_actions/eq19/eq19/v1
-        git init && git submodule update --init
-        cmake -G Ninja -B ../iree-build/ -S . \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-          -DIREE_ENABLE_ASSERTIONS=ON \
-          -DIREE_ENABLE_SPLIT_DWARF=ON \
-          -DCMAKE_C_COMPILER=clang \
-          -DCMAKE_CXX_COMPILER=clang++ \
-          -DIREE_ENABLE_LLD=ON
+        git clone https://github.com/iree-org/iree.git
+        cd iree && git submodule update --init
         cmake --build ../iree-build/
         ls -al ../iree-build
 
