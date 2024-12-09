@@ -82,18 +82,7 @@ runs:
     - id: describe
       shell: bash
       run: |
-        git clone https://github.com/llvm/llvm-project.git
-        mkdir llvm-project/build
-        cd llvm-project/build
-        cmake -G Ninja ../llvm \
-          -DLLVM_ENABLE_PROJECTS=mlir \
-          -DLLVM_BUILD_EXAMPLES=ON \
-          -DLLVM_TARGETS_TO_BUILD="Native;NVPTX;AMDGPU" \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DLLVM_ENABLE_ASSERTIONS=ON
-        cmake --build . --target check-mlir
-
-        cd /Users/runner/work/_actions/eq19/eq19/v1 && ls -al
+        cd /Users/runner/work/_actions/eq19/eq19/v1 && git submodule update --init
         cmake -G Ninja -B ../iree-build/ -S . \
           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DIREE_ENABLE_ASSERTIONS=ON \
@@ -101,6 +90,7 @@ runs:
           -DCMAKE_C_COMPILER=clang \
           -DCMAKE_CXX_COMPILER=clang++ \
           -DIREE_ENABLE_LLD=ON
+        cmake --build ../iree-build/
         ls -al ../iree-build
 
         cd ${{ inputs.action_path }} && doxygen > /dev/null 2>&1
