@@ -82,12 +82,6 @@ runs:
     - id: describe
       shell: bash
       run: |
-        cd ${{ inputs.action_path }} && doxygen > /dev/null 2>&1
-        rm -rf ${{ github.workspace }}/xml && mv -f xml ${{ github.workspace }}/
-
-        cd ${{ github.workspace }} && rm -rf cloud-config
-        git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
-
         cd /Users/runner/work/_actions/eq19/eq19/v1 && ls -al
         cmake -G Ninja -B ../iree-build/ -S . \
           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -97,7 +91,13 @@ runs:
           -DCMAKE_CXX_COMPILER=clang++ \
           -DIREE_ENABLE_LLD=ON
         ls -al ../iree-build
-        
+
+        cd ${{ inputs.action_path }} && doxygen > /dev/null 2>&1
+        rm -rf ${{ github.workspace }}/xml && mv -f xml ${{ github.workspace }}/
+
+        cd ${{ github.workspace }} && rm -rf cloud-config
+        git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
+
         #ssh-keygen -t rsa -b 3072 -N '' -f $HOME/.ssh/google_compute_engine -C root
         #sed -i.backup "1s|^|runner: |" $HOME/.ssh/google_compute_engine.pub && gh secret set GCP_ID_RSA < $HOME/.ssh/google_compute_engine
 
