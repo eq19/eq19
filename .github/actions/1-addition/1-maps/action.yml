@@ -127,12 +127,15 @@ runs:
         #python ${{ github.workspace }}/.github/entrypoint/artifact/python/gellmann.py
         
         cd ${{ inputs.action_path }}
+        #Ref: https://github.com/tsoding/JelloVM
         javac Main.java && python app.py Main.class
 
         cd numberGenerator
+        #Ref: 
         python npreader.py -h && python map.py -h
 
         cd python
+        #Ref:
         python phex.py output.txt && cat results/output.txt
 
         exit 1
