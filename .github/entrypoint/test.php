@@ -11,7 +11,7 @@
         'type' => 'sell',
         'price' => '1700000000',
         'idr' => '',
-        'btc' => '0.00000863'
+        'btc' => '0.00002973'
     ];
 	$post_data = http_build_query($data, '', '&');
     $sign = hash_hmac('sha512', $post_data, $secretKey);
