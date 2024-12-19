@@ -1,13 +1,14 @@
 # coding=utf-8
 
+import os
 import ccxt
 
 hitbtc   = ccxt.hitbtc({'verbose': True})
 bitmex   = ccxt.bitmex()
 huobipro = ccxt.huobipro()
 exmo     = ccxt.indodax({
-    'apiKey': 'YOUR_PUBLIC_API_KEY',
-    'secret': 'YOUR_SECRET_PRIVATE_KEY',
+    'apiKey': os.environ['ACCESS_API'],
+    'secret': os.environ['ACCESS_KEY'],
 })
 #kraken = ccxt.kraken({
     #'apiKey': 'YOUR_PUBLIC_API_KEY',
