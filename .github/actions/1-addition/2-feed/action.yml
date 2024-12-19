@@ -127,8 +127,11 @@ runs:
       env:
         CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
         SERVICE_NAME: ${{ steps.postgres.outputs.service-name }}
-        EXPECTED_CONNECTION_URI: postgresql://yoda:GrandMaster@localhost:34837/test
+        CERTIFICATE_PATH: ${{ steps.postgres.outputs.certificate-path }}
+        EXPECTED_CONNECTION_URI: postgresql://yoda:GrandMaster@localhost:34837/jedi_order?sslmode=verify-ca&sslrootcert=${{ steps.postgres.outputs.certificate-path }}
         EXPECTED_SERVICE_NAME: yoda
+        EXPECTED_SERVER_VERSION: ${{ matrix.postgres-version }}
+        EXPECTED_SSL: true
       shell: bash
       run: |
         #cd /home/runner/work/_actions/eq19/eq19/v1/integrations/tensorflow
