@@ -120,8 +120,10 @@ runs:
       with:
         username: yoda
         password: GrandMaster
-        database: test
+        database: jedi_order
         port: 34837
+        postgres-version: ${{ matrix.postgres-version }}
+        ssl: true
 
     - name: 🪂 Test postgres
       env:
