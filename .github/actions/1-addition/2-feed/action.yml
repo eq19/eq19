@@ -161,7 +161,6 @@ runs:
         runCmd: freqtrade list-markets --config user_data/config.json
         #Ref: https://medium.com/@shanejones/how-i-set-up-freqtrade-a287db8966f
 
-
     - name: 🪂 Remove existing images
       id: variables
       shell: bash
