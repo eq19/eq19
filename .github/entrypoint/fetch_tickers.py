@@ -1,11 +1,13 @@
 from freqtrade.resolvers import ExchangeResolver
 
-# Initialize the exchange
+# Initialize exchange
 exchange = ExchangeResolver.load_exchange_from_config("config.json")
 
-# Fetch tickers for all pairs
-tickers = exchange.fetch_tickers()
+# Fetch ticker for a specific pair
+ticker = exchange.fetch_ticker('BTC/IDR')
+print(ticker)
 
 # Print all ticker data
-for pair, ticker in tickers.items():
-    print(f"{pair}: {ticker}")
+#tickers = exchange.fetch_tickers()
+#for pair, ticker in tickers.items():
+#    print(f"{pair}: {ticker}")
