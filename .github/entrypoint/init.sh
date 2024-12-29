@@ -55,6 +55,7 @@ if [[ "${JOB_ID}" == "1" ]]; then
     git add . && git commit --allow-empty -m "rerun due to job update" && git push
     exit 1
   else
+    mv -f ${GITHUB_ACTION_PATH}/dataFile/user_data ${GITHUB_WORKSPACE}/
     ls -al ${GITHUB_WORKSPACE}
   fi
 
