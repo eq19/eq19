@@ -55,7 +55,7 @@ if [[ "${JOB_ID}" == "1" ]]; then
     git add . && git commit --allow-empty -m "rerun due to job update" && git push
     exit 1
   else
-    mv -f ${GITHUB_ACTION_PATH}/dataFile/user_data ${GITHUB_WORKSPACE}/
+    mv -f $1/dataFile/user_data ${GITHUB_WORKSPACE}/
     cd ${GITHUB_WORKSPACE}/user_data/config_examples
     sed -i "s|your_exchange_key|${ACCESS_API}|g" *.json
     sed -i "s|your_exchange_secret|${ACCESS_KEY}|g" *.json
