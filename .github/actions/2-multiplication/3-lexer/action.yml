@@ -116,8 +116,8 @@ runs:
         #sed -i.backup "1s|^|runner: |" $HOME/.ssh/google_compute_engine.pub && gh secret set GCP_ID_RSA < $HOME/.ssh/google_compute_engine
 
         gcloud secrets describe freqtrade-config || \
-          gcloud secrets create freqtrade-config --data="${{ inputs.config }}"
-          gcloud secrets versions add freqtrade-config --data="${{ inputs.config }}"
+          echo "${{ inputs.config }}" | gcloud secrets create freqtrade-config --data-file=- || \
+          echo "${{ inputs.vonfig }}" | gcloud secrets versions add freqtrade-config --data-file=-
 
         gcloud compute instances add-metadata grid-${{ env.IMAGE_TAG }} --zone=us-central1-a \
           --metadata=startup-script=/home/runner/work/_actions/eq19/eq19/v1/.github/entrypoint/startup.sh
