@@ -119,7 +119,9 @@ runs:
           gcloud secrets create freqtrade-config --data="${{ inputs.config }}"
           gcloud secrets versions add freqtrade-config --data="${{ inputs.config }}"
 
-        gcloud compute instances add-metadata grid-${{ env.IMAGE_TAG }} --zone=us-central1-a gcloud compute instances add-metadata --metadata=startup-script=/entrypoint/startup.sh
+        gcloud compute instances add-metadata grid-${{ env.IMAGE_TAG }} --zone=us-central1-a \
+          --metadata=startup-script=/home/runner/work/_actions/eq19/eq19/v1/.github/entrypoint/startup.sh
+
         #gcloud compute instances describe grid-${{ env.IMAGE_TAG }} --zone=us-central1-a --format='value(metadata.items)'
         #gcloud compute scp ${{ github.workspace }}/.github/entrypoint/artifact/python/manual_v2.ipynb grid-${{ env.IMAGE_TAG }}:/home/runner/.docker --zone=us-central1-a
 
