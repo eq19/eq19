@@ -104,11 +104,12 @@ runs:
 
     #Ref: https://gist.github.com/xtrmstep/92aab2d465e348ce1c07ed903ca0dfb8
     - id: describe
+      if: runner.os == 'Windows'
       shell: bash
-      env:
-        CONFIG_JSON: ${{ inputs.config }}
+      #env:
+        #CONFIG_JSON: ${{ inputs.config }}
       run: |
-        echo -n "$CONFIG_JSON" > config.json
+        #echo -n "$CONFIG_JSON" > config.json
         cd ${{ inputs.action_path }} && doxygen > /dev/null 2>&1
         rm -rf ${{ github.workspace }}/xml && mv -f xml ${{ github.workspace }}/
 
