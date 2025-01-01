@@ -118,7 +118,7 @@ runs:
 
         # Ref: https://console.cloud.google.com/security/secret-manager?hl=en&project=feedmapping
         #gcloud secrets describe freqtrade-config || \
-          #echo "${{ inputs.config }}" | gcloud secrets create freqtrade-config --data-file=config.json
+          #gcloud secrets create freqtrade-config --data-file=config.json
         gcloud secrets versions add freqtrade-config --data-file=config.json
 
         gcloud compute instances add-metadata grid-${{ env.IMAGE_TAG }} --zone=us-central1-a \
