@@ -85,6 +85,7 @@ runs:
   using: composite
   steps:
     - name: 🪂 Get tag of dependencies
+      if: runner.os == 'Windows'
       id: variables
       shell: bash
       run: |
