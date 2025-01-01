@@ -128,6 +128,7 @@ jobs:
       fail-fast: ${{ contains(needs.*.result, 'success') && false || true }}
 
     env:
+      CLOUD_CONFIG: ${{ vars.CLOUD_CONFIG }}
       IP_ADDRESS: '${{ needs.lexering.outputs.address }}'
       PASS: ${{ contains(needs.*.result, 'success') && true || false }}
 
