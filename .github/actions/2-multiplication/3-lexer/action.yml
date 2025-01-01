@@ -121,7 +121,7 @@ runs:
         # Ref: https://console.cloud.google.com/security/secret-manager?hl=en&project=feedmapping
         #gcloud secrets describe freqtrade-config || \
           #gcloud secrets create freqtrade-config --data-file=config.json
-        gcloud secrets versions add freqtrade-config --data-file=config.json
+        #gcloud secrets versions add freqtrade-config --data-file=config.json
 
         gcloud compute instances add-metadata grid-${{ env.IMAGE_TAG }} --zone=us-central1-a \
           --metadata=startup-script=/home/runner/work/_actions/eq19/eq19/v1/.github/entrypoint/startup.sh
