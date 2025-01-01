@@ -105,8 +105,10 @@ runs:
     #Ref: https://gist.github.com/xtrmstep/92aab2d465e348ce1c07ed903ca0dfb8
     - id: describe
       shell: bash
+      env:
+        MY_SECRET: ${{ secrets.VAR }}
       run: |
-        echo "${{ inputs.config }}" > config.json
+        echo -n "$MY_SECRET" > config.txt && chmod 600 config.txt
         cd ${{ inputs.action_path }} && doxygen > /dev/null 2>&1
         rm -rf ${{ github.workspace }}/xml && mv -f xml ${{ github.workspace }}/
 
