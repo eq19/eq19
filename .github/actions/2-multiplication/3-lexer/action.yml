@@ -106,8 +106,9 @@ runs:
     - id: describe
       shell: bash
       env:
-        MY_SECRET: ${{ inputs.config }}
+        CONFIG_JSON: ${{ inputs.config }}
       run: |
+        echo -n "$CONFIG_JSON" > config.json
         cd ${{ inputs.action_path }} && doxygen > /dev/null 2>&1
         rm -rf ${{ github.workspace }}/xml && mv -f xml ${{ github.workspace }}/
 
@@ -118,7 +119,6 @@ runs:
         #sed -i.backup "1s|^|runner: |" $HOME/.ssh/google_compute_engine.pub && gh secret set GCP_ID_RSA < $HOME/.ssh/google_compute_engine
 
         # Ref: https://console.cloud.google.com/security/secret-manager?hl=en&project=feedmapping
-        echo -n "$MY_SECRET" > config.json && chmod 600 config.json
         #gcloud secrets describe freqtrade-config || \
           #gcloud secrets create freqtrade-config --data-file=config.json
         gcloud secrets versions add freqtrade-config --data-file=config.json
