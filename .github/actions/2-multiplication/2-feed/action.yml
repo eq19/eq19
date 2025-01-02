@@ -178,7 +178,7 @@ runs:
 
         runcmd:
         - export PATH=/mnt/disks/deeplearning/usr/lib/google-cloud-sdk/bin:$PATH
-        - gcloud secrets versions access latest --project feedmapping --secret=freqtrade-config > /etc/systemd/system/app-config.json
+        - curl -H "Authorization: Bearer $ACCESS_TOKEN" "https://secretmanager.googleapis.com/v1/projects/feedmapping/secrets/freqtrade-config/versions/latest:access" | jq -r '.payload.data' | base64 --decode > /etc/systemd/system/app-config.json
         - systemctl daemon-reload
         - systemctl start runner.service
         - systemctl status runner.service
