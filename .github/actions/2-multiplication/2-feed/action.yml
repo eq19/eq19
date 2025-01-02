@@ -124,7 +124,6 @@ runs:
         - path: /etc/environment
           append: true
           content: |
-            CLOUDSDK_CONFIG=/home/runner/.config
             PATH=/mnt/disks/deeplearning/usr/bin:$PATH
 
         - path: /etc/systemd/system/firewall.service
