@@ -61,6 +61,12 @@ inputs:
   token:
     description: 'The deploy token'
     required: false
+  bot_token:
+    description: 'The telegram token'
+    required: false
+  chat_id:
+    description: 'The telegram chat id'
+    required: false
   action_path:
     description: 'The action path'
     required: false
