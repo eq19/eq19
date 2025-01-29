@@ -122,8 +122,9 @@ runs:
           find -not -path "./.git/*" -not -name ".git" -delete
           shopt -s dotglob && mv -f /home/runner/_site/* .
 
-          COMMIT="${{ env.LATEST_COMMIT }}" 
+          COMMIT="${{ env.LATEST_COMMIT }}"
+          MESSAGE=$(echo "$COMMIT" | tr -d '"')
           # Remove double quotes using parameter extension
-          git add . && git commit --allow-empty -m "${COMMIT//\"/}" && git push
+          git add . && git commit --allow-empty -m "${MESSAGE}" && git push
  
         fi
