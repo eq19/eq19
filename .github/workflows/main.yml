@@ -127,6 +127,8 @@ jobs:
       fail-fast: ${{ contains(needs.*.result, 'success') && false || true }}
 
     env:
+      ACCESS_API: ${{ secrets.ACCESS_API }}
+      ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
       IP_ADDRESS: '${{ needs.lexering.outputs.address }}'
       PASS: ${{ contains(needs.*.result, 'success') && true || false }}
 
