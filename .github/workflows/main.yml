@@ -127,8 +127,6 @@ jobs:
       fail-fast: ${{ contains(needs.*.result, 'success') && false || true }}
 
     env:
-      ACCESS_API: ${{ secrets.ACCESS_API }}
-      ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
       IP_ADDRESS: '${{ needs.lexering.outputs.address }}'
       PASS: ${{ contains(needs.*.result, 'success') && true || false }}
 
@@ -166,6 +164,8 @@ jobs:
         with:
           id: ${{ matrix.config.id }}
           token: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_API: ${{ secrets.ACCESS_API }}
+          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           pauli_sum: ${{ toJSON(steps.set-parser.outputs) }}
           failure_status: ${{ contains(steps.*.conclusion, 'failure') ||
