@@ -35,10 +35,6 @@ permissions: write-all
 env:
   GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
-  ACCESS_API: ${{ secrets.ACCESS_API }}
-  ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
-  MESSAGE_API: ${{ secrets.MESSAGE_API }}
-  MESSAGE_TOKEN: ${{ secrets.MESSAGE_TOKEN }}
   TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
 
 jobs:
@@ -84,7 +80,8 @@ jobs:
           id: ${{ matrix.config.id }}
           token: ${{ secrets.ACCESS_TOKEN }}
           chat_id: ${{ secrets.MESSAGE_API }}
-          bot_token: ${{ secrets.MESSAGE_TOKEN }}
+          bot_token: ${{ secrets.MONITOR_TOKEN }}
+          logs_token: ${{ secrets.WARNING_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
