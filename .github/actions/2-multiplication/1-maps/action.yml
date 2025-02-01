@@ -126,7 +126,7 @@ runs:
     # Ref: https://cloud.google.com/compute/docs/instances/create-start-instance
     - name: 💎 Remove Existing Self-Hosted Runner
       env:
-        RERUN_RUNNER: ${{ vars.RERUN_RUNNER }}
+        RERUN_RUNNER: ${{ secrets.RERUN_RUNNER }}
       if: ${{ env.RERUN_RUNNER == 'true' }}
       shell: bash
       run: |
