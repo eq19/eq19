@@ -125,7 +125,9 @@ runs:
 
     # Ref: https://cloud.google.com/compute/docs/instances/create-start-instance
     - name: 💎 Remove Existing Self-Hosted Runner
-      if: ${{ var.RERUN_RUNNER }} == true
+      env:
+        RERUN_RUNNER: ${{ vars.RERUN_RUNNER }}
+      if: ${{ env.RERUN_RUNNER == 'true' }}
       shell: bash
       run: |
         for instance_uri in $(gcloud compute instances list --uri 2> /dev/null); do
