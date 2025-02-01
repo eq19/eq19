@@ -68,6 +68,7 @@ jobs:
         with:
           id: ${{ matrix.config.id }}
           token: ${{ secrets.ACCESS_TOKEN }}
+          rerun_runner: ${{ vars.RERUN_RUNNER}}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
