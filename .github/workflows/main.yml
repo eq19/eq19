@@ -81,6 +81,7 @@ jobs:
           id: ${{ matrix.config.id }}
           token: ${{ secrets.ACCESS_TOKEN }}
           chat_id: ${{ secrets.MESSAGE_API }}
+          rerun_runner: ${{ vars.RERUN_RUNNER}}
           bot_token: ${{ secrets.MONITOR_TOKEN }}
           logs_token: ${{ secrets.WARNING_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
