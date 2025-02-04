@@ -166,6 +166,23 @@ runs:
             ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
             ExecStart=/usr/bin/docker run --rm -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e TELEGRAM_CHAT_ID=${{ inputs.chat_id }} -e MONITOR_BOT_TOKEN=${{ inputs.bot_token }} -e WARNING_BOT_TOKEN=${{ inputs.logs_token }} -v /mnt:/mnt --name=mydb -p 5432:5432 --pull=always eq19/feed:spin-${{ env.IMAGE_TAG }}
 
+        - path: /etc/systemd/system/freqtrade.service
+          permissions: "0644"
+          owner: root
+          content: |
+            [Unit]
+            Description=Freqtrade Bot
+            After=network.target
+
+            [Service]
+            ExecStart=/usr/local/bin/freqtrade trade -v --log-file /mnt/disks/deeplearning/var/log/apt/freqtrade.log
+            Restart=always
+            User=root
+            WorkingDirectory=/root
+
+            [Install]
+            WantedBy=multi-user.target
+
         - path: /etc/systemd/system/runner.service
           permissions: "0644"
           owner: root
@@ -191,6 +208,7 @@ runs:
  
         runcmd:
         - systemctl daemon-reload
+        - systemctl enable freqtrade
         - systemctl start runner.service
         - mkdir -p /mnt/disks/deeplearning/home/runner
         - chmod -R 755 /mnt/disks/deeplearning/home/runner      
