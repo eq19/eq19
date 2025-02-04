@@ -191,8 +191,8 @@ runs:
  
         runcmd:
         - systemctl daemon-reload
-        - systemctl enable freqtrade
         - systemctl start runner.service
+        - systemctl enable freqtrade.service
         - mkdir -p /mnt/disks/deeplearning/home/runner
         - chmod -R 755 /mnt/disks/deeplearning/home/runner      
         - chown -R root:root /mnt/disks/deeplearning/home/runner
