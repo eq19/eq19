@@ -193,7 +193,7 @@ runs:
         - systemctl daemon-reload
         - docker run --rm --pull=always --entrypoint "" -v /mnt/disks/deeplearning:/mnt/disks/deeplearning eq19/feed:spin-${{ env.IMAGE_TAG }} sh -c "cp -r /home/runner/user_data /mnt/disks/deeplearning/"
         - systemctl start runner.service
-       EOL
+        EOL
         
     # Ref: https://stackoverflow.com/a/47018417/4058484
     - name: 🪂 Setup Runner by Gcloud
