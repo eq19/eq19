@@ -15,19 +15,19 @@
     },
     "buy": {
       "buy_additional_indicator": "STOCH_OSC",
-      "buy_fast_dema": "8",
-      "buy_fib_level": "0.618",
-      "buy_rsi": 41,
-      "buy_slow_ema": "55",
-      "buy_stoch_osc": 10,
-      "buy_swing_period": 33
+      "buy_fast_dema": 21,
+      "buy_fib_level": "0.236",
+      "buy_rsi": 45,
+      "buy_slow_ema": 34,
+      "buy_stoch_osc": 8,
+      "buy_swing_period": 90
     },
     "sell": {
       "sell_additional_indicator": "STOCH_OSC",
       "sell_fib_level": "0.382",
-      "sell_rsi": 80,
-      "sell_rsi_threshold": 76,
-      "sell_stoch_osc": 89
+      "sell_rsi": 99,
+      "sell_rsi_threshold": 72,
+      "sell_stoch_osc": 81
     },
     "protection": {
       "cooldown_lookback": 7,
@@ -40,12 +40,12 @@
       "use_stop_protection": true
     },
     "roi": {
-      "0": 0.093,
-      "7": 0.018000000000000002,
-      "12": 0.006,
-      "22": 0
+      "0": 0.096,
+      "7": 0.024,
+      "12": 0.003,
+      "29": 0
     }
   },
   "ft_stratparam_v": 1,
-  "export_time": "2025-02-17 16:18:54.167984+00:00"
+  "export_time": "2025-02-17 19:53:16.489387+00:00"
 }
