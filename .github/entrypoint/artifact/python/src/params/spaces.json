@@ -26,13 +26,13 @@
       "use_stop_protection": true
     },
     "roi": {
-      "0": 0.07999999999999999,
-      "4": 0.028999999999999998,
+      "0": 0.0786,
+      "4": 0.0238,
       "11": 0.006,
       "19": 0
     },
     "stoploss": {
-      "stoploss": -0.337
+      "stoploss": -0.137
     },
     "trailing": {
       "trailing_stop": true,
