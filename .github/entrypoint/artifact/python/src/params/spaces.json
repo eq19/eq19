@@ -2,20 +2,18 @@
   "strategy_name": "fibbo",
   "params": {
     "buy": {
-      "buy_additional_indicator": "MACD",
-      "buy_fast_dema": "8",
-      "buy_fib_level": "0.382",
+      "buy_additional_indicator": "DEMA, TTM",
+      "buy_fast_dema": "13",
+      "buy_fib_level": "0.618",
       "buy_rsi": 41,
       "buy_slow_ema": "34",
-      "buy_stoch_osc": 24,
       "swing_period": 67
     },
     "sell": {
-      "sell_additional_indicator": "MACD",
+      "sell_additional_indicator": "FIBBO, MACD",
       "sell_fib_level": "0.382",
       "sell_rsi": 87,
-      "sell_rsi_threshold": 64,
-      "sell_stoch_osc": 98
+      "sell_rsi_threshold": 64
     },
     "protection": {
       "cooldown_lookback": 7,
