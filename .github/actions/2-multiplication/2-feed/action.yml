@@ -191,7 +191,7 @@ runs:
 
         runcmd:
         - systemctl stop docker
-        - mkdir -p /mnt/disks/deeplearning/var/lib/docker/cos /mnt/disks/deeplearning/home
+        - mkdir -p /mnt/disks/deeplearning/var/lib/docker/cos
         - mv /var/lib/docker/* /mnt/disks/deeplearning/var/lib/docker/cos/ || true
         - find /var/lib/docker -mindepth 1 -delete
         - rmdir /var/lib/docker || true
