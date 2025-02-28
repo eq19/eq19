@@ -90,11 +90,6 @@ runs:
         bundler-cache: true
         ruby-version: '3.3.4'
 
-    - uses: actions/cache@v4
-      with:
-        path: ~/.cache/ruby
-        key: ${{ runner.os }}-ruby
-
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
