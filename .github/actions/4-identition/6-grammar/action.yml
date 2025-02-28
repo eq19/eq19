@@ -87,6 +87,7 @@ runs:
     - name: ⏪ Rewind all jobs on failure
       shell: bash
       env:
+        DISABLE_WHITELIST: true
         GH_TOKEN: ${{ inputs.token }}
         BASE: "D:/a/_actions/eq19/eq19/v2/.github"
       run: |
