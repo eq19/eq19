@@ -115,7 +115,7 @@ runs:
           #Jekyll Quick Reference https://gist.github.com/DrOctogon/bfb6e392aa5654c63d12
           #cp -R ${GITHUB_WORKSPACE//\\//}/_plugins/* ${GITHUB_WORKSPACE//\\//}/vendor/bundle/ruby/3.3.0/plugins
           cp -R ${GITHUB_WORKSPACE//\\//}/_vendor/* ${GITHUB_WORKSPACE//\\//}/vendor/bundle/ruby/3.3.0/gems/jekyll-3.10.0/
-          JEKYLL_GITHUB_TOKEN=${{ inputs.token }} DISABLE_WHITELIST=true bundle exec jekyll build --profile -t -p _plugins -d ${GITHUB_WORKSPACE//\\//}/docs --trace
+          JEKYLL_GITHUB_TOKEN=${{ inputs.token }} DISABLE_WHITELIST=true bundle exec jekyll build --profile -t -p ${GITHUB_WORKSPACE//\\//}/_plugins -d ${GITHUB_WORKSPACE//\\//}/docs --trace
 
           if [[ "${TARGET_REPOSITORY}" == "eq19/eq19.github.io" ]]; then echo "www.eq19.com" > ${GITHUB_WORKSPACE//\\//}/docs/CNAME; fi
           rm -rf ${GITHUB_WORKSPACE//\\//}/docs/.nojekyll && touch ${GITHUB_WORKSPACE//\\//}/docs/.nojekyll
