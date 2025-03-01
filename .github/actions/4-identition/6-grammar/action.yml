@@ -114,6 +114,7 @@ runs:
           echo -e "\n$hr\nBuild Pages\n$hr"
           #Jekyll Quick Reference https://gist.github.com/DrOctogon/bfb6e392aa5654c63d12
           FILE=${GITHUB_WORKSPACE//\\//}/vendor/bundle/ruby/3.3.0/gems/jekyll-3.10.0/lib/jekyll/plugin_manager.rb
+          sed -i 's|X|postgres|g' $FILE && sed -i 's|X|postgres|g' $FILE
           JEKYLL_GITHUB_TOKEN=${{ inputs.token }} DISABLE_WHITELIST=true bundle exec jekyll build --profile -t -d ${GITHUB_WORKSPACE//\\//}/docs --trace
 
           if [[ "${TARGET_REPOSITORY}" == "eq19/eq19.github.io" ]]; then echo "www.eq19.com" > ${GITHUB_WORKSPACE//\\//}/docs/CNAME; fi
