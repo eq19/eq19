@@ -84,7 +84,7 @@ elif [[ "${JOB_ID}" == "3" ]]; then
   # Take titles from _Sidebar.md of base wiki
   sed -i 's/0. \[\[//g' _Sidebar.md && sed -i 's/\]\]//g' _Sidebar.md
 
-  gist.sh && cp -R ${RUNNER_TEMP}/gistdir/* . && github_pages.sh
+  gist.sh ${RUNNER_TEMP} && cp -R ${RUNNER_TEMP}/gistdir/* . && github_pages.sh
   find . -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
 
 else
