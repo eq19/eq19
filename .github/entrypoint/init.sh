@@ -77,7 +77,6 @@ elif [[ "${JOB_ID}" == "3" ]]; then
   cat /home/runner/_site/_config.yml
   gist.sh ${TARGET_REPOSITORY} ${FOLDER}
 
-  find ${RUNNER_TEMP}/gistdir -type d -name .git -prune -exec rm -rf {} \;
   rm -rf ${RUNNER_TEMP}/Sidebar.md && cp _Sidebar.md ${RUNNER_TEMP}/Sidebar.md
 
   sed -i 's/0. \[\[//g' ${RUNNER_TEMP}/Sidebar.md && sed -i 's/\]\]//g' ${RUNNER_TEMP}/Sidebar.md
