@@ -29,6 +29,7 @@ gh gist clone e9832026b5b78f694e4ad22c3eb6c3ef ${RUNNER_TEMP}/gistdir/exponentia
 
 # Rearrange README.md for span titling
 find ${RUNNER_TEMP}/gistdir -type f -name "README.md" -exec rm -rf {} \;
+find ${RUNNER_TEMP}/gistdir -type d -name .git -prune -exec rm -rf {} \;
 
 # Collect and sort all spins on gistdir
 rm -rf ${RUNNER_TEMP}/spin.txt && touch ${RUNNER_TEMP}/spin.txt
