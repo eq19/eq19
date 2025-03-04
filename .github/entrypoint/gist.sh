@@ -3,7 +3,9 @@
 # Clone wiki as base
 rm -rf ${RUNNER_TEMP}/*dir
 git clone ${BASE} ${RUNNER_TEMP}/workdir
+
 mv -f ${RUNNER_TEMP}/workdir/* /home/runner/_site/
+mv -f /home/runner/_site/Home.md /home/runner/_site/README.md
 
 gh gist clone 0ce5848f7ad62dc46dedfaa430069857 ${RUNNER_TEMP}/gistdir/identition/span1
 gh gist clone b32915925d9d365e2e9351f0c4ed786e ${RUNNER_TEMP}/gistdir/identition/span2
@@ -26,7 +28,6 @@ gh gist clone e84a0961dc7636c01d5953d19d65e30a ${RUNNER_TEMP}/gistdir/exponentia
 gh gist clone e9832026b5b78f694e4ad22c3eb6c3ef ${RUNNER_TEMP}/gistdir/exponentiation/span18
 
 # Rearrange README.md for span titling
-mv -f ${RUNNER_TEMP}/workdir/Home.md ${RUNNER_TEMP}/workdir/README.md
 find ${RUNNER_TEMP}/gistdir -type f -name "README.md" -exec rm -rf {} \;
 
 # Collect and sort all spins on gistdir
