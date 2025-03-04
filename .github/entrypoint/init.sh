@@ -85,7 +85,6 @@ elif [[ "${JOB_ID}" == "3" ]]; then
   mv -f ${RUNNER_TEMP}/workdir/* /home/runner/_site/
   mv -f /home/runner/_site/Home.md /home/runner/_site/README.md
 
-  cat /home/runner/_site/_config.yml
   gist.sh ${TARGET_REPOSITORY} ${FOLDER}
   cd /home/runner/_site && cp -R ${RUNNER_TEMP}/gistdir/* . && github_pages.sh && ls -lR .
 
