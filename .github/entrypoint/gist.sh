@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
+# Clone wiki as base
 rm -rf ${RUNNER_TEMP}/*dir
 git clone ${BASE} ${RUNNER_TEMP}/workdir
-
-rm -rf ${RUNNER_TEMP}/spin.txt && touch ${RUNNER_TEMP}/spin.txt
-mv -f ${RUNNER_TEMP}/workdir/Home.md ${RUNNER_TEMP}/workdir/README.md
 
 gh gist clone 0ce5848f7ad62dc46dedfaa430069857 ${RUNNER_TEMP}/gistdir/identition/span1
 gh gist clone b32915925d9d365e2e9351f0c4ed786e ${RUNNER_TEMP}/gistdir/identition/span2
@@ -26,6 +24,11 @@ gh gist clone dc30497160f3389546d177da901537d9 ${RUNNER_TEMP}/gistdir/exponentia
 gh gist clone e84a0961dc7636c01d5953d19d65e30a ${RUNNER_TEMP}/gistdir/exponentiation/span17
 gh gist clone e9832026b5b78f694e4ad22c3eb6c3ef ${RUNNER_TEMP}/gistdir/exponentiation/span18
 
+# Rearrange README.md for span titling
+mv -f ${RUNNER_TEMP}/workdir/Home.md ${RUNNER_TEMP}/workdir/README.md
 find ${RUNNER_TEMP}/gistdir -type f -name "README.md" -exec rm -rf {} \;
+
+# Collect and sort all spins on gistdir
+rm -rf ${RUNNER_TEMP}/spin.txt && touch ${RUNNER_TEMP}/spin.txt
 find ${RUNNER_TEMP}/gistdir -type f -name 'spin_*.txt' | sort -n -t _ -k 2  | \
   while ((i++)); IFS= read -r f; do sort.sh $f $i; done
