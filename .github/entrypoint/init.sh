@@ -78,9 +78,8 @@ elif [[ "${JOB_ID}" == "3" ]]; then
   gist.sh ${TARGET_REPOSITORY} ${FOLDER}
 
   find ${RUNNER_TEMP}/gistdir -type d -name .git -prune -exec rm -rf {} \;
-  mv -f ${RUNNER_TEMP}/workdir/* /home/runner/_site/
-
   rm -rf ${RUNNER_TEMP}/Sidebar.md && cp _Sidebar.md ${RUNNER_TEMP}/Sidebar.md
+
   sed -i 's/0. \[\[//g' ${RUNNER_TEMP}/Sidebar.md && sed -i 's/\]\]//g' ${RUNNER_TEMP}/Sidebar.md
   cd /home/runner/_site && cp -R ${RUNNER_TEMP}/gistdir/* . && github_pages.sh && ls -lR .
 
