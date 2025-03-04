@@ -11,6 +11,3 @@ if [[ "${WIKI}" != "${BASE}" ]]; then
   find . -type d -name "${FOLDER}" -prune -exec sh -c 'wiki.sh "$1"' sh {} \;
 
 fi
-   
-find . -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
-cd ${GITHUB_WORKSPACE} && pwd && ls -alR .
