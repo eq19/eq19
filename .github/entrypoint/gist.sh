@@ -3,6 +3,7 @@
 # Clone wiki as base
 rm -rf ${RUNNER_TEMP}/*dir
 git clone ${BASE} ${RUNNER_TEMP}/workdir
+mv -f ${RUNNER_TEMP}/workdir/* /home/runner/_site/
 
 gh gist clone 0ce5848f7ad62dc46dedfaa430069857 ${RUNNER_TEMP}/gistdir/identition/span1
 gh gist clone b32915925d9d365e2e9351f0c4ed786e ${RUNNER_TEMP}/gistdir/identition/span2
