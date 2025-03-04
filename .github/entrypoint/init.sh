@@ -74,10 +74,6 @@ elif [[ "${JOB_ID}" == "2" ]]; then
 
 elif [[ "${JOB_ID}" == "3" ]]; then
 
-  rm -rf ${RUNNER_TEMP}/spin.txt && touch ${RUNNER_TEMP}/spin.txt
-  rm -rf ${RUNNER_TEMP}/Sidebar.md && cp _Sidebar.md ${RUNNER_TEMP}/Sidebar.md
-  sed -i 's/0. \[\[//g' ${RUNNER_TEMP}/Sidebar.md && sed -i 's/\]\]//g' ${RUNNER_TEMP}/Sidebar.md
-
   cat /home/runner/_site/_config.yml
   gist.sh ${TARGET_REPOSITORY} ${FOLDER}
   cd /home/runner/_site && cp -R ${RUNNER_TEMP}/gistdir/* . && github_pages.sh && ls -lR .
