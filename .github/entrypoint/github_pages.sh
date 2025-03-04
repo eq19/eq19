@@ -8,9 +8,7 @@ if [[ "${WIKI}" != "${BASE}" ]]; then
 
   git clone $WIKI ${RUNNER_TEMP}/wikidir
   cd ${RUNNER_TEMP}/wikidir && mv -f Home.md README.md
-
   find . -type d -name "${FOLDER}" -prune -exec sh -c 'wiki.sh "$1"' sh {} \;
-  find . -type d -name "${FOLDER}" -prune -exec sh -c 'cat ${RUNNER_TEMP}/README.md >> $1/README.md' sh {} \;
 
 fi
    
