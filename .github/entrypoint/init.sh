@@ -74,7 +74,7 @@ elif [[ "${JOB_ID}" == "2" ]]; then
 
 elif [[ "${JOB_ID}" == "3" ]]; then
 
-  cd /home/runner/_site
+  cd /home/runner/_site && cat _config.yml
   gist.sh ${BASE} && cp -R ${RUNNER_TEMP}/wikidir/* .
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
