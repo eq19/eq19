@@ -76,16 +76,7 @@ elif [[ "${JOB_ID}" == "3" ]]; then
 
   # Clone wiki as base
   cd /home/runner/_site
-  rm -rf ${RUNNER_TEMP}/*dir
-
-  git clone ${BASE} ${RUNNER_TEMP}/workdir
-  mv -f ${RUNNER_TEMP}/workdir/* . && mv -f Home.md README.md
-
-  # Take titles from _Sidebar.md of base wiki
-  sed -i 's/0. \[\[//g' _Sidebar.md && sed -i 's/\]\]//g' _Sidebar.md
-
-  gist.sh ${RUNNER_TEMP} && cp -R ${RUNNER_TEMP}/gistdir/* . && github_pages.sh
-  find . -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
+  gist.sh ${BASE} && cp -R ${RUNNER_TEMP}/wikidir/* .
 
 else
 
