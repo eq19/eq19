@@ -40,7 +40,7 @@ find ${RUNNER_TEMP}/gistdir -type f -name "README.md" -exec rm -rf {} \;
 rm -rf ${RUNNER_TEMP}/spin.txt && touch ${RUNNER_TEMP}/spin.txt
 find ${RUNNER_TEMP}/gistdir -type f -name 'spin_*.txt' | sort -n -t _ -k 2  | \
   while ((i++)); IFS= read -r f; do sort.sh $f $i; done
-cat spin.txt
+cat ${RUNNER_TEMP}/spin.txt
 
 # Copy the gist to wiki
 cp -R ${RUNNER_TEMP}/gistdir/* ${RUNNER_TEMP}/wikidir/
