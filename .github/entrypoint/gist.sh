@@ -4,7 +4,7 @@
 rm -rf ${RUNNER_TEMP}/*dir
 
 # Clone wiki
-git clone ${BASE} ${RUNNER_TEMP}/wikidir
+git clone $1 ${RUNNER_TEMP}/wikidir
 mv -f ${RUNNER_TEMP}/wikidir/Home.md ${RUNNER_TEMP}/wikidir/README.md
 
 # Take titles from _Sidebar.md of wiki
