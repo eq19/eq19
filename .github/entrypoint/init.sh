@@ -74,9 +74,13 @@ elif [[ "${JOB_ID}" == "2" ]]; then
 
 elif [[ "${JOB_ID}" == "3" ]]; then
 
-  # Clone wiki as base
   cd /home/runner/_site
   gist.sh ${BASE} && cp -R ${RUNNER_TEMP}/wikidir/* .
+
+  if [[ "${WIKI}" != "${BASE}" ]]; then
+    gist.sh ${WIKI}
+    find . -type d -name "${FOLDER}" -prune -exec sh -c 'cp -R ${RUNNER_TEMP}/wikidir/* "$1/"' sh {} \;
+  fi
 
 else
 
