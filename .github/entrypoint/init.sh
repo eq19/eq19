@@ -45,7 +45,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 
 fi
 
-echo -e "\n$hr\nWORKSPACE\n$hr"
+echo -e "\n$hr\nWORKSPACE: $FOLDER\n$hr"
 if [[ "${JOB_ID}" == "1" ]]; then
 
   #[[ "${LATEST_COMMIT}" == *"RERUN_RUNNER"* ]] && gh variable set RERUN_RUNNER --body "true"
