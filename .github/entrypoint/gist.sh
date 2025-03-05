@@ -11,7 +11,7 @@ mv -f ${RUNNER_TEMP}/wikidir/Home.md ${RUNNER_TEMP}/wikidir/README.md
 sed -i 's/0. \[\[//g' ${RUNNER_TEMP}/wikidir/_Sidebar.md
 sed -i 's/\]\]//g' ${RUNNER_TEMP}/wikidir/_Sidebar.md
 
-# Clone gist to be put later on wiki
+# Clone gist to be put later on wiki's exponentiation and identition folders
 gh gist clone 0ce5848f7ad62dc46dedfaa430069857 ${RUNNER_TEMP}/gistdir/identition/span1
 gh gist clone b32915925d9d365e2e9351f0c4ed786e ${RUNNER_TEMP}/gistdir/identition/span2
 gh gist clone 88d09204b2e5986237bd66d062406fde ${RUNNER_TEMP}/gistdir/identition/span3
