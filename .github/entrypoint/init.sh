@@ -35,8 +35,8 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
   echo 'TARGET_REPO='${TARGET_REPO} >> ${GITHUB_ENV}
   echo 'REMOTE_REPO='${REMOTE_REPO} >> ${GITHUB_ENV}
 
-  if [[ -f _config.yml ]]; the
-    FOLDER=$(yq '.span' _config.yml)
+  if [[ -f /home/runner/_site/_config.yml ]]; then
+    FOLDER=$(yq '.span' /home/runner/_site/_config.yml)
     export FOLDER=$(eval echo $FOLDER)
   elif [[ -f /home/runner/_site/.env ]]; then
     set -a && . /home/runner/_site/.env && set +a
