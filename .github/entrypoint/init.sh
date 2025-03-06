@@ -76,7 +76,7 @@ elif [[ "${JOB_ID}" == "2" ]]; then
 elif [[ "${JOB_ID}" == "3" ]]; then
 
   cd /home/runner/_site
-  gist.sh ${BASE} pwd && cp -R ${RUNNER_TEMP}/wikidir/* .
+  gist.sh ${BASE} $(pwd)
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
     gist.sh ${WIKI}
