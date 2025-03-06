@@ -75,12 +75,10 @@ elif [[ "${JOB_ID}" == "2" ]]; then
 
 elif [[ "${JOB_ID}" == "3" ]]; then
 
-  cd /home/runner/_site
-  gist.sh ${BASE} $(pwd)
+  cd /home/runner/_site && gist.sh ${BASE} $(pwd)
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
-    gist.sh ${WIKI}
-    find . -type d -name "${FOLDER}" -prune -exec sh -c 'cp -R ${RUNNER_TEMP}/wikidir/* "$1/"' sh {} \;
+    find . -type d -name "${FOLDER}" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
   fi
 
 else
