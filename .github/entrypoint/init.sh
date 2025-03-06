@@ -36,6 +36,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
   echo 'REMOTE_REPO='${REMOTE_REPO} >> ${GITHUB_ENV}
 
   if [[ -f /home/runner/_site/_config.yml ]]; then
+    cat /home/runner/_site/_config.yml
     FOLDER=$(yq '.span' /home/runner/_site/_config.yml)
     export FOLDER=$(eval echo $FOLDER)
   elif [[ -f /home/runner/_site/.env ]]; then
@@ -74,8 +75,8 @@ elif [[ "${JOB_ID}" == "2" ]]; then
 
 elif [[ "${JOB_ID}" == "3" ]]; then
 
-  cd /home/runner/_site && cat _config.yml
-  gist.sh ${BASE} && cp -R ${RUNNER_TEMP}/wikidir/* . && pwd && ls -al .
+  cd /home/runner/_site
+  gist.sh ${BASE} pwd && cp -R ${RUNNER_TEMP}/wikidir/* .
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
     gist.sh ${WIKI}
