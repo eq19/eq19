@@ -50,5 +50,6 @@ cp -R ${RUNNER_TEMP}/gistdir/* ${RUNNER_TEMP}/wikidir/
 find ${RUNNER_TEMP}/wikidir -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
 
 echo -e "\n$hr\nWiki Dir: $2\n$hr"
+cat ${RUNNER_TEMP}/README.md >> $2/README.md
 cp -R ${RUNNER_TEMP}/wikidir/* $2/
 ls -al $2
