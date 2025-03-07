@@ -8,8 +8,7 @@ rm -rf ${RUNNER_TEMP}/README.md
 
 # Clone wiki
 git clone $1 ${RUNNER_TEMP}/wikidir
-cp ${RUNNER_TEMP}/wikidir/Home.md ${RUNNER_TEMP}/README.md
-mv -f ${RUNNER_TEMP}/wikidir/Home.md ${RUNNER_TEMP}/wikidir/README.md
+mv -f ${RUNNER_TEMP}/wikidir/Home.md ${RUNNER_TEMP}/README.md
 
 # Take titles from _Sidebar.md of wiki
 sed -i 's/0. \[\[//g' ${RUNNER_TEMP}/wikidir/_Sidebar.md
