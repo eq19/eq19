@@ -79,7 +79,6 @@ elif [[ "${JOB_ID}" == "3" ]]; then
 
   if [[ "${WIKI}" != "${BASE}" ]]; then
     find . -type d -name "${FOLDER}" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
-    find . -type d -name "${FOLDER}" -prune -exec sh -c 'cat ${RUNNER_TEMP}/README.md >> $1/README.md' sh {} \;      
   fi
 
 else
