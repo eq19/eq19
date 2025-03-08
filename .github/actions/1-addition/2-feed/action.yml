@@ -67,6 +67,12 @@ inputs:
     description: 'The deploy repository'
     default: ${{ github.repository }}
     required: false
+  api_key:
+    description: The key of api application
+    required: true
+  api_secret:
+    description: The secret of api application
+    required: true
 
 outputs:
   artifact:
@@ -103,8 +109,8 @@ runs:
         DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
         DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
         GCP_CREDENTIALS: ${{ inputs.credentials }}
-        ACCESS_API: ${{ inputs.credentials }}
-        ACCESS_KEY: ${{ inputs.credentials }}
+        ACCESS_API: ${{ inputs.api_key }}
+        ACCESS_KEY: ${{ inputs.api_secret }}
         
       run: |      
         shopt -s dotglob
