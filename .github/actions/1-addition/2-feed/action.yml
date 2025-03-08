@@ -100,7 +100,7 @@ runs:
         ACTOR: ${{ github.triggering_actor }}
         OWNER: ${{ github.repository_owner }}
         BEARER: ${{ steps.auth.outputs.id_token }}
-        DOCKER_HUB_TOKEN: ${{ inputs.hub_username }}
+        DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
         DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
         
       run: |      
