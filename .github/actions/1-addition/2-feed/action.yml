@@ -103,6 +103,8 @@ runs:
         DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
         DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
         GCP_CREDENTIALS: ${{ inputs.credentials }}
+        ACCESS_API: ${{ inputs.credentials }}
+        ACCESS_KEY: ${{ inputs.credentials }}
         
       run: |      
         shopt -s dotglob
