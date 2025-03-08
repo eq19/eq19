@@ -73,6 +73,18 @@ inputs:
   api_secret:
     description: The secret of api application
     required: true
+  pypi_token:
+    description: The pypi token
+    required: true
+  bot_token:
+    description: The monitor token
+    required: true
+  logs_token:
+    description: The warning token
+    required: true
+  chat_id:
+    description: The telegram chat id
+    required: true
 
 outputs:
   artifact:
@@ -111,10 +123,10 @@ runs:
         GCP_CREDENTIALS: ${{ inputs.credentials }}
         ACCESS_API: ${{ inputs.api_key }}
         ACCESS_KEY: ${{ inputs.api_secret }}
-        MESSAGE_API: ${{ inputs.api_key }}
-        MONITOR_TOKEN: ${{ inputs.api_secret }}
-        WARNING_TOKEN: ${{ inputs.api_key }}
-        PYPI_TOKEN: ${{ inputs.api_secret }}        
+        MESSAGE_API: ${{ inputs.chat_id }}
+        MONITOR_TOKEN: ${{ inputs.bot_token }}
+        WARNING_TOKEN: ${{ inputs.logs_token }}
+        PYPI_TOKEN: ${{ inputs.pypi_token }}        
       run: |      
         shopt -s dotglob
         rm -rf ${{ inputs.action_path }}/.git
