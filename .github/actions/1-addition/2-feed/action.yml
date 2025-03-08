@@ -102,6 +102,7 @@ runs:
         BEARER: ${{ steps.auth.outputs.id_token }}
         DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
         DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
+        credentials: ${{ inputs.credentials }}
         
       run: |      
         shopt -s dotglob
