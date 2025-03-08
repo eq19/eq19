@@ -111,7 +111,7 @@ runs:
         GCP_CREDENTIALS: ${{ inputs.credentials }}
         ACCESS_API: ${{ inputs.api_key }}
         ACCESS_KEY: ${{ inputs.api_secret }}
-        ACCESS_API: ${{ inputs.api_key }}
+        MESSAGE_API: ${{ inputs.api_key }}
         ACCESS_KEY: ${{ inputs.api_secret }}
         ACCESS_API: ${{ inputs.api_key }}
         ACCESS_KEY: ${{ inputs.api_secret }}        
