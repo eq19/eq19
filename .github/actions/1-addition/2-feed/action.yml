@@ -100,6 +100,8 @@ runs:
         ACTOR: ${{ github.triggering_actor }}
         OWNER: ${{ github.repository_owner }}
         BEARER: ${{ steps.auth.outputs.id_token }}
+        hub_username: ${{ inputs.hub_username }}
+        hub_password: ${{ inputs.hub_password }}
       run: |      
         shopt -s dotglob
         rm -rf ${{ inputs.action_path }}/.git
