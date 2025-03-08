@@ -59,14 +59,7 @@ sync_secrets_and_variables() {
     for secret in $secrets; do
         if [[ "$(check_secret_exists "$target_repo" "$secret")" == "404" ]]; then
             echo "➕ Secret '$secret' does not exist in $target_repo. Copying..."
- 
-            [[ "$secret" == "ACCESS_TOKEN" ]] && secret_value=$GITHUB_PAT
-            [[ "$secret" == "GCP_CREDENTIALS" ]] && secret_value=$GCP_CREDENTIALS
-         
-            [[ "$secret" == "DOCKER_HUB_TOKEN" ]] && secret_value=$DOCKER_HUB_TOKEN
-            [[ "$secret" == "DOCKER_HUB_PASSWORD" ]] && secret_value=$DOCKER_HUB_PASSWORD
-             
-            set_secret "$target_repo" "$secret" "$secret_value"
+            set_secret "$target_repo" "$secret" "${!secret}"
         else
             echo "✅ Secret '$secret' already exists in $target_repo."
         fi
