@@ -95,8 +95,8 @@ runs:
         TMP: ${{ inputs.tmp }}
         RUN: ${{ github.run_id }}
         USER: ${{ github.actor }}
-        #TOKEN: ${{ inputs.token }}
         REPO: ${{ github.repository }}
+        ACCESS_TOKEN: ${{ inputs.token }}
         ACTOR: ${{ github.triggering_actor }}
         OWNER: ${{ github.repository_owner }}
         BEARER: ${{ steps.auth.outputs.id_token }}
