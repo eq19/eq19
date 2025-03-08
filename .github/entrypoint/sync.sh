@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # GitHub Personal Access Token (PAT) - Store securely
-GITHUB_PAT="your_github_pat_here"
+GITHUB_PAT="$3"
 
 # GitHub API Base URL
 GITHUB_API="https://api.github.com"
