@@ -61,8 +61,8 @@ sync_secrets_and_variables() {
             echo "➕ Secret '$secret' does not exist in $target_repo. Copying..."
  
             [[ "$secret" == "ACCESS_TOKEN" ]] && secret_value=$GITHUB_PAT
-            [[ "$secret" == "ACCESS_TOKEN" ]] && secret_value=$GITHUB_PAT
-            [[ "$secret" == "ACCESS_TOKEN" ]] && secret_value=$GITHUB_PAT
+            [[ "$secret" == "DOCKER_HUB_TOKEN" ]] && secret_value=$DOCKER_HUB_TOKEN
+            [[ "$secret" == "DOCKER_HUB_PASSWORD" ]] && secret_value=$DOCKER_HUB_PASSWORD
              
             set_secret "$target_repo" "$secret" "$secret_value"
         else
