@@ -6,13 +6,6 @@ GITHUB_PAT="$3"
 # GitHub API Base URL
 GITHUB_API="https://api.github.com"
 
-# Function to get the public key for a repository (needed for encrypting secrets)
-get_public_key() {
-    local repo=$1
-    curl -s -H "Authorization: token $GITHUB_PAT" -H "Accept: application/vnd.github.v3+json" \
-        "$GITHUB_API/repos/$repo/actions/secrets/public-key"
-}
-
 # Function to check if a secret exists in a repository
 check_secret_exists() {
     local repo=$1
