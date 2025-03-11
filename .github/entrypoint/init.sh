@@ -66,7 +66,7 @@ if [[ "${JOB_ID}" == "1" ]]; then
     #mv -f ${GITHUB_WORKSPACE}/$PARAMS $1/dataFile/user_data/strategies/fibbo.json
     curl -s -H "Authorization: token $GH_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
-      "$GITHUB_API/repos/$source_repo/actions/variables/$var" \
+      "https://api.github.com/repos/$source_repo/actions/variables/PARAMS_JSON" \
       | jq -r '.value' > $1/dataFile/user_data/strategies/fibbo.json
   
     mv -f $1/dataFile/user_data ${GITHUB_WORKSPACE}/
