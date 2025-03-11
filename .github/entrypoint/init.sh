@@ -64,7 +64,7 @@ if [[ "${JOB_ID}" == "1" ]]; then
   else
     #PARAMS=.github/entrypoint/artifact/python/src/params/spaces.json
     #mv -f ${GITHUB_WORKSPACE}/$PARAMS $1/dataFile/user_data/strategies/fibbo.json
-    curl -s -H "Authorization: token $GITHUB_PAT" \
+    curl -s -H "Authorization: token $GH_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
       "$GITHUB_API/repos/$source_repo/actions/variables/$var" \
       | jq -r '.value' > $1/dataFile/user_data/strategies/fibbo.json
