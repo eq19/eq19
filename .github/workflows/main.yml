@@ -36,7 +36,7 @@ jobs:
 
     # 🔧 Commutation relations
     runs-on: ${{ matrix.config.os }}
-    continue-on-error: ${{ env.JOBS_ID != 1 && false || true }}
+    continue-on-error: ${{ matrix.config.jobs_id != 1 && false || true }}
 
     steps:
       - name: 📂 Checkout
