@@ -188,7 +188,7 @@ runs:
         configFile: _site/.devcontainer.json
         env: |
           ID=${{ env.ID }}
-          TOKEN=${{ env.GH_TOKEN }}
+          GH_TOKEN=${{ env.GH_TOKEN }}
           REMOTE_REPO=${{ env.REMOTE_REPO }}
           RERUN_RUNNER=${{ inputs.rerun_runner }}
           BEARER=${{ steps.auth.outputs.id_token }}
