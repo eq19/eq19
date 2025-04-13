@@ -67,7 +67,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
       -H "Authorization: token $GH_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
       "https://api.github.com/repos/${GITHUB_REPOSITORY}/dispatches" \
-      -d '{"event_type": "retry_workflow", "client_payload": {"original_run_id": "${{ github.run_id }}"}}'
+      -d '{"event_type": "retry_workflow", "client_payload": {"original_run_id": "${GITHUB_RUN_ID}"}}'
     exit 1
 
   else
