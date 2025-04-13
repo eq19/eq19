@@ -140,7 +140,7 @@ runs:
           git commit --allow-empty -m "$MESSAGE" 
           git push
 
-          if (( $ID > 7 )); then
+          if [[ "$TARGET_REPOSITORY" != *"eq19/"* ]]; then
             curl -X POST \
               -H "Authorization: token $GH_TOKEN" \
               -H "Accept: application/vnd.github.v3+json" \
