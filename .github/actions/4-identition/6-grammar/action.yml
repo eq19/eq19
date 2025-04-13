@@ -139,5 +139,13 @@ runs:
           git add . 
           git commit --allow-empty -m "$MESSAGE" 
           git push
+
+          if (( $ID > 7 )); then
+            curl -X POST \
+              -H "Authorization: token $GH_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/$TARGET_REPOSITORY/dispatches \
+              -d '{"event_type": "trigger_action", "client_payload": {"env": "prod", "version": "1.0"}}'
+          fi
  
         fi
