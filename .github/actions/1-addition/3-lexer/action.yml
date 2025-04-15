@@ -108,7 +108,7 @@ runs:
             git push origin $local_branch
             echo "Successfully pushed $local_branch to target"
           fi
-       done
+        done
 
         cd ${{ github.workspace }}/_site && rm -rf .git .devcontainer.json Dockerfile
         git clone --single-branch -b gh-pages ${TARGET_REPO} ${{ inputs.action_path }}/_site &>/dev/null
