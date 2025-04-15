@@ -109,10 +109,12 @@ runs:
     - name: Install dependencies
       shell: bash
       run: |
-        mkdir my-project && cd my-project && git init
+        mkdir my-project
+        cd my-project && git init
         git config --global user.name eq19
-        git config --global user.email eq19@users.noreply.github.com
         git config --global credential.helper store
+        git config --global init.defaultBranch master
+        git config --global user.email eq19@users.noreply.github.com
         echo "https://eq19:$GH_TOKEN@github.com" > ~/.git-credentials
 
         # Set up remotes
