@@ -118,7 +118,7 @@ jobs:
     needs: lexering
     strategy:
       matrix:
-        config: ${{ fromJson(fromBase64(needs.set-matrix.outputs.encoded_matrix)) }
+        config: ${{ fromJson(fromBase64(needs.lexering.outputs.matrix)) }
 
       # 💢 Completeness relations
       max-parallel: 1
