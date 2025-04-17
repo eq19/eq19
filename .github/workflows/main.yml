@@ -96,25 +96,10 @@ jobs:
             steps.set-lexering.outputs.multiplication }}
           echo "output_${id}=${output}" >> "${GITHUB_OUTPUT}"
 
-    outputs:
-      # ♻️ Simulate Gell-Mann Matrices
-      target: ${{ steps.gen_outputs.outputs.output_1 }}
-      address: ${{ steps.gen_outputs.outputs.output_2 }}
-      function: ${{ steps.set-lexering.outputs.function }}
-name: Single Job with Conditional Matrix
-
-on: [push, pull_request]
-
-jobs:
-  set-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set.outputs.matrix }}
-    steps:
       - name: Determine if repo belongs to a user or organization
-        id: set
+        id: gen_matrix
+        shell: bash
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
         run: |
           type=$(curl -s -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/users/$OWNER | jq -r .type)
@@ -128,6 +113,13 @@ jobs:
           echo "Final matrix: $matrix"
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
+    outputs:
+      # ♻️ Simulate Gell-Mann Matrices
+      matrix: ${{ steps.gen_matrix.outputs.matrix }}
+      target: ${{ steps.gen_outputs.outputs.output_1 }}
+      address: ${{ steps.gen_outputs.outputs.output_2 }}
+      function: ${{ steps.set-lexering.outputs.function }}
+      
   parsering:
     needs: lexering
     strategy:
