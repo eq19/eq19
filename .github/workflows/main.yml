@@ -101,13 +101,38 @@ jobs:
       target: ${{ steps.gen_outputs.outputs.output_1 }}
       address: ${{ steps.gen_outputs.outputs.output_2 }}
       function: ${{ steps.set-lexering.outputs.function }}
+name: Single Job with Conditional Matrix
+
+on: [push, pull_request]
+
+jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - name: Determine if repo belongs to a user or organization
+        id: set
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          type=$(curl -s -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/users/$OWNER | jq -r .type)
+
+          if [[ "$type" == "Organization" ]]; then
+            matrix='[{"os":"self-hosted","jobs_id":3},{"os":"windows-latest","jobs_id":4}]'
+          else
+            matrix='[{"os":"windows-latest","jobs_id":3}]'
+          fi
+
+          echo "Final matrix: $matrix"
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   parsering:
+    needs: lexering
     strategy:
       matrix:
-        config:
-          - { os: self-hosted, jobs_id: 3 }
-          - { os: windows-latest, jobs_id: 4 }
+        config: ${{ fromJson(needs.lexering.outputs.matrix) }}
 
       # 💢 Completeness relations
       max-parallel: 1
@@ -119,7 +144,6 @@ jobs:
       PASS: ${{ contains(needs.lexering.result, 'success') }}
 
     ## ✔️ Completeness status
-    needs: lexering
     runs-on: ${{ matrix.config.os }}
     #if: ${{ (needs.lexering.result == 'success') }}
     continue-on-error: ${{ matrix.config.jobs_id == 3 && true || false }}
