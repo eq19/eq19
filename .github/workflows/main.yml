@@ -90,32 +90,25 @@ jobs:
       - name: 📋 Generate Outputs
         id: gen_outputs
         shell: bash
+        env:
+          OWNER: ${{ github.repository_owner }}
         run: |
           output=${{ env.JOBS_ID == 1 &&
             steps.feed-mapping.outputs.addition ||
             steps.set-lexering.outputs.multiplication }}
           echo "output_${id}=${output}" >> "${GITHUB_OUTPUT}"
 
-      - name: Determine if repo belongs to a user or organization
-        id: gen_matrix
-        shell: bash
-        env:
-          OWNER: ${{ github.repository_owner }}
-        run: |
           type=$(curl -s -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/users/$OWNER | jq -r .type)
-
-          if [[ "$type" == "Organization" ]]; then
-            matrix='[{"os":"self-hosted","jobs_id":3},{"os":"windows-latest","jobs_id":4}]'
-          else
+          if [[ "$type" != "Organization" ]]; then
             matrix='[{"os":"windows-latest","jobs_id":3}]'
+          else
+            matrix='[{"os":"self-hosted","jobs_id":3},{"os":"windows-latest","jobs_id":4}]'
           fi
-
-          echo "Final matrix: $matrix"
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
     outputs:
       # ♻️ Simulate Gell-Mann Matrices
-      matrix: ${{ steps.gen_matrix.outputs.matrix }}
+      matrix: ${{ steps.gen_outputs.outputs.matrix }}
       target: ${{ steps.gen_outputs.outputs.output_1 }}
       address: ${{ steps.gen_outputs.outputs.output_2 }}
       function: ${{ steps.set-lexering.outputs.function }}
