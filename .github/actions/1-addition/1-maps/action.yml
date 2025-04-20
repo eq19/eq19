@@ -84,7 +84,8 @@ runs:
         #See: https://docs.github.com/en/rest/actions/self-hosted-runners
         RESPONSE=$(gh api -H "${HEADER}" repos/${{ github.repository }}/actions/runners)
         STATUS=$(echo "$RESPONSE" | jq -r --arg name "$RUNNER_NAME" '.runners[] | select(.name == $name).status')
-
+        echo $RESPONSE
+        echo $STATUS
         if [ "$STATUS" == "offline" ]; then
           RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
           TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
