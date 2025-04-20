@@ -83,7 +83,7 @@ runs:
             
         #See: https://docs.github.com/en/rest/actions/self-hosted-runners
         RESPONSE=$(gh api -H "${HEADER}" repos/${{ github.repository }}/actions/runners)
-        STATUS=$(echo "$RESPONSE" | jq -r --arg name "$RUNNER_NAME" '.runners[] | select(.name == $name).status')
+        STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_NAME }}" '.runners[] | select(.name == $NAME).status')
         echo $RESPONSE
         echo $STATUS
         if [ "$STATUS" == "offline" ]; then
