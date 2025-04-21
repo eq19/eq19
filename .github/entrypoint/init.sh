@@ -46,6 +46,11 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 
 fi
 
+RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+  "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
+
+echo 'RERUN_RUNNER='${RERUN_RUNNER} >> ${GITHUB_ENV}
+
 echo -e "\n$hr\nWORKSPACE\n$hr"
 if [[ "${JOBS_ID}" == "1" ]]; then
 
@@ -94,11 +99,6 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
 
   ls -alR ${GITHUB_WORKSPACE}
   
-  RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
-
-  echo 'RERUN_RUNNER='${RERUN_RUNNER} >> ${GITHUB_ENV}
-
 elif [[ "${JOBS_ID}" == "3" ]]; then
 
   cd /home/runner/_site && rm -rf README.md docs && gist.sh ${BASE} $(pwd)
