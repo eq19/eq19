@@ -15,7 +15,9 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   /mnt/disks/deeplearning/usr/bin/docker network inspect bridge
 
   echo -e "\n$hr\nStart Network\n$hr"
-  RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+  RERUN_RUNNER=$(curl -s \
+    -H "Authorization: token $GH_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
 
   if [[ "$RERUN_RUNNER" == "true" ]]; then
