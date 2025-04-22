@@ -150,6 +150,8 @@ runs:
             git checkout $DEFAULT_BRANCH
             git pull origin $DEFAULT_BRANCH
             git checkout -b v0
+            rm -rf .github && cp ${GITHUB_WORKSPACE//\\//}/.github
+            git add . && git commit --allow-empty -m "update workflows"
             git push origin v0  
             echo "Created v0 branch and set it as default"
           else
