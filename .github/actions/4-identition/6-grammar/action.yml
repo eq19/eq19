@@ -140,12 +140,18 @@ runs:
           git push
 
           if [[ "$TARGET_REPOSITORY" != *"eq19/"* ]]; then
+            # Unpublish existing GitHub Pages
+            curl -s -X DELETE \
+              -H "Authorization: token $GH_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+               https://api.github.com/repos/$TARGET_REPOSITORY/pages > /dev/null
+  
             # Disable GitHub Pages
-            curl -X PATCH \
-             -H "Authorization: token $GH_TOKEN" \
-             -H "Accept: application/vnd.github.v3+json" \
-             https://api.github.com/repos/$TARGET_REPOSITORY/pages \
-             -d '{"build_type":"legacy","source":null}'
+            curl -s -X PATCH \
+              -H "Authorization: token $GH_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/$TARGET_REPOSITORY/pages \
+              -d '{"build_type":"legacy","source":null}' > /dev/null
   
             # Trigger a dispaches action
             curl -X POST \
