@@ -82,7 +82,7 @@ runs:
         HEADER="Accept: application/vnd.github+json"
         RESPONSE=$(gh api -H "${HEADER}" repos/${{ github.repository }}/actions/runners)
         TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
-        STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_NAME }}" '.runners[] | select(.name == $NAME).status')
+        STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_TITLE }}" '.runners[] | select(.name == $NAME).status')
 
         if [[ "$TOTAL_COUNT" -eq 0 ]]; then
           export "RUNNER_COUNT=$TOTAL_COUNT"
