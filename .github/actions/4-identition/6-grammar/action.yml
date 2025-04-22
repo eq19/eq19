@@ -184,7 +184,7 @@ runs:
               -d '{"build_type":"legacy","source":null}' > /dev/null
   
             # Trigger a dispaches action
-            curl -s -X POST \
+            curl -X POST \
               -H "Authorization: token $GH_TOKEN" \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/$TARGET_REPOSITORY/dispatches \
