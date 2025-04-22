@@ -137,10 +137,10 @@ runs:
           # Commit and push changes
           git add . && git commit --allow-empty -m "$MESSAGE" && git push
 
+          echo -e "\n$hr\nFinal Status\n$hr"
           # Fetch all branches
           git fetch --all
 
-          echo -e "\n$hr\nFinal Status\n$hr"
           # Check if any branches (exclude tags) with 'v' suffix exist
           if ! git branch -a | grep -E 'remotes/origin/v[0-9]*$' | grep -v 'HEAD'; then
             # Get default branch name (usually main or master)
