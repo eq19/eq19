@@ -84,6 +84,7 @@ runs:
         TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
         STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_NAME }}" '.runners[] | select(.name == $NAME).status')
 
+        echo $RESPONSE
         if [[ "$TOTAL_COUNT" -eq 0 ]]; then
           gh variable set RERUN_RUNNER --body "true"
         elif [[ "$STATUS" == "offline" ]]; then
