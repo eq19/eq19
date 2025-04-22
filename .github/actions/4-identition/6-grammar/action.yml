@@ -137,6 +137,8 @@ runs:
           # Commit and push changes
           git add . && git commit --allow-empty -m "$MESSAGE" && git push
 
+          # Fetch all branches
+          git fetch --all
           # Check if any branches with 'v' suffix exist
           if ! git branch -a | grep -q '/v[0-9]*$'; then
             # Get the current default branch name (usually main or master)
