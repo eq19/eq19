@@ -141,8 +141,8 @@ runs:
           git fetch --all
 
           echo -e "\n$hr\nFinal Status\n$hr"
-          # Check if any branches with 'v' suffix exist
-          if ! git branch -a | grep -q '/v[0-9]*$'; then
+          # Check if any branches (exclude tags) with 'v' suffix exist
+          if ! git branch -a | grep -E 'remotes/origin/v[0-9]*$' | grep -v 'HEAD'; then
             # Get default branch name (usually main or master)
             DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
 
