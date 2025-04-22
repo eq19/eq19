@@ -135,9 +135,29 @@ runs:
           echo "Processed: $MESSAGE"
 
           # Commit and push changes
-          git add . 
-          git commit --allow-empty -m "$MESSAGE" 
-          git push
+          git add . && git commit --allow-empty -m "$MESSAGE" && git push
+
+          # Check if any branches with 'v' suffix exist
+          if ! git branch -a | grep -q '/v[0-9]*$'; then
+            # Get the current default branch name (usually main or master)
+            DEFAULT_BRANCH=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)
+  
+            # Create new v0 branch from default branch
+            git checkout $DEFAULT_BRANCH
+            git pull origin $DEFAULT_BRANCH
+            git checkout -b v0
+  
+            # Push the new branch to GitHub
+            git push origin v0
+  
+            # Set v0 as the new default branch
+            gh repo edit --default-branch v0
+  
+            echo "Created v0 branch and set it as default"
+          else
+            echo "Branches with 'v' suffix already exist"
+            git branch -a | grep '/v[0-9]*$'
+          fi
 
           if [[ "$TARGET_REPOSITORY" != *"eq19/"* ]]; then
             # Unpublish existing GitHub Pages
