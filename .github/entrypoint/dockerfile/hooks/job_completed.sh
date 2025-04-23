@@ -16,7 +16,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
   echo -e "\n$hr\nStart Network\n$hr"
   RERUN_RUNNER=$(curl -s \
-    -H "Authorization: token $GH_TOKEN" \
+    -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
 
