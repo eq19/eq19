@@ -96,7 +96,39 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 elif [[ "${JOBS_ID}" == "2" ]]; then
 
   ls -alR ${GITHUB_WORKSPACE}
+  mkdir my-project
+  cd my-project && git init -q
+
+  # Set up remotes
+  git remote add source $REMOTE_REPO
+  git remote add origin $TARGET_REPO
+
+  # Get list of existing target branches (once)
+  existing_target_branches=$(git ls-remote --heads origin | awk -F'/' '{print $3}')
+
+  # Fetch only gh- branches from source
+  git fetch source 'refs/heads/gh-*:refs/remotes/source/gh-*'
+
+  # Process branches
+  for remote_branch in $(git branch -r | grep 'source/gh-'); do
+    local_branch=${remote_branch#source/}
   
+    if ! grep -q "^$local_branch$" <<< "$existing_target_branches"; then
+      git checkout -b "$local_branch" "$remote_branch"
+      git push origin "$local_branch"
+      echo "Successfully pushed $local_branch to target"
+    else
+      if [[ "$local_branch" == "gh-pages" ]]; then
+        # Check if 'docs/' exists in the remote gh-pages tree
+        if ! git ls-tree --name-only origin/gh-pages | grep -q "^docs/"; then
+          git push origin --delete gh-pages
+          git push origin gh-pages
+          echo "Re-pushed local gh-pages with docs"
+        fi
+      fi
+    fi
+  done
+
 elif [[ "${JOBS_ID}" == "3" ]]; then
 
   cd /home/runner/_site && rm -rf README.md docs && gist.sh ${BASE} $(pwd)
