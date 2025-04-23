@@ -153,7 +153,6 @@ runs:
             if [[ "$local_branch" == "gh-pages" ]]; then
               # Check if 'docs/' exists in the remote gh-pages tree
               if ! git ls-tree --name-only origin/gh-pages | grep -q "^docs/"; then
-                echo "'docs' folder missing on remote gh-pages — replacing remote branch"
                 git push origin --delete gh-pages
                 git push origin gh-pages
                 echo "Re-pushed local gh-pages with docs"
