@@ -95,11 +95,12 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
 elif [[ "${JOBS_ID}" == "2" ]]; then
 
-  ls -alR ${GITHUB_WORKSPACE}
+  ls -alR $GITHUB_WORKSPACE
+
+  # Set remotes
+  cd $RUNNER_TEMP
   mkdir my-project
   cd my-project && git init -q
-
-  # Set up remotes
   git remote add source $REMOTE_REPO
   git remote add origin $TARGET_REPO
 
