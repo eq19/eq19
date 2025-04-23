@@ -97,12 +97,9 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
 
   ls -alR $GITHUB_WORKSPACE
 
-  # Set remotes
-  cd $RUNNER_TEMP
-  mkdir my-project
-  cd my-project && git init -q
-  git remote add source $REMOTE_REPO
-  git remote add origin $TARGET_REPO
+  echo -e "\n$hr\nGH BRANCHES\n$hr"
+  cd $RUNNER_TEMP && mkdir my-project && cd my-project && git init -q
+  git remote add source $REMOTE_REP && git remote add origin $TARGET_REPO
 
   # Get list of existing target branches (once)
   existing_target_branches=$(git ls-remote --heads origin | awk -F'/' '{print $3}')
