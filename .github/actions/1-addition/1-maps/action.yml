@@ -144,12 +144,27 @@ runs:
         # Process branches
         for remote_branch in $(git branch -r | grep 'source/gh-'); do
           local_branch=${remote_branch#source/}
+  
           if ! grep -q "^$local_branch$" <<< "$existing_target_branches"; then
-            git checkout -b $local_branch $remote_branch
-            git push origin $local_branch
+            git checkout -b "$local_branch" "$remote_branch"
+            git push origin "$local_branch"
             echo "Successfully pushed $local_branch to target"
           else
-            echo "Branch $local_branch already exists in target - skipping"
+            echo "Branch $local_branch already exists in target - checking docs directory"
+
+            if [[ "$local_branch" == "gh-pages" ]]; then
+              # Check if 'docs/' exists in the remote gh-pages tree
+              if ! git ls-tree --name-only origin/gh-pages | grep -q "^docs/"; then
+                echo "'docs' folder missing on remote gh-pages — replacing remote branch"
+                git push origin --delete gh-pages
+                git push origin gh-pages
+                echo "Re-pushed local gh-pages with docs"
+              else
+                echo "Remote gh-pages already contains 'docs' — skipping"
+              fi
+            else
+              echo "Branch $local_branch exists and is not gh-pages — skipping"
+            fi
           fi
         done
 
