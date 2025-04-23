@@ -162,8 +162,6 @@ runs:
               else
                 echo "Remote gh-pages already contains 'docs' — skipping"
               fi
-            else
-              echo "Branch $local_branch exists and is not gh-pages — skipping"
             fi
           fi
         done
