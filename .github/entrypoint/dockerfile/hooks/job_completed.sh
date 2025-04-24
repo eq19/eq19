@@ -14,12 +14,12 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   echo -e "\n$hr\nNetwork images\n$hr"
   /mnt/disks/deeplearning/usr/bin/docker network inspect bridge
 
-  echo -e "\n$hr\nStart Network\n$hr"
   RERUN_RUNNER=$(curl -s \
     -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
 
+  echo -e "\n$hr\nStart Network\n$hr"
   if [[ "$RERUN_RUNNER" == "true" ]]; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade
     /mnt/disks/deeplearning/usr/bin/docker exec mydb service cron start
