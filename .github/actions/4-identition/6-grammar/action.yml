@@ -172,8 +172,6 @@ runs:
               https://api.github.com/repos/$TARGET_REPOSITORY \
               -d '{"default_branch":"v0"}' > /dev/null
             echo "Created v0 branch and set it as default"
-          else
-            echo "Branches with 'v' suffix already exist"
           fi
 
           if [[ "$TARGET_REPOSITORY" != *"eq19/"* ]]; then
