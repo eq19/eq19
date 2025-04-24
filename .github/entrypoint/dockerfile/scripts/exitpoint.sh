@@ -49,6 +49,7 @@ if [[ -f /home/runner/config.sh ]]; then
     cd /home/runner
     ./svc.sh stop
     ./svc.sh uninstall
+    ./config.sh remove
     ./config.sh \
         --url $RUNNER_URL \
         --token $RUNNER_TOKEN \
