@@ -1,7 +1,6 @@
 #!/bin/bash
 
 SCOPE="repos"
-cd /home/runner
 RUNNER_URL="https://github.com/$1"
 
 if [[ -z $RUNNER_TOKEN && -z $GITHUB_ACCESS_TOKEN ]]; then
@@ -47,6 +46,7 @@ if [[ -f /home/runner/config.sh ]]; then
         | jq -r '.token')"
 
     # Register new URL    
+    cd /home/runner
     ./svc.sh stop
     ./svc.sh uninstall
     ./config.sh \
