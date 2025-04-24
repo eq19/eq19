@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # Structure: Cell Types – Modulo 6
 # https://www.hexspin.com/proof-of-confinement/
 
@@ -118,6 +119,56 @@ jekyll_build() {
     -f sha="$(gh api /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml --jq '.sha')" \
     -f message="Update file" -f content="$(base64 -w0 .github/workflows/main.yml)" > /dev/null
 
+  # Test cases
+  echo "Chetabahana/maps → $(next_repo "Chetabahana/maps")"
+  echo "Chetabahana/grammar → $(next_repo "Chetabahana/grammar")"
+  echo "Chetabahana/track → $(next_repo "Chetabahana/track")"
+  echo "FeedMapping/FeedMapping.github.io → $(next_repo "FeedMapping/FeedMapping.github.io")"
+
+}
+
+# Define the next repository function using jq
+next_repo() {
+  local target_repo="$1"
+  jq -r --arg target "$target_repo" '
+    # Split target into org/repo
+    ($target | split("/")) as $parts |
+    $parts[0] as $org |
+    $parts[1] as $repo |
+
+    # Find the organization index
+    (map(.login) | index($org)) as $org_index |
+    if $org_index == null then
+      "Organization not found: \($org)" | halt_error(1)
+    else .[$org_index] as $current_org |
+
+    # Check for github.io case
+    if $repo == "\($org).github.io" then
+      (($org_index + 1) % length) as $next_org_index |
+      "\(.[$next_org_index].login)/\(.[$next_org_index].key1[0])"
+    
+    # Check key1
+    elif ($current_org.key1 | index($repo)) as $key1_index | $key1_index != null then
+      if ($key1_index + 1) < ($current_org.key1 | length) then
+        "\($org)/\($current_org.key1[$key1_index + 1])"
+      else
+        "\($org)/\($current_org.key2[0])"
+      end
+    
+    # Check key2
+    elif ($current_org.key2 | index($repo)) as $key2_index | $key2_index != null then
+      if ($key2_index + 1) < ($current_org.key2 | length) then
+        "\($org)/\($current_org.key2[$key2_index + 1])"
+      else
+        (($org_index + 1) % length) as $next_org_index |
+        "\(.[$next_org_index].login)/\(.[$next_org_index].login).github.io"
+      end
+    
+    else
+      "Repository not found: \($repo)" | halt_error(1)
+    end
+    end
+  ' ${RUNNER_TEMP}/orgs.json
 }
 
 # Get structure on gist files
