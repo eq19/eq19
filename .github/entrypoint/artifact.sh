@@ -124,6 +124,7 @@ jekyll_build() {
   echo "Chetabahana/grammar → $(next_repo "Chetabahana/grammar")"
   echo "Chetabahana/track → $(next_repo "Chetabahana/track")"
   echo "FeedMapping/FeedMapping.github.io → $(next_repo "FeedMapping/FeedMapping.github.io")"
+  echo "${TARGET_REPOSITORY} → $(next_repo "${TARGET_REPOSITORY}")"
 
 }
 
