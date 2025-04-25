@@ -168,8 +168,6 @@ next_repo() {
             # After last key2, go to same org's github.io
             "\($org)/\($org).github.io"
           end
-        else
-          "Repository not found: \($repo)" | halt_error(1)
         end
       end
     end
