@@ -171,12 +171,6 @@ next_repo() {
   ' ${RUNNER_TEMP}/orgs.json
 }
 
-# Test cases
-echo "Test Cases:"
-echo "1. Chetabahana/maps → $(next_repo "Chetabahana/maps")"
-echo "2. Chetabahana/grammar → $(next_repo "Chetabahana/grammar")"
-echo "3. Chetabahana/track → $(next_repo "Chetabahana/track")"
-echo "4. FeedMapping/FeedMapping.github.io → $(next_repo "FeedMapping/FeedMapping.github.io")"
 # Get structure on gist files
 PATTERN='sort_by(.created_at)|.[] | select(.public == true).files.[] | select(.filename != "README.md").raw_url'
 HEADER="Accept: application/vnd.github+json" #&& echo ${TOKEN} | gh auth login --with-token
