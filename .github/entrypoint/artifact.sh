@@ -147,34 +147,32 @@ next_repo() {
     (map(.login) | index($org)) as $org_index |
     if $org_index == null then
       "Organization not found: \($org)" | halt_error(1)
-    else .[$org_index] as $current_org |
+    else 
+      .[$org_index] as $current_org |
 
-    if $repo == "\($org).github.io" then
-      (($org_index + 1) % length) as $next_org_index |
-      "\(.[$next_org_index].login)/\(.[$next_org_index].key1[0])"
-    
-    else
-      ($current_org.key1 | index($repo)) as $key1_index |
-      if $key1_index != null then
-        if ($key1_index + 1) < ($current_org.key1 | length) then
-          "\($org)/\($current_org.key1[$key1_index + 1])"
-        else
-          "\($org)/\($current_org.key2[0])"
-        end
+      if $repo == "\($org).github.io" then
+        "\($org)/\($current_org.key1[0])"
       else
-        ($current_org.key2 | index($repo)) as $key2_index |
-        if $key2_index != null then
-          if ($key2_index + 1) < ($current_org.key2 | length) then
-            "\($org)/\($current_org.key2[$key2_index + 1])"
+        ($current_org.key1 | index($repo)) as $key1_index |
+        if $key1_index != null then
+          if ($key1_index + 1) < ($current_org.key1 | length) then
+            "\($org)/\($current_org.key1[$key1_index + 1])"
           else
-            (($org_index + 1) % length) as $next_org_index |
-            "\(.[$next_org_index].login)/\(.[$next_org_index].login).github.io"
+            "\($org)/\($current_org.key2[0])"
           end
         else
-          "Repository not found: \($repo)" | halt_error(1)
+          ($current_org.key2 | index($repo)) as $key2_index |
+          if $key2_index != null then
+            if ($key2_index + 1) < ($current_org.key2 | length) then
+              "\($org)/\($current_org.key2[$key2_index + 1])"
+            else
+              "\($org)/\($org).github.io"
+            end
+          else
+            "Repository not found: \($repo)" | halt_error(1)
+          end
         end
       end
-    end
     end
   ' ${RUNNER_TEMP}/orgs.json
 
