@@ -98,9 +98,11 @@ jekyll_build() {
   gh variable set FOLDER --body "$FOLDER"
   echo 'FOLDER='${FOLDER} >> ${RUNNER_TEMP}/.env
   echo 'repo='${TARGET_REPOSITORY} >> ${GITHUB_OUTPUT}
-  gh variable set TARGET_REPOSITORY --body "$TARGET_REPOSITORY"
   echo 'TARGET_REPOSITORY='${TARGET_REPOSITORY} >> ${GITHUB_ENV}
 
+  NEXT_REPOSITORY=$(next_repo "${TARGET_REPOSITORY}")
+  gh variable set TARGET_REPOSITORY --body "$NEXT_REPOSITORY" -repos $TARGET_REPOSITORY
+  
   sed -i "1s|^|title: eQuantum\n|" ${RUNNER_TEMP}/_config.yml
   sed -i "1s|^|span: ${FOLDER}\n|" ${RUNNER_TEMP}/_config.yml
   sed -i "1s|^|user: ${USER}\n|" ${RUNNER_TEMP}/_config.yml
@@ -118,13 +120,6 @@ jekyll_build() {
   gh api --method PUT /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml \
     -f sha="$(gh api /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml --jq '.sha')" \
     -f message="Update file" -f content="$(base64 -w0 .github/workflows/main.yml)" > /dev/null
-
-  # Test cases
-  echo "Chetabahana/maps → $(next_repo "Chetabahana/maps")"
-  echo "Chetabahana/grammar → $(next_repo "Chetabahana/grammar")"
-  echo "Chetabahana/track → $(next_repo "Chetabahana/track")"
-  echo "FeedMapping/FeedMapping.github.io → $(next_repo "FeedMapping/FeedMapping.github.io")"
-  echo "${TARGET_REPOSITORY} → $(next_repo "${TARGET_REPOSITORY}")"
 
 }
 
