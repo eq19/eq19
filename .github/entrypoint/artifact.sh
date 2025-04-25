@@ -73,6 +73,7 @@ set_target() {
     echo "  organization: [$(cat ${RUNNER_TEMP}/user_orgs)]" >> ${RUNNER_TEMP}/_config.yml
   fi
   return $(( $SPAN + $SPIN ))
+
 }
 
 jekyll_build() {
@@ -136,6 +137,7 @@ jekyll_build() {
 
 # Define the next repository function using jq
 next_repo() {
+
   local target_repo="$1"
   jq -r --arg target "$target_repo" '
     ($target | split("/")) as $parts |
@@ -148,8 +150,8 @@ next_repo() {
     else .[$org_index] as $current_org |
 
     if $repo == "\($org).github.io" then
-      # Special case: after github.io, go to first key1 of same org
-      "\($org)/\($current_org.key1[0])"
+      (($org_index + 1) % length) as $next_org_index |
+      "\(.[$next_org_index].login)/\(.[$next_org_index].key1[0])"
     
     else
       ($current_org.key1 | index($repo)) as $key1_index |
@@ -165,14 +167,17 @@ next_repo() {
           if ($key2_index + 1) < ($current_org.key2 | length) then
             "\($org)/\($current_org.key2[$key2_index + 1])"
           else
-            # After last key2, go to same org's github.io
-            "\($org)/\($org).github.io"
+            (($org_index + 1) % length) as $next_org_index |
+            "\(.[$next_org_index].login)/\(.[$next_org_index].login).github.io"
           end
+        else
+          "Repository not found: \($repo)" | halt_error(1)
         end
       end
     end
     end
   ' ${RUNNER_TEMP}/orgs.json
+
 }
 
 # Get structure on gist files
