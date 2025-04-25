@@ -101,11 +101,6 @@ jekyll_build() {
   echo 'repo='${TARGET_REPOSITORY} >> ${GITHUB_OUTPUT}
   echo 'TARGET_REPOSITORY='${TARGET_REPOSITORY} >> ${GITHUB_ENV}
 
-  if [[ "${TARGET_REPOSITORY}" != *"eq19/"* ]]; then
-    NEXT_REPOSITORY=$(next_repo "${TARGET_REPOSITORY}")
-    gh variable set TARGET_REPOSITORY --repo $TARGET_REPOSITORY --body "$NEXT_REPOSITORY"
-  fi
-
   sed -i "1s|^|title: eQuantum\n|" ${RUNNER_TEMP}/_config.yml
   sed -i "1s|^|span: ${FOLDER}\n|" ${RUNNER_TEMP}/_config.yml
   sed -i "1s|^|user: ${USER}\n|" ${RUNNER_TEMP}/_config.yml
@@ -116,13 +111,20 @@ jekyll_build() {
   echo -e "\n$hr\nCONFIG\n$hr"
   cat ${RUNNER_TEMP}/_config.yml
 
-  echo -e "\nTest Module Structure:"
-  echo "1. Chetabahana/maps → $(next_repo "Chetabahana/maps")"
-  echo "2. Chetabahana/grammar → $(next_repo "Chetabahana/grammar")"
-  echo "3. Chetabahana/track → $(next_repo "Chetabahana/track")"
-  echo "4. FeedMapping/FeedMapping.github.io → $(next_repo "FeedMapping/FeedMapping.github.io")"
-  echo "5. ${TARGET_REPOSITORY} → $(next_repo "${TARGET_REPOSITORY}")"
-    
+  if [[ "${TARGET_REPOSITORY}" != *"eq19/"* ]]; then
+
+    echo -e "\nTest Module Structure:"
+    echo "1. Chetabahana/maps → $(next_repo "Chetabahana/maps")"
+    echo "2. Chetabahana/grammar → $(next_repo "Chetabahana/grammar")"
+    echo "3. Chetabahana/track → $(next_repo "Chetabahana/track")"
+    echo "4. FeedMapping/FeedMapping.github.io → $(next_repo "FeedMapping/FeedMapping.github.io")"
+    echo "5. ${TARGET_REPOSITORY} → $(next_repo "${TARGET_REPOSITORY}")"
+
+    NEXT_REPOSITORY=$(next_repo "${TARGET_REPOSITORY}")
+    gh variable set TARGET_REPOSITORY --repo $TARGET_REPOSITORY --body "$NEXT_REPOSITORY"
+
+  fi
+   
   echo -e "\n$hr\nSET TOKEN\n$hr"
   sync.sh ${REPO} ${TARGET_REPOSITORY} ${GH_TOKEN}
   
