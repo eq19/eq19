@@ -112,7 +112,6 @@ jekyll_build() {
     echo "4. FeedMapping/FeedMapping.github.io → $(next_repo "FeedMapping/FeedMapping.github.io")"
     echo "5. ${TARGET_REPOSITORY} → $(next_repo "${TARGET_REPOSITORY}")"
     echo "6. ${NEXT_REPOSITORY} → $(next_repo "${NEXT_REPOSITORY}")"
-
   fi
 
   sed -i "1s|^|title: eQuantum\n|" ${RUNNER_TEMP}/_config.yml
