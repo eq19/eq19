@@ -100,9 +100,11 @@ jekyll_build() {
   echo 'repo='${TARGET_REPOSITORY} >> ${GITHUB_OUTPUT}
   echo 'TARGET_REPOSITORY='${TARGET_REPOSITORY} >> ${GITHUB_ENV}
 
-  NEXT_REPOSITORY=$(next_repo "${TARGET_REPOSITORY}")
-  gh variable set TARGET_REPOSITORY --body "$NEXT_REPOSITORY" -repos $TARGET_REPOSITORY
-  
+  if [[ "${TARGET_REPOSITORY}" != *"eq19/"* ]]; then
+    NEXT_REPOSITORY=$(next_repo "${TARGET_REPOSITORY}")
+    gh variable set TARGET_REPOSITORY --body "$NEXT_REPOSITORY" -repos $TARGET_REPOSITORY
+  fi
+
   sed -i "1s|^|title: eQuantum\n|" ${RUNNER_TEMP}/_config.yml
   sed -i "1s|^|span: ${FOLDER}\n|" ${RUNNER_TEMP}/_config.yml
   sed -i "1s|^|user: ${USER}\n|" ${RUNNER_TEMP}/_config.yml
