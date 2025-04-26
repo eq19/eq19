@@ -50,7 +50,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
     set -a && . /home/runner/_site/.env && set +a
   fi
 
-  if [[ -d $1/user_data/strategies ]]; them
+  if [[ -d $1/user_data/strategies ]]; then
     PARAMS_JSON=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
       "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/PARAMS_JSON" | jq -r '.value')
     echo "${PARAMS_JSON}" | jq '.' > $1/user_data/strategies/fibbo.json
