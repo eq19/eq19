@@ -105,28 +105,9 @@ runs:
     - name: 💎 Set Artifact
       id: artifact
       shell: bash
-      env:
-        TMP: ${{ inputs.tmp }}
-        RUN: ${{ github.run_id }}
-        USER: ${{ github.actor }}
-        REPO: ${{ github.repository }}
-        ACCESS_API: ${{ inputs.api_key }}
-        ACCESS_KEY: ${{ inputs.api_secret }}
-        ACCESS_TOKEN: ${{ inputs.token }}
-        MESSAGE_API: ${{ inputs.chat_id }}
-        MONITOR_TOKEN: ${{ inputs.bot_token }}
-        WARNING_TOKEN: ${{ inputs.logs_token }}
-        PYPI_TOKEN: ${{ inputs.pypi_token }}        
-        ACTOR: ${{ github.triggering_actor }}
-        OWNER: ${{ github.repository_owner }}
-        DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
-        DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
-        GCP_CREDENTIALS: ${{ inputs.credentials }}
       run: |      
         shopt -s dotglob
         rm -rf ${{ inputs.action_path }}/.git
-
-        export PATH=.github/entrypoint:$PATH && artifact.sh
 
         mv -f ${{ runner.temp }}/.env ${{ inputs.action_path }}/
         mv -f ${{ runner.temp }}/_config.yml ${{ inputs.action_path }}/
