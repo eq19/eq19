@@ -87,7 +87,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
       -d '{"event_type": "retry_workflow", "client_payload": {"original_run_id": "${GITHUB_RUN_ID}"}}'
     exit 1
 
-  els
+  else
 
     cd $1 && javac -d user_data/ft_client/test_client javaCode/Main.java
     cd $GITHUB_WORKSPACE && rm -rf user_data && mv -f $1/user_data . && ls -al .
