@@ -91,7 +91,6 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
     cd $GITHUB_WORKSPACE
     rm -rf user_data && mv -f $1/user_data . && ls -al .
-    mv -f .github/templates/jekyll_config.yml $RUNNER_TEMP/_config.yml && artifact.sh   
 
   fi
 
