@@ -39,6 +39,17 @@ fi
 
 if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 
+  echo -e "\n$hr\nPARAMETERS\n$hr"
+  PARAMS_JSON=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/PARAMS_JSON" | jq -r '.value')
+  echo "${PARAMS_JSON}" | jq '.' > $1/user_data/strategies/fibbo.json
+
+  if jq empty < user_data/strategies/fibbo.json; then
+    cat user_data/strategies/fibbo.json
+  else
+    echo "Invalid JSON"
+  fi
+
   echo -e "\n$hr\nENVIRONTMENT\n$hr"
   echo 'TARGET_REPO='${TARGET_REPO} >> ${GITHUB_ENV}
   echo 'REMOTE_REPO='${REMOTE_REPO} >> ${GITHUB_ENV}
@@ -77,19 +88,9 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
   else
 
-    PARAMS_JSON=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/PARAMS_JSON" | jq -r '.value')
-    echo "${PARAMS_JSON}" | jq '.' > $1/user_data/strategies/fibbo.json
-
-    cd $1 && javac -d user_data/ft_client/test_client javaCode/Main.java
-    if jq empty < user_data/strategies/fibbo.json; then
-      cat user_data/strategies/fibbo.json
-    else
-      echo "Invalid JSON"
-    fi
-
     cd $GITHUB_WORKSPACE
     rm -rf user_data && mv -f $1/user_data . && ls -al .
+    cd $1 && javac -d user_data/ft_client/test_client javaCode/Main.java
 
   fi
 
