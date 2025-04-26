@@ -39,7 +39,6 @@ fi
 
 if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 
-  echo -e "\n$hr\nENVIRONTMENT\n$hr"
   echo 'TARGET_REPO='${TARGET_REPO} >> ${GITHUB_ENV}
   echo 'REMOTE_REPO='${REMOTE_REPO} >> ${GITHUB_ENV}
 
@@ -50,6 +49,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
   elif [[ -f /home/runner/_site/.env ]]; then
     set -a && . /home/runner/_site/.env && set +a
   fi
+  echo -e "\n$hr\nENVIRONTMENT\n$hr"
   printenv | sort
 
 fi
