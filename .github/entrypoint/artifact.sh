@@ -114,10 +114,10 @@ jekyll_build() {
   if [[ "${TARGET_REPOSITORY}" != *"eq19/"* ]]; then
 
     echo -e "\nTest Module Structure:"
-    echo "1. Chetabahana/maps → $(next_repo "Chetabahana/maps")"
-    echo "2. Chetabahana/grammar → $(next_repo "Chetabahana/grammar")"
-    echo "3. Chetabahana/track → $(next_repo "Chetabahana/track")"
-    echo "4. FeedMapping/FeedMapping.github.io → $(next_repo "FeedMapping/FeedMapping.github.io")"
+    echo "1. ${GITHUB_REPOSITORY_OWNER}/${GITHUB_REPOSITORY_OWNER}.github.io → $(next_repo "${GITHUB_REPOSITORY_OWNER}/${GITHUB_REPOSITORY_OWNER}.github.io")"
+    echo "2. ${GITHUB_REPOSITORY_OWNER}/maps → $(next_repo "${GITHUB_REPOSITORY_OWNER}/maps")"
+    echo "3. ${GITHUB_REPOSITORY_OWNER}/grammar → $(next_repo "${GITHUB_REPOSITORY_OWNER}/grammar")"
+    echo "4. Chetabahana/track → $(next_repo "Chetabahana/track")"
     echo "5. ${TARGET_REPOSITORY} → $(next_repo "${TARGET_REPOSITORY}")"
 
     NEXT_REPOSITORY=$(next_repo "${TARGET_REPOSITORY}")
