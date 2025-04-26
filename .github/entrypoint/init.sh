@@ -50,6 +50,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
   elif [[ -f /home/runner/_site/.env ]]; then
     set -a && . /home/runner/_site/.env && set +a
   fi
+  export PATH=.github/entrypoint:$PATH    
   printenv | sort
 
 fi
@@ -88,7 +89,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
       echo "Invalid JSON"
     fi
 
-    cd ${GITHUB_WORKSPACE}
+    cd ${GITHUB_WORKSPACE} && artifact.sh
     rm -rf user_data && mv -f $1/user_data . && ls -al .
 
   fi
