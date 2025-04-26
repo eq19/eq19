@@ -50,7 +50,6 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
   elif [[ -f /home/runner/_site/.env ]]; then
     set -a && . /home/runner/_site/.env && set +a
   fi
-  export PATH=.github/entrypoint:$PATH    
   printenv | sort
 
 fi
