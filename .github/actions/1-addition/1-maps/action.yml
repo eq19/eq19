@@ -137,7 +137,8 @@ runs:
         DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
         GCP_CREDENTIALS: ${{ inputs.credentials }}
       run: |
-        mv -f .github/templates/jekyll_config.yml ${{ runner.temp }}/_config.yml && artifact.sh
+        mv -f .github/templates/jekyll_config.yml ${{ runner.temp }}/_config.yml
+        export PATH=.github/entrypoint:$PATH && artifact.sh
      
         #python -m pip -q install --upgrade pip
         #python -m pip -q install -r ${{ inputs.action_path }}/dataFile/requirements.txt
