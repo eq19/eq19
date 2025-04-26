@@ -110,7 +110,6 @@ runs:
           gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}
         fi
 
-        mv -f .github/templates/jekyll_config.yml ${{ runner.temp }}/_config.yml
         /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh ${{ inputs.action_path }}
         mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
 
