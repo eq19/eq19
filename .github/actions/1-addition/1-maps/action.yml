@@ -13,7 +13,7 @@ inputs:
     required: false
   hub_username:
     description: Username for Docker Hub
-    default: ${{ github.actor }}
+    default: ${{ github.actor }}       
     required: true
   hub_password:
     description: Docker Hub authentication token
@@ -21,19 +21,20 @@ inputs:
   hub_token:
     description: Docker Hub authentication token
     required: true
+  action_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
   credentials:
     description: 'The gcloud credentials'
     required: true
   image_name:
-    description: "Name for the container to be created. Example: nginx"
-    required: false
-  image_tag:
     description: Tag to use for the new image
+    default: ${{ github.action_repository }}
     required: true
   dockerfile_path:
     description: Path to the dockerfile from which to build the image
     required: true
-  build_args:
+  initiate_pauli_sum:
     description: Build args
     required: false
     default: ""
@@ -52,35 +53,34 @@ inputs:
     description: Path for the docker cache destination
     required: false
     default: /tmp/.buildx-cache-new
-  provider:
-    description: 'The deploy provider'
-    required: true
   owner:
     description: 'The deploy owner'
     required: false
   token:
     description: 'The deploy token'
     required: false
-  chat_id:
-    description: 'The telegram chat id'
-    required: false
-  bot_token:
-    description: 'The monitor token'
-    required: false
-  logs_token:
-    description: 'The warning token'
-    required: false
-  action_path:
-    description: 'The action path'
-    required: false
   repository:
     description: 'The deploy repository'
     default: ${{ github.repository }}
     required: false
-  initiate_pauli_sum:
-    description: Build args
-    required: false
-    default: ""
+  api_key:
+    description: The key of api application
+    required: true
+  api_secret:
+    description: The secret of api application
+    required: true
+  pypi_token:
+    description: The pypi token
+    required: true
+  bot_token:
+    description: The monitor token
+    required: true
+  logs_token:
+    description: The warning token
+    required: true
+  chat_id:
+    description: The telegram chat id
+    required: true
 
 outputs:
   artifact:
