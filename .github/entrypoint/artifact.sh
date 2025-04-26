@@ -114,9 +114,9 @@ jekyll_build() {
   if [[ "${TARGET_REPOSITORY}" != *"eq19/"* ]]; then
 
     echo -e "\nTest Module Structure:"
-    echo "1. ${GITHUB_REPOSITORY_OWNER}/${GITHUB_REPOSITORY_OWNER}.github.io → $(next_repo "${GITHUB_REPOSITORY_OWNER}/${GITHUB_REPOSITORY_OWNER}.github.io")"
-    echo "2. ${GITHUB_REPOSITORY_OWNER}/maps → $(next_repo "${GITHUB_REPOSITORY_OWNER}/maps")"
-    echo "3. ${GITHUB_REPOSITORY_OWNER}/grammar → $(next_repo "${GITHUB_REPOSITORY_OWNER}/grammar")"
+    echo "1. ${GITHUB_REPOSITORY_OWNER}/maps → $(next_repo "${GITHUB_REPOSITORY_OWNER}/maps")"
+    echo "2. ${GITHUB_REPOSITORY_OWNER}/grammar → $(next_repo "${GITHUB_REPOSITORY_OWNER}/grammar")"
+    echo "3. ${GITHUB_REPOSITORY_OWNER}/${GITHUB_REPOSITORY_OWNER}.github.io → $(next_repo "${GITHUB_REPOSITORY_OWNER}/${GITHUB_REPOSITORY_OWNER}.github.io")"
     echo "4. ${GITHUB_REPOSITORY_OWNER}/$(yq -r '.track.pinned | .[-1]' ${RUNNER_TEMP}/_config.yml) → $(next_repo "${GITHUB_REPOSITORY_OWNER}/$(yq -r '.track.pinned | .[-1]' ${RUNNER_TEMP}/_config.yml)")"
 
     NEXT_REPOSITORY=$(next_repo "${TARGET_REPOSITORY}")
