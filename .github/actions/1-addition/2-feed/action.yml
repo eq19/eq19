@@ -126,7 +126,6 @@ runs:
         shopt -s dotglob
         rm -rf ${{ inputs.action_path }}/.git
 
-        mv -f .github/templates/jekyll_config.yml ${{ runner.temp }}/_config.yml
         export PATH=.github/entrypoint:$PATH && artifact.sh
 
         mv -f ${{ runner.temp }}/.env ${{ inputs.action_path }}/
