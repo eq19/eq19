@@ -57,8 +57,10 @@ sync_secrets_and_variables() {
         -H "Accept: application/vnd.github.v3+json" "$GITHUB_API/repos/$source_repo/actions/secrets" | jq -r '.secrets[].name')
 
     for secret in $secrets; do
-       set_secret "$target_repo" "$secret" "${!secret}"
-       #if [[ "$(check_secret_exists "$target_repo" "$secret")" == "404" ]]; then
+        secret_value=$(curl -s -H "Authorization: token $GITHUB_PAT" \
+            -H "Accept: application/vnd.github.v3+json" "$GITHUB_API/repos/$source_repo/actions/secrets/$secret" | jq -r '.value')
+        set_secret "$target_repo" "$secret" "$secret_value"
+        #if [[ "$(check_secret_exists "$target_repo" "$secret")" == "404" ]]; then
             #echo "➕ Secret '$secret' does not exist in $target_repo. Copying..."
             #set_secret "$target_repo" "$secret" "${!secret}"
         #else
