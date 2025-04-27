@@ -139,6 +139,7 @@ runs:
 
     - name: Install dependencies
       shell: bash
+      env:
         ACCESS_API: ${{ inputs.api_key }}
         ACCESS_KEY: ${{ inputs.api_secret }}
         ACCESS_TOKEN: ${{ inputs.token }}
