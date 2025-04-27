@@ -52,7 +52,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 
   if [[ -d $1/user_data/strategies ]]; then
     echo -e "\n$hr\nCONFIG\n$hr"
-    mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/templates/jekyll_config.yml ${{ runner.temp }}/_config.yml
+    mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/templates/jekyll_config.yml $RUNNER_TEMP/_config.yml
     export PATH=/home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint:$PATH && artifact.sh
     
     PARAMS_JSON=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
