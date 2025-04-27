@@ -152,7 +152,7 @@ runs:
         GCP_CREDENTIALS: ${{ inputs.credentials }}
       run: |
         #./.github/entrypoint/sync.sh eq19/eq19 ${{ env.TARGET_REPOSITORY }} ${{ env.GH_TOKEN }}
-        ./.github/entrypoint/sync.sh eq19/maps eq19/eq19 ${{ env.GH_TOKEN }}
+        ./.github/entrypoint/sync.sh eq19/eq19 ${{ github.repository }} ${{ env.GH_TOKEN }}
   
         #python -m pip -q install --upgrade pip
         #python -m pip -q install -r ${{ inputs.action_path }}/dataFile/requirements.txt
