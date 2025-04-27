@@ -125,9 +125,6 @@ jekyll_build() {
 
   fi
    
-  echo -e "\n$hr\nSET TOKEN\n$hr"
-  sync.sh ${REPO} ${TARGET_REPOSITORY} ${GH_TOKEN}
-  
   # Fetch SHA, encode new content, and update in one step
   gh api --method PUT /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml \
     -f sha="$(gh api /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml --jq '.sha')" \
