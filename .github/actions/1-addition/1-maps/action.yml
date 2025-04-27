@@ -8,7 +8,7 @@ branding:
   color: 'red'
 
 inputs:
-  id:
+  id: ok
     description: The deploy id
     required: false
   hub_username:
@@ -140,8 +140,7 @@ runs:
     - name: Install dependencies
       shell: bash
       run: |
-        ./.github/entrypoint/sync.sh eq19/eq19 ${{ github.repository }}
-        #./.github/entrypoint/sync.sh eq19/eq19 ${{ env.TARGET_REPOSITORY }}
+        ./.github/entrypoint/sync.sh eq19/eq19 ${{ env.TARGET_REPOSITORY }}
   
         #python -m pip -q install --upgrade pip
         #python -m pip -q install -r ${{ inputs.action_path }}/dataFile/requirements.txt
