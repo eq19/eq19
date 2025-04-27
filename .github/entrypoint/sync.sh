@@ -57,12 +57,13 @@ sync_secrets_and_variables() {
         -H "Accept: application/vnd.github.v3+json" "$GITHUB_API/repos/$source_repo/actions/secrets" | jq -r '.secrets[].name')
 
     for secret in $secrets; do
-        if [[ "$(check_secret_exists "$target_repo" "$secret")" == "404" ]]; then
-            echo "➕ Secret '$secret' does not exist in $target_repo. Copying..."
-            set_secret "$target_repo" "$secret" "${!secret}"
-        else
-            echo "✅ Secret '$secret' already exists in $target_repo."
-        fi
+       set_secret "$target_repo" "$secret" "${!secret}"
+       #if [[ "$(check_secret_exists "$target_repo" "$secret")" == "404" ]]; then
+            #echo "➕ Secret '$secret' does not exist in $target_repo. Copying..."
+            #set_secret "$target_repo" "$secret" "${!secret}"
+        #else
+            #echo "✅ Secret '$secret' already exists in $target_repo."
+        #fi
     done
 
     echo "🔄 Syncing variables from $source_repo to $target_repo..."
@@ -72,14 +73,17 @@ sync_secrets_and_variables() {
         -H "Accept: application/vnd.github.v3+json" "$GITHUB_API/repos/$source_repo/actions/variables" | jq -r '.variables[].name')
 
     for var in $variables; do
-        if ! check_variable_exists "$target_repo" "$var"; then
-            echo "➕ Variable '$var' does not exist in $target_repo. Copying..."
-            var_value=$(curl -s -H "Authorization: token $GITHUB_PAT" \
-                -H "Accept: application/vnd.github.v3+json" "$GITHUB_API/repos/$source_repo/actions/variables/$var" | jq -r '.value')
-            set_variable "$target_repo" "$var" "$var_value"
-        else
-            echo "✅ Variable '$var' already exists in $target_repo."
-        fi
+        var_value=$(curl -s -H "Authorization: token $GITHUB_PAT" \
+            -H "Accept: application/vnd.github.v3+json" "$GITHUB_API/repos/$source_repo/actions/variables/$var" | jq -r '.value')
+        set_variable "$target_repo" "$var" "$var_value"
+        #if ! check_variable_exists "$target_repo" "$var"; then
+            #echo "➕ Variable '$var' does not exist in $target_repo. Copying..."
+            #var_value=$(curl -s -H "Authorization: token $GITHUB_PAT" \
+                #-H "Accept: application/vnd.github.v3+json" "$GITHUB_API/repos/$source_repo/actions/variables/$var" | jq -r '.value')
+            #set_variable "$target_repo" "$var" "$var_value"
+        #else
+            #echo "✅ Variable '$var' already exists in $target_repo."
+        #fi
     done
 
     echo "✅ Sync complete!"
