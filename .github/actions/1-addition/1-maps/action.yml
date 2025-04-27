@@ -139,8 +139,18 @@ runs:
 
     - name: Install dependencies
       shell: bash
+        ACCESS_API: ${{ inputs.api_key }}
+        ACCESS_KEY: ${{ inputs.api_secret }}
+        ACCESS_TOKEN: ${{ inputs.token }}
+        MESSAGE_API: ${{ inputs.chat_id }}
+        MONITOR_TOKEN: ${{ inputs.bot_token }}
+        WARNING_TOKEN: ${{ inputs.logs_token }}
+        PYPI_TOKEN: ${{ inputs.pypi_token }}        
+        DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
+        DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
+        GCP_CREDENTIALS: ${{ inputs.credentials }}
       run: |
-        ./.github/entrypoint/sync.sh eq19/eq19 ${{ env.TARGET_REPOSITORY }}
+        ./.github/entrypoint/sync.sh ${{ github.repository }} ${{ env.TARGET_REPOSITORY }}
   
         #python -m pip -q install --upgrade pip
         #python -m pip -q install -r ${{ inputs.action_path }}/dataFile/requirements.txt
