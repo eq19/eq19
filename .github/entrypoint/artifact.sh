@@ -107,8 +107,6 @@ jekyll_build() {
   sed -i "1s|^|id: ${SITEID}\n|" ${RUNNER_TEMP}/_config.yml
 
   echo 'ID='${SITEID} >> ${GITHUB_ENV}
-
-  echo -e "\n$hr\nCONFIG\n$hr"
   cat ${RUNNER_TEMP}/_config.yml
 
   if [[ "${TARGET_REPOSITORY}" != *"eq19/"* ]]; then
