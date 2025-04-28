@@ -15,15 +15,23 @@ git config --global credential.helper store
 echo "https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com" > ~/.git-credentials
 
 # Loop through all repos and cancel runs except current one
+ALL_REPOS=""
+ORGS=$(gh api user/orgs --jq '.[].login')
 CURRENT_REPO=$(gh repo view --json nameWithOwner -q '.nameWithOwner')
-ALL_REPOS=$(gh repo list --limit 1000 --json nameWithOwner -q '.[].nameWithOwner')
+ALL_REPOS+=$(gh repo list --limit 1000 --json nameWithOwner -q '.[].nameWithOwner')
+
+# Get organization repositories for each org
+for org in $ORGS; do
+  echo "Fetching repos for organization: $org"
+  ALL_REPOS+=$(gh repo list --limit 1000 --json nameWithOwner -q '.[].nameWithOwner' --org "$org")
+done
 
 for REPO in $ALL_REPOS; do
   if [ "$REPO" != "$CURRENT_REPO" ]; then
     RUNS=$(gh api "repos/$REPO/actions/runs?status=in_progress" --jq '.workflow_runs[].id')
     RUNS+=" $(gh api "repos/$REPO/actions/runs?status=queued" --jq '.workflow_runs[].id')"
     for RUN_ID in $RUNS; do
-        gh api -X POST "repos/$REPO/actions/runs/$RUN_ID/force-cancel" || echo "Failed to cancel runs $RUN_ID in $REPO"
+      gh api -X POST "repos/$REPO/actions/runs/$RUN_ID/force-cancel" || echo "Failed to cancel runs $RUN_ID in $REPO"
     done
   fi
 done
