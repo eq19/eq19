@@ -191,45 +191,14 @@ runs:
       id: variables
       shell: bash
       env:
-        IMAGE_NAME: "${{ inputs.image_name }}"
-        HUB_USERNAME: "${{ inputs.hub_username }}"
-        HUB_PASSWORD: "${{ inputs.hub_password }}"
         MAX_DELETIONS: 15
       run: |
-        # Extract namespace/repo
-        NAMESPACE=${IMAGE_NAME%/*}
-        REPO_NAME=${IMAGE_NAME#*/}
-
-        # Authenticate
+        echo "Fetching manifests to delete..."
         HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST \
-          -d "{\"username\": \"$HUB_USERNAME\", \"password\": \"$HUB_PASSWORD\"}" \
+          -d "{\"username\": \"${{ inputs.hub_username }}\", \"password\": \"${{ inputs.hub_password }}\"}" \
           https://hub.docker.com/v2/users/login/ | jq -r .token)
         [ -z "$HUB_TOKEN" ] && { echo "❌ Authentication failed"; exit 1; }
 
-        # --- PHASE 1: Delete tags ---
-        echo "Fetching tags on $NAMESPACE/$REPO_NAME to delete..."
-        TAGS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
-          "https://hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags/?page_size=${{ env.MAX_DELETIONS }}&ordering=last_updated" \
-          | jq -r '.results[] | select(.name != "latest") | .name')
-
-        DELETED_TAGS=0
-        for TAG in $TAGS; do
-          echo "Deleting $IMAGE_NAME:$TAG..."
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
-            -H "Authorization: JWT $HUB_TOKEN" \
-            "https://hub.docker.com/v2/namespaces/$NAMESPACE/repositories/$REPO_NAME/tags/$TAG")
-      
-          if [ "$RESPONSE" -eq 204 ]; then
-            ((DELETED_TAGS++))
-            echo "✅ Deleted tag"
-          else
-            echo "❌ Failed to delete (HTTP $RESPONSE)"
-          fi
-          sleep 1
-        done
-
-        # --- PHASE 2: Delete manifests ---
-        echo "Fetching manifests to delete..."
         MANIFESTS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
           "https://hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags/?page_size=${{ env.MAX_DELETIONS }}&ordering=last_updated" \
           | jq -r '.results[] | select(.images != null) | .images[].digest' \
@@ -250,7 +219,4 @@ runs:
             echo "❌ Failed to delete (HTTP $RESPONSE)"
           fi
         done
-
-        echo "Results:"
-        echo "Deleted tags: $DELETED_TAGS"
         echo "Deleted manifests: $DELETED_MANIFESTS"
