@@ -54,7 +54,21 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
     echo -e "\n$hr\nCONFIG\n$hr"
     mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/templates/jekyll_config.yml $RUNNER_TEMP/_config.yml
     export PATH=/home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint:$PATH && artifact.sh
-    
+
+    # Loop through all repos and cancel runs except current one
+    #ALL_REPOS=""
+    #ORGS=$(gh api user/orgs --jq '.[].login')
+    #CURRENT_REPO=$(gh repo view --json nameWithOwner -q '.nameWithOwner')
+    #ALL_REPOS+=$(gh repo list --limit 1000 --json nameWithOwner -q '.[].nameWithOwner')
+    #for org in $ORGS; do ALL_REPOS+=$(gh repo list $org --limit 1000 --json nameWithOwner -q '.[].nameWithOwner'); done
+    #for REPO in $ALL_REPOS; do
+      #if [ "$REPO" != "$CURRENT_REPO" ]; then
+        #RUNS=$(gh api "repos/$REPO/actions/runs?status=in_progress" --jq '.workflow_runs[].id')
+        #RUNS+=" $(gh api "repos/$REPO/actions/runs?status=queued" --jq '.workflow_runs[].id')"
+        #for RUN_ID in $RUNS; do gh api -X POST "repos/$REPO/actions/runs/$RUN_ID/force-cancel"; done
+      #fi
+    #done
+
     PARAMS_JSON=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
       "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/PARAMS_JSON" | jq -r '.value')
     echo "${PARAMS_JSON}" | jq '.' > $1/user_data/strategies/fibbo.json
