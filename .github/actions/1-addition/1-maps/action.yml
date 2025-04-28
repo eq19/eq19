@@ -207,7 +207,7 @@ runs:
         [ -z "$HUB_TOKEN" ] && { echo "❌ Authentication failed"; exit 1; }
 
         # --- PHASE 1: Delete tags ---
-        echo "Fetching tags on namespace $NAMESPACE of repo $REPO_NAME to delete..."
+        echo "Fetching tags on $NAMESPACE/$REPO_NAME to delete..."
         TAGS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
           "https://hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags/?page_size=${{ env.MAX_DELETIONS }}&ordering=last_updated" \
           | jq -r '.results[] | select(.name != "latest") | .name')
