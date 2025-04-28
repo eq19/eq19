@@ -187,7 +187,7 @@ runs:
         configFile: ${{ inputs.action_path }}/.devcontainer.json
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
 
-    - name: � Delete 15 Oldest Docker Images
+    - name: 🗑️ Delete 15 Oldest Docker Images
       id: variables
       shell: bash
       env:
@@ -199,7 +199,6 @@ runs:
         # Extract namespace/repo
         NAMESPACE=${IMAGE_NAME%/*}
         REPO_NAME=${IMAGE_NAME#*/}
-        BASE_NAME=$(basename "$IMAGE_NAME")
 
         # Authenticate
         HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST \
@@ -208,7 +207,7 @@ runs:
         [ -z "$HUB_TOKEN" ] && { echo "❌ Authentication failed"; exit 1; }
 
         # --- PHASE 1: Delete tags ---
-        echo "🗑️ Fetching tags to delete..."
+        echo "Fetching tags to delete..."
         TAGS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
           "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=$MAX_DELETIONS&ordering=last_updated" \
           | jq -r '.results[] | select(.name != "latest") | .name')
@@ -219,17 +218,18 @@ runs:
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
             -H "Authorization: JWT $HUB_TOKEN" \
             "https://hub.docker.com/v2/namespaces/$NAMESPACE/repositories/$REPO_NAME/tags/$TAG")
-        
+      
           if [ "$RESPONSE" -eq 204 ]; then
             ((DELETED_TAGS++))
             echo "✅ Deleted tag"
           else
             echo "❌ Failed to delete (HTTP $RESPONSE)"
           fi
+          sleep 1
         done
 
         # --- PHASE 2: Delete manifests ---
-        echo "🧹 Fetching manifests to delete..."
+        echo "Fetching manifests to delete..."
         MANIFESTS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
           "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=$MAX_DELETIONS&ordering=last_updated" \
           | jq -r '.results[] | select(.images != null) | .images[].digest' \
@@ -241,11 +241,11 @@ runs:
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
             -H "Authorization: JWT $HUB_TOKEN" \
             "https://hub.docker.com/v2/repositories/$IMAGE_NAME/manifests/$SHA")
-        
+      
           if [ "$RESPONSE" -eq 202 ]; then
             ((DELETED_MANIFESTS++))
             echo "✅ Deleted manifest"
-            sleep 1  # Rate limiting
+            sleep 1
           else
             echo "❌ Failed to delete (HTTP $RESPONSE)"
           fi
