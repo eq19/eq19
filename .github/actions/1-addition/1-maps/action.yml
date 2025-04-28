@@ -191,6 +191,10 @@ runs:
       id: variables
       shell: bash
       run: |
+        # Extract namespace/repo
+        NAMESPACE=${IMAGE_NAME%/*}
+        REPO_NAME=${IMAGE_NAME#*/}
+
         BASE_NAME=$(basename ${{ inputs.image_name }})
         IFS=', '; array=($(curl -L -s 'https://registry.hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags?page_size=1024' | jq -rc '."results"[]["name"]' | yq eval -P | sed "s/ /, /g"))
         for ((i=0; i < ${#array[@]}; i++)); do
@@ -201,10 +205,6 @@ runs:
           fi
         done
 
-        # Extract namespace/repo
-        NAMESPACE=${IMAGE_NAME%/*}
-        REPO_NAME=${IMAGE_NAME#*/}
-
         # Get all images sorted by date (oldest first)
         IMAGES=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
           "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=100&ordering=last_updated" \
@@ -213,11 +213,11 @@ runs:
         # Delete exactly MAX_DELETIONS oldest images
         DELETED=0
         for SHA in $IMAGES; do
-           echo "🗑️ Deleting image $((DELETED+1))/$MAX_DELETIONS: $IMAGE_NAME@${SHA:0:12}..."
-           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
-             -H "Authorization: JWT $HUB_TOKEN" \
-             "https://hub.docker.com/v2/repositories/$IMAGE_NAME/manifests/$SHA")
+          echo "🗑️ Deleting image $((DELETED+1))/$MAX_DELETIONS: $IMAGE_NAME@${SHA:0:12}..."
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
+            -H "Authorization: JWT $HUB_TOKEN" \
+            "https://hub.docker.com/v2/repositories/$IMAGE_NAME/manifests/$SHA")
     
-           [ "$RESPONSE" -eq 202 ] && ((DELETED++)) || echo "❌ Failed (HTTP $RESPONSE)"
-         done
-       echo "✅ Successfully deleted $DELETED/$MAX_DELETIONS oldest images"
+          [ "$RESPONSE" -eq 202 ] && ((DELETED++)) || echo "❌ Failed (HTTP $RESPONSE)"
+        done
+        echo "✅ Successfully deleted $DELETED/$MAX_DELETIONS oldest images"
