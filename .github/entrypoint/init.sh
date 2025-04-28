@@ -30,9 +30,7 @@ for REPO in $ALL_REPOS; do
   if [ "$REPO" != "$CURRENT_REPO" ]; then
     RUNS=$(gh api "repos/$REPO/actions/runs?status=in_progress" --jq '.workflow_runs[].id')
     RUNS+=" $(gh api "repos/$REPO/actions/runs?status=queued" --jq '.workflow_runs[].id')"
-    for RUN_ID in $RUNS; do
-      gh api -X POST "repos/$REPO/actions/runs/$RUN_ID/force-cancel" || echo "Failed to cancel runs $RUN_ID in $REPO"
-    done
+    #for RUN_ID in $RUNS; do gh api -X POST "repos/$REPO/actions/runs/$RUN_ID/force-cancel"; done
   fi
 done
 
