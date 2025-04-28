@@ -210,10 +210,11 @@ runs:
           fi
         done
 
-        # Get all untagged images sorted by date (oldest first)
+        # Get all untagged images on docker hub sorted by date (oldest first)
         IMAGES=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
           "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=100&ordering=last_updated" \
-          | jq -r '.results[] | select(.images != null) | .images[0].digest' | head -n $MAX_DELETIONS)
+          | jq -r '.results[] | select(.tag_last_pushed != null) | .images[].digest' \
+          | sort | uniq | head -n $MAX_DELETIONS)
 
         # Delete exactly MAX_DELETIONS oldest images
         DELETED=0
