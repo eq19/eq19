@@ -188,69 +188,69 @@ runs:
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
 
     - name: � Delete 15 Oldest Docker Images
-  id: variables
-  shell: bash
-  env:
-    IMAGE_NAME: "${{ inputs.image_name }}"
-    HUB_USERNAME: "${{ inputs.hub_username }}"
-    HUB_PASSWORD: "${{ inputs.hub_password }}"
-    MAX_DELETIONS: 15
-  run: |
-    # Extract namespace/repo
-    NAMESPACE=${IMAGE_NAME%/*}
-    REPO_NAME=${IMAGE_NAME#*/}
-    BASE_NAME=$(basename "$IMAGE_NAME")
+      id: variables
+      shell: bash
+      env:
+        IMAGE_NAME: "${{ inputs.image_name }}"
+        HUB_USERNAME: "${{ inputs.hub_username }}"
+        HUB_PASSWORD: "${{ inputs.hub_password }}"
+        MAX_DELETIONS: 15
+      run: |
+        # Extract namespace/repo
+        NAMESPACE=${IMAGE_NAME%/*}
+        REPO_NAME=${IMAGE_NAME#*/}
+        BASE_NAME=$(basename "$IMAGE_NAME")
 
-    # Authenticate
-    HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST \
-        -d "{\"username\": \"$HUB_USERNAME\", \"password\": \"$HUB_PASSWORD\"}" \
-        https://hub.docker.com/v2/users/login/ | jq -r .token)
-    [ -z "$HUB_TOKEN" ] && { echo "❌ Authentication failed"; exit 1; }
+        # Authenticate
+        HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST \
+          -d "{\"username\": \"$HUB_USERNAME\", \"password\": \"$HUB_PASSWORD\"}" \
+          https://hub.docker.com/v2/users/login/ | jq -r .token)
+        [ -z "$HUB_TOKEN" ] && { echo "❌ Authentication failed"; exit 1; }
 
-    # --- PHASE 1: Delete tags ---
-    echo "🗑️ Fetching tags to delete..."
-    TAGS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
-        "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=$MAX_DELETIONS&ordering=last_updated" \
-        | jq -r '.results[] | select(.name != "latest") | .name')
+        # --- PHASE 1: Delete tags ---
+        echo "🗑️ Fetching tags to delete..."
+        TAGS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
+          "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=$MAX_DELETIONS&ordering=last_updated" \
+          | jq -r '.results[] | select(.name != "latest") | .name')
 
-    DELETED_TAGS=0
-    for TAG in $TAGS; do
-        echo "Deleting $IMAGE_NAME:$TAG..."
-        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
+        DELETED_TAGS=0
+        for TAG in $TAGS; do
+          echo "Deleting $IMAGE_NAME:$TAG..."
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
             -H "Authorization: JWT $HUB_TOKEN" \
             "https://hub.docker.com/v2/namespaces/$NAMESPACE/repositories/$REPO_NAME/tags/$TAG")
         
-        if [ "$RESPONSE" -eq 204 ]; then
+          if [ "$RESPONSE" -eq 204 ]; then
             ((DELETED_TAGS++))
             echo "✅ Deleted tag"
-        else
+          else
             echo "❌ Failed to delete (HTTP $RESPONSE)"
-        fi
-    done
+          fi
+        done
 
-    # --- PHASE 2: Delete manifests ---
-    echo "🧹 Fetching manifests to delete..."
-    MANIFESTS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
-        "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=$MAX_DELETIONS&ordering=last_updated" \
-        | jq -r '.results[] | select(.images != null) | .images[].digest' \
-        | sort | uniq | head -n $MAX_DELETIONS)
+        # --- PHASE 2: Delete manifests ---
+        echo "🧹 Fetching manifests to delete..."
+        MANIFESTS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
+          "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=$MAX_DELETIONS&ordering=last_updated" \
+          | jq -r '.results[] | select(.images != null) | .images[].digest' \
+          | sort | uniq | head -n $MAX_DELETIONS)
 
-    DELETED_MANIFESTS=0
-    for SHA in $MANIFESTS; do
-        echo "Deleting manifest ${SHA:0:12}..."
-        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
+        DELETED_MANIFESTS=0
+        for SHA in $MANIFESTS; do
+          echo "Deleting manifest ${SHA:0:12}..."
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
             -H "Authorization: JWT $HUB_TOKEN" \
             "https://hub.docker.com/v2/repositories/$IMAGE_NAME/manifests/$SHA")
         
-        if [ "$RESPONSE" -eq 202 ]; then
+          if [ "$RESPONSE" -eq 202 ]; then
             ((DELETED_MANIFESTS++))
             echo "✅ Deleted manifest"
             sleep 1  # Rate limiting
-        else
+          else
             echo "❌ Failed to delete (HTTP $RESPONSE)"
-        fi
-    done
+          fi
+        done
 
-    echo "Results:"
-    echo "Deleted tags: $DELETED_TAGS"
-    echo "Deleted manifests: $DELETED_MANIFESTS"
+        echo "Results:"
+        echo "Deleted tags: $DELETED_TAGS"
+        echo "Deleted manifests: $DELETED_MANIFESTS"
