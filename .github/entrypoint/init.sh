@@ -23,7 +23,7 @@ ALL_REPOS+=$(gh repo list --limit 1000 --json nameWithOwner -q '.[].nameWithOwne
 # Get organization repositories for each org
 for org in $ORGS; do
   echo "Fetching repos for organization: $org"
-  ALL_REPOS+=$(gh repo list --limit 1000 --json nameWithOwner -q '.[].nameWithOwner' --org "$org")
+  ALL_REPOS+=$(gh repo list $org --limit 1000 --json nameWithOwner -q '.[].nameWithOwner')
 done
 
 for REPO in $ALL_REPOS; do
