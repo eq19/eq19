@@ -207,9 +207,9 @@ runs:
         [ -z "$HUB_TOKEN" ] && { echo "❌ Authentication failed"; exit 1; }
 
         # --- PHASE 1: Delete tags ---
-        echo "Fetching tags to delete..."
+        echo "Fetching tags on namespace $NAMESPACE of repo $REPO_NAME to delete..."
         TAGS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
-          "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=$MAX_DELETIONS&ordering=last_updated" \
+          "https://hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags/?page_size=${{ env.MAX_DELETIONS }}&ordering=last_updated" \
           | jq -r '.results[] | select(.name != "latest") | .name')
 
         DELETED_TAGS=0
@@ -231,16 +231,16 @@ runs:
         # --- PHASE 2: Delete manifests ---
         echo "Fetching manifests to delete..."
         MANIFESTS=$(curl -s -H "Authorization: JWT $HUB_TOKEN" \
-          "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags/?page_size=$MAX_DELETIONS&ordering=last_updated" \
+          "https://hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags/?page_size=${{ env.MAX_DELETIONS }}&ordering=last_updated" \
           | jq -r '.results[] | select(.images != null) | .images[].digest' \
-          | sort | uniq | head -n $MAX_DELETIONS)
+          | sort | uniq | head -n ${{ env.MAX_DELETIONS }})
 
         DELETED_MANIFESTS=0
         for SHA in $MANIFESTS; do
           echo "Deleting manifest ${SHA:0:12}..."
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
             -H "Authorization: JWT $HUB_TOKEN" \
-            "https://hub.docker.com/v2/repositories/$IMAGE_NAME/manifests/$SHA")
+            "https://hub.docker.com/v2/repositories/${{ inputs.image_name }}/manifests/$SHA")
       
           if [ "$RESPONSE" -eq 202 ]; then
             ((DELETED_MANIFESTS++))
