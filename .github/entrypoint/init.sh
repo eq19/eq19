@@ -14,19 +14,21 @@ git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 git config --global credential.helper store
 echo "https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com" > ~/.git-credentials
 
-# Get current repo name in owner/repo format
+# Loop through all repos and cancel runs except current one
 CURRENT_REPO=$(gh repo view --json nameWithOwner -q '.nameWithOwner')
-
-# Get list of all repositories (user and org)
 ALL_REPOS=$(gh repo list --limit 1000 --json nameWithOwner -q '.[].nameWithOwner')
 
-# Loop through all repos and cancel runs except current one
-for repo in $ALL_REPOS; do
-  if [ "$repo" != "$CURRENT_REPO" ]; then
-    echo "Canceling runs in $repo"
-    gh api -X POST "/repos/$repo/actions/runs/cancel" || echo "Failed to cancel runs in $repo"
+for REPO in $ALL_REPOS; do
+  if [ "$REPO" != "$CURRENT_REPO" ]; then
+    echo "Canceling runs in $REPO"
+    RUNS=$(gh api "repos/$REPO/actions/runs?status=in_progress" --jq '.workflow_runs[].id')
+    RUNS+=" $(gh api "repos/$REPO/actions/runs?status=queued" --jq '.workflow_runs[].id')"
+    for RUN_ID in $RUNS; do
+        echo "Canceling run $RUN_ID in $REPO"
+        gh api -X POST "repos/$REPO/actions/runs/$RUN_ID/cancel" || echo "Failed to cancel runs in $REPO"
+    done
   else
-    echo "Skipping current repo: $repo"
+    echo "Skipping current repo: $REPO"
   fi
 done
 
