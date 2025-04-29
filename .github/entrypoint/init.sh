@@ -110,6 +110,11 @@ if [[ "${JOBS_ID}" == "1" ]]; then
     cd $1 && javac -d user_data/ft_client/test_client javaCode/Main.java
     cd $GITHUB_WORKSPACE && rm -rf user_data && mv -f $1/user_data . && ls -al .
 
+    # Fetch SHA, encode new content, and update in one step
+    gh api --method PUT /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml \
+      -f sha="$(gh api /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml --jq '.sha')" \
+      -f message="Update file" -f content="$(base64 -w0 .github/workflows/main.yml)" > /dev/null
+
   fi
 
 elif [[ "${JOBS_ID}" == "2" ]]; then
