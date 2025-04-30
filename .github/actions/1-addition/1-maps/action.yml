@@ -187,13 +187,13 @@ runs:
         configFile: ${{ inputs.action_path }}/.devcontainer.json
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
 
-- name: 🗑️ Delete Docker Tags AND Images
-  id: delete_images
-  shell: bash
-  env:
-    IMAGE_NAME: "${{ inputs.image_name }}"
-    HUB_USERNAME: "${{ inputs.hub_username }}"
-    HUB_PASSWORD: "${{ inputs.hub_password }}"
-    MAX_DELETIONS: 15
-  run: |
-    ./.github/entrypoint/remote.sh
+    - name: 🗑️ Delete Docker Tags AND Images
+      id: delete_images
+      shell: bash
+      env:
+        IMAGE_NAME: "${{ inputs.image_name }}"
+        HUB_USERNAME: "${{ inputs.hub_username }}"
+        HUB_PASSWORD: "${{ inputs.hub_password }}"
+        MAX_DELETIONS: 15
+      run: |
+        ./.github/entrypoint/remote.sh
