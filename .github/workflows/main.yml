@@ -45,7 +45,7 @@ jobs:
       - name: 📂 Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          #submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
           repository: ${{ env.JOBS_ID != 1 && env.DOC || '' }}
 
@@ -133,7 +133,7 @@ jobs:
       - name: 📂 Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          #submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
           repository: ${{ env.TARGET_REPOSITORY }}
           ref: ${{ env.JOBS_ID == 3 && 'gh-source' || 'gh-pages' }}                  
