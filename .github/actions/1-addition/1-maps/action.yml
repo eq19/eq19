@@ -203,7 +203,6 @@ runs:
           BEARER=${{ steps.auth.outputs.id_token }}
           TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
           WORKSPACE=/workspaces/${{ github.event.repository.name }}
-          ARTIFACT=$WORKSPACE/user_data/ft_client/test_client/results/orgs.json
 
     - name: 🗑️ Delete Docker Tags AND Images
       id: delete_images
