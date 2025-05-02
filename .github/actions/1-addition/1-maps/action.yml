@@ -180,12 +180,12 @@ runs:
     - name: 🚀 Initiate Lexer
       uses: devcontainers/ci@v0.3
       with:
-        runCmd: ls -al /workspaces/$(basename "$GITHUB_REPOSITORY")
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
         imageTag: target-${{ github.run_number }}
         configFile: ${{ inputs.action_path }}/.devcontainer.json
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
+        runCmd: ls -al /workspaces/${{ github.event.repository.name }}
 
     - name: 🗑️ Delete Docker Tags AND Images
       id: delete_images
