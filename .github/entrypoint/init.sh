@@ -54,6 +54,7 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
     echo -e "\n$hr\nCONFIG\n$hr"
     mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/templates/jekyll_config.yml $RUNNER_TEMP/_config.yml
     export PATH=/home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint:$PATH && artifact.sh
+    mv -f $RUNNER_TEMP/orgs.json $1/user_data/ft_client/test_client/results/
 
     # Loop through all repos and cancel runs except current one
     #ALL_REPOS=""
