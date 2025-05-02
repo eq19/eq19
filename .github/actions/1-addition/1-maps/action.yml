@@ -137,6 +137,15 @@ runs:
         #path: ~/.cache/pip
         #key: ${{ runner.os }}-pip
 
+    - name: 💎 Set ID Token
+      id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        token_format: 'id_token'
+        create_credentials_file: false
+        credentials_json: ${{ inputs.credentials }}
+        id_token_audience: 'https://us-central1-feedmapping.cloudfunctions.net/function'
+
     - name: Install dependencies
       shell: bash
       env:
