@@ -185,7 +185,7 @@ runs:
         imageTag: target-${{ github.run_number }}
         configFile: ${{ inputs.action_path }}/.devcontainer.json
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
-        runCmd: ls -al $WORKSPACE
+        runCmd: bash $WORKSPACE/user_data/ft_client/test_client/test_client.sh            
         env: |
           WORKSPACE=/workspaces/${{ github.event.repository.name }}
 
