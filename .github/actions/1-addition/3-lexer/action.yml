@@ -105,9 +105,9 @@ runs:
         imageTag: id-${{ env.ID }}
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
+        runCmd: bash user_data/ft_client/test_client/lexer.sh
         configFile: ${{ inputs.action_path }}/.devcontainer.json
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
-        runCmd: bash $WORKSPACE/user_data/ft_client/test_client/lexer.sh
         env: |
           CXX=clang++
           CC=clang
