@@ -145,9 +145,8 @@ runs:
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
         configFile: _site/.devcontainer.json
-        push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
         runCmd: bash user_data/ft_client/test_client/feed.sh
-        #runCmd: bash $WORKSPACE/user_data/ft_client/test_client/feed.sh
+        push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
         env: |
           ID=${{ env.ID }}
           GH_TOKEN=${{ env.GH_TOKEN }}
