@@ -86,8 +86,8 @@ runs:
         if [[ '${{ inputs.failure_status }}' == 'false' ]]; then
 
           TARGET_WIKI="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.wiki.git"
-          rm -rf ${{ inputs.runner_temp }}/wiki && git clone $TARGET_WIKI ${{ inputs.runner_temp }}/wiki
-          cat ${{ inputs.runner_temp }}/wiki/_Sidebar.md
+          rm -rf $RUNNER_TEMP/wiki && git clone $TARGET_WIKI $RUNNER_TEMP/wiki
+          cat $RUNNER_TEMP/wiki/_Sidebar.md
   
         fi
 
