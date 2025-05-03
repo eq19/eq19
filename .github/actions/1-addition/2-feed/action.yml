@@ -145,14 +145,15 @@ runs:
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
         configFile: _site/.devcontainer.json
+        push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
+        runCmd: bash user_data/ft_client/test_client/feed.sh
+        #runCmd: bash $WORKSPACE/user_data/ft_client/test_client/feed.sh
         env: |
           ID=${{ env.ID }}
           GH_TOKEN=${{ env.GH_TOKEN }}
           REMOTE_REPO=${{ env.REMOTE_REPO }}
           BEARER=${{ steps.auth.outputs.id_token }}
           TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
-        push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
-        runCmd: bash user_data/ft_client/test_client/test_rest_client.sh
 
     - name: 🪂 Remove existing images
       id: variables
