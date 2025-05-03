@@ -55,7 +55,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
   if diff -qr ${GITHUB_WORKSPACE}/.github /home/runner/work/_actions/eq19/eq19/v2/.github >/dev/null; then
     echo -e "\n$hr\nCONFIG\n$hr"
-    mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/templates/jekyll_config.yml $RUNNER_TEMP/_config.yml
+    cat /home/runner/work/_actions/eq19/eq19/v2/.github/templates/jekyll_config.yml > $RUNNER_TEMP/_config.yml
     export PATH=/home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint:$PATH && artifact.sh
     cp $RUNNER_TEMP/orgs.json $1/user_data/ft_client/test_client/results/
 
