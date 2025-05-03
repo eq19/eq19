@@ -196,7 +196,6 @@ runs:
         configFile: ${{ inputs.action_path }}/.devcontainer.json
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
         runCmd: bash user_data/ft_client/test_client/maps.sh            
-        #runCmd: bash $WORKSPACE/user_data/ft_client/test_client/maps.sh            
         env: |
           ID=${{ env.ID }}
           GH_TOKEN=${{ env.GH_TOKEN }}
