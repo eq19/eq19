@@ -126,7 +126,7 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
   for remote_branch in $(git branch -r | grep 'source/gh-'); do
     local_branch=${remote_branch#source/}  
     if ! grep -q "^$local_branch$" <<< "$existing_target_branches"; then
-      if [[ "$var" =~ ^(gh-base|gh-source|gh-pages)$ ]]; then
+      if [[ "$local_branch" =~ ^(gh-base|gh-source|gh-pages)$ ]]; then
         git checkout -b "$local_branch" "$remote_branch"
         git push origin "$local_branch"
         echo "Successfully pushed $local_branch to target"
