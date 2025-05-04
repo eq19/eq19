@@ -176,6 +176,7 @@ else
   shopt -s dotglob && mv -f ${RUNNER_TEMP//\\//}/gh-source/* .
 
   # Get the variable value and save to file.json
+  gh variable list
   gh variable get JEKYLL_CONFIG > _config.yml && ls -lR .
 
 fi
