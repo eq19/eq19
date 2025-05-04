@@ -173,7 +173,10 @@ else
   find -not -path "./.git/*" -not -name ".git" -delete
 
   rm -rf ${RUNNER_TEMP//\\//}/gh-source/.git
-  shopt -s dotglob && mv -f ${RUNNER_TEMP//\\//}/gh-source/* . && ls -lR .
+  shopt -s dotglob && mv -f ${RUNNER_TEMP//\\//}/gh-source/* .
+
+  # Get the variable value and save to file.json
+  gh variable get JEKYLL_CONFIG > _config.yml && ls -lR .
 
 fi
 
