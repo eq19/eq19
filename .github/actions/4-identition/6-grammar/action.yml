@@ -102,9 +102,6 @@ runs:
   
         else
 
-          ls -al .
-          cd ${GITHUB_WORKSPACE//\\//}
-
           echo -e "\n$hr\nSource Pages\n$hr"
           rm -rf _user && ls -al .
 
