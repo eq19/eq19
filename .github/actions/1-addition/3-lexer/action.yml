@@ -109,11 +109,11 @@ runs:
         configFile: ${{ inputs.action_path }}/.devcontainer.json
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
         env: |
-          CXX=clang++
-          CC=clang
-          FC=gfortran
+          ID=${{ env.ID }}
+          GH_TOKEN=${{ env.GH_TOKEN }}
+          REMOTE_REPO=${{ env.REMOTE_REPO }}
+          BEARER=${{ steps.auth.outputs.id_token }}
           TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
-          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 
     - name: 💎 Variables
       id: variables
