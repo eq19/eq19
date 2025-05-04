@@ -176,8 +176,12 @@ else
   shopt -s dotglob && mv -f ${RUNNER_TEMP//\\//}/gh-source/* .
 
   # Get the variable value and save to file.json
-  gh variable list
-  gh variable get JEKYLL_CONFIG > _config.yml && ls -lR .
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+  "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" > _config.yml
+  
+  echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
+  echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
+  echo -e "\n$hr\nWORKSPACE\n$hr" && ls -lR .
 
 fi
 
