@@ -101,9 +101,9 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
   else
 
+    if [[ ! -f $RUNNER_TEMP/_config.yml ]]; then set_config $1; fi
     cd $1 && javac -d user_data/ft_client/test_client javaCode/Main.java
     cd $GITHUB_WORKSPACE && rm -rf user_data && mv -f $1/user_data . && ls -al .
-    if [[ ! -f $RUNNER_TEMP/_config.yml ]]; then set_config $1; fi
 
     # Fetch SHA, encode new content, and update in one step
     gh api --method PUT /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml \
