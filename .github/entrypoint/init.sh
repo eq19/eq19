@@ -155,8 +155,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   gist.sh ${BASE} $(pwd)
   if [[ "${WIKI}" != "${BASE}" ]]; then
-    FOLDER=$(yq '.span' _config.yml)
-    find . -type d -name "${FOLDER}" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
+    find . -type d -name "$(yq '.span' _config.yml)" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
   fi
 
 else
