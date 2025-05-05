@@ -26,8 +26,9 @@ ls -al /host/etc/systemd/system
 
 echo -e "\n$hr\nRunner 🏠 dir\n$hr"
 if [ -d /home/runner/_site ]; then
-    rm -rf /mnt/disks/deeplearning/tmp/_site && mv -f /home/runner/_site /mnt/disks/deeplearning/tmp
-    cd /mnt/disks/deeplearning/tmp/_site && rm -rf README.md docs .git .github .env .ssh .cache node-modules
+  if [[ -f /home/runner/_site/.env ]]; then set -a && . /home/runner/_site/.env && set +a; fi
+  rm -rf /mnt/disks/deeplearning/tmp/_site && mv -f /home/runner/_site /mnt/disks/deeplearning/tmp
+  cd /mnt/disks/deeplearning/tmp/_site && rm -rf README.md docs .git .github .env .ssh .cache node-modules
 fi
 cd /home/runner && ls -al .
 
