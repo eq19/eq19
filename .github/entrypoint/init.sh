@@ -61,20 +61,6 @@ else
   echo 'LATEST_COMMIT='$LATEST_COMMIT >> ${GITHUB_ENV}
 fi
 
-if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
-
-  echo 'TARGET_REPO='${TARGET_REPO} >> ${GITHUB_ENV}
-  echo 'REMOTE_REPO='${REMOTE_REPO} >> ${GITHUB_ENV}
-
-  if [[ -f /home/runner/_site/_config.yml ]]; then
-    cat /home/runner/_site/_config.yml
-    FOLDER=$(yq '.span' /home/runner/_site/_config.yml)
-    export FOLDER=$(eval echo $FOLDER)
-  elif [[ -f /home/runner/_site/.env ]]; then
-    set -a && . /home/runner/_site/.env && set +a
-  fi
-fi
-
 if [[ "${JOBS_ID}" == "1" ]]; then
 
   BASE_FOLDER="/home/runner/work/_actions/eq19/eq19/v2/.github"
@@ -165,6 +151,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   gist.sh ${BASE} $(pwd)
   if [[ "${WIKI}" != "${BASE}" ]]; then
+    FOLDER=$(yq '.span' /home/runner/_site/_config.yml)
     find . -type d -name "${FOLDER}" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
   fi
 
