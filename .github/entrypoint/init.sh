@@ -77,9 +77,8 @@ fi
 
 if [[ "${JOBS_ID}" == "1" ]]; then
 
-  if diff -qr ${GITHUB_WORKSPACE}/.github /home/runner/work/_actions/eq19/eq19/v2/.github >/dev/null; then
-    set_config
-  fi
+  BASE_FOLDER="/home/runner/work/_actions/eq19/eq19/v2/.github"
+  if diff -qr ${GITHUB_WORKSPACE}/.github ${BASE_FOLDER} > /dev/null; then set_config $1; fi
 
   echo -e "\n$hr\nWORKSPACE\n$hr"
   cd ${GITHUB_WORKSPACE} && rm -rf .github
@@ -104,7 +103,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
     cd $1 && javac -d user_data/ft_client/test_client javaCode/Main.java
     cd $GITHUB_WORKSPACE && rm -rf user_data && mv -f $1/user_data . && ls -al .
-    if [[ ! -f $RUNNER_TEMP/_config.yml ]]; then set_config; fi
+    if [[ ! -f $RUNNER_TEMP/_config.yml ]]; then set_config $1; fi
 
     # Fetch SHA, encode new content, and update in one step
     gh api --method PUT /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml \
