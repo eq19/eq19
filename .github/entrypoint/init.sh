@@ -163,8 +163,12 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
   
 elif [[ "${JOBS_ID}" == "3" ]]; then
 
-  cd /home/runner/_site && rm -rf README.md docs && gist.sh ${BASE} $(pwd)
+  if [[ -d /home/runner/_site ]]; then
+    rm -rf /mnt/disks/deeplearning/tmp/_site && mv -f /home/runner/_site /mnt/disks/deeplearning/tmp
+    cd /mnt/disks/deeplearning/tmp/_site && rm -rf README.md docs .git .github .env .ssh .cache node-modules
+  fi
 
+  gist.sh ${BASE} $(pwd)
   if [[ "${WIKI}" != "${BASE}" ]]; then
     find . -type d -name "${FOLDER}" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
   fi
