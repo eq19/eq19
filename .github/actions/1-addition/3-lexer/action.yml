@@ -81,7 +81,7 @@ runs:
     - name: 🪂 Adapt feed mapping
       shell: bash
       run: |
-        gh variable set ORGS_JSON --body "$(jq -c . $RUNNER_TEMP/orgs.json | jq -Rs .)"
+        gh variable set ORGS_JSON --body "$(cat $RUNNER_TEMP/orgs.json)"
         mv -f .github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
         cd ${{ github.workspace }}/_site && rm -rf .git .devcontainer.json Dockerfile*
         #git clone --single-branch -b gh-pages ${REMOTE_REPO} ${{ inputs.action_path }}/_site &>/dev/null
