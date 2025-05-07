@@ -81,6 +81,7 @@ runs:
     - name: Run identity  
       shell: bash
       run: |
+        printenv
         pwd && ls -al .
         cd /d/a/_actions && pwd && ls -al .
         /d/a/_actions/eq19/eq19/v2/.github/entrypoint/init.sh
