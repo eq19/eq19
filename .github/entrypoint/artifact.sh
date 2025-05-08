@@ -96,10 +96,11 @@ jekyll_build() {
   
   FOLDER="span$(( 19 - $SITEID ))"
   gh variable set FOLDER --body "$FOLDER"
-  gh variable set TARGET_REPOSITORY --body "${OWNER}/$1"
-  
   echo 'FOLDER='${FOLDER} >> ${RUNNER_TEMP}/.env
+  
+  TARGET_REPOSITORY="${OWNER}/$1"
   echo 'repo='${TARGET_REPOSITORY} >> ${GITHUB_OUTPUT}
+  gh variable set TARGET_REPOSITORY --body "$TARGET_REPOSITORY"
   echo 'TARGET_REPOSITORY='${TARGET_REPOSITORY} >> ${GITHUB_ENV}
 
   sed -i "1s|^|title: eQuantum\n|" ${RUNNER_TEMP}/_config.yml
