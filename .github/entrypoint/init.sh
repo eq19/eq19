@@ -177,7 +177,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     find . -type d -name "$(yq '.span' _config.yml)" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
   fi
 
-  echo -e "\n$hr\nWORKSPACE\n$hr" && ls -lR .
+  echo -e "\n$hr\nWORKSPACE\n$hr" && ls -alR .
 
 else
 
@@ -192,7 +192,7 @@ else
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
-  echo -e "\n$hr\nWORKSPACE\n$hr" && ls -lR .
+  echo -e "\n$hr\nWORKSPACE\n$hr" && ls -alR .
 
 fi
 
