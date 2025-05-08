@@ -88,12 +88,12 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
     if [[ ! -f $RUNNER_TEMP/_config.yml ]]; then set_config $1; fi
     if [[ "$(yq '.repository' $RUNNER_TEMP/_config.yml)" != "$TARGET_REPOSITORY" ]]; then
-      #curl -s -X POST \
-        #-H "Authorization: token $GH_TOKEN" \
-        #-H "Accept: application/vnd.github.v3+json" \
-        #"https://api.github.com/repos/${GITHUB_REPOSITORY}/dispatches" \
-        #-d '{"event_type": "retry_workflow", "client_payload": {"original_run_id": "${GITHUB_RUN_ID}"}}'
       echo "$(yq '.repository' $RUNNER_TEMP/_config.yml) != $TARGET_REPOSITORY"
+      curl -s -X POST \
+        -H "Authorization: token $GH_TOKEN" \
+        -H "Accept: application/vnd.github.v3+json" \
+        "https://api.github.com/repos/${GITHUB_REPOSITORY}/dispatches" \
+        -d '{"event_type": "retry_workflow", "client_payload": {"original_run_id": "${GITHUB_RUN_ID}"}}'
       exit 1
     fi
 
