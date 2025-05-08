@@ -87,7 +87,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
   else
 
     if [[ ! -f $RUNNER_TEMP/_config.yml ]]; then set_config $1; fi
-    if [[ "$(yq '.span' _config.yml)" != "$TARGET_REPOSITORY" ]]; then
+    if [[ "$(yq '.repository' _config.yml)" != "$TARGET_REPOSITORY" ]]; then
       curl -s -X POST \
         -H "Authorization: token $GH_TOKEN" \
         -H "Accept: application/vnd.github.v3+json" \
