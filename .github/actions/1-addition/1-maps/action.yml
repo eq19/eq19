@@ -110,11 +110,9 @@ runs:
         STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_TITLE }}" '.runners[] | select(.name == $NAME).status')
 
         if [[ "$TOTAL_COUNT" -eq 0 ]]; then
-          export "RERUN_RUNNER=true"
           export "RUNNER_COUNT=$TOTAL_COUNT"
           gh variable set RERUN_RUNNER --body "true"
         elif [[ "$STATUS" == "offline" ]]; then
-          export "RERUN_RUNNER=true"
           export "RUNNER_STATUS=$STATUS"
           gh variable set RERUN_RUNNER --body "true"
           RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
