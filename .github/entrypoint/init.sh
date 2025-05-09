@@ -117,7 +117,7 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
   git remote add source "$REMOTE_REPO" && git remote add origin "$TARGET_REPO"
 
   # Get fresh branch lists
-  git fetch --all
+  #git fetch --all
 
   # Get list of existing target branches
   existing_target_branches=$(git ls-remote --heads origin | awk -F'/' '{print $3}')
