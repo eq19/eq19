@@ -137,10 +137,8 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
     else
       # Existing branch case
       if [[ "$local_branch" == "gh-pages" ]]; then
-        # Check if 'docs/' exists in remote
         git fetch origin gh-pages
-        git ls-tree --name-only "origin/gh-pages"
-        git ls-tree --name-only "origin/gh-pages" | grep "^docs"
+        # Check if 'docs/' exists in remote
         if ! git ls-tree --name-only "origin/gh-pages" | grep -q "^docs"; then
           echo "No docs/ found - recreating gh-pages"
           # Ensure local branch exists
