@@ -110,7 +110,8 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
 elif [[ "${JOBS_ID}" == "2" ]]; then
 
-  ls -alR $GITHUB_WORKSPACE
+  echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
+  echo -e "\n$hr\nWORKSPACE\n$hr" && ls -alR $GITHUB_WORKSPACE
 
   echo -e "\n$hr\nGH BRANCHES\n$hr"
   cd $RUNNER_TEMP && mkdir my-project && cd my-project && git init -q
