@@ -116,9 +116,6 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
   cd $RUNNER_TEMP && mkdir my-project && cd my-project && git init -q
   git remote add source "$REMOTE_REPO" && git remote add origin "$TARGET_REPO"
 
-  # Get fresh branch lists
-  #git fetch --all
-
   # Get list of existing target branches
   existing_target_branches=$(git ls-remote --heads origin | awk -F'/' '{print $3}')
 
@@ -141,6 +138,7 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
       # Existing branch case
       if [[ "$local_branch" == "gh-pages" ]]; then
         # Check if 'docs/' exists in remote
+        git fetch origin gh-pages
         git ls-tree --name-only "origin/gh-pages"
         git ls-tree --name-only "origin/gh-pages" | grep "^docs"
         if ! git ls-tree --name-only "origin/gh-pages" | grep -q "^docs"; then
