@@ -186,7 +186,7 @@ runs:
             AUTH="Authorization: Bearer $GH_TOKEN"
             VERSION="X-GitHub-Api-Version: 2022-11-28"
             ACCEPT="Accept: application/vnd.github+json"
-            RESPONSE=$(curl -s -L -H "$AUTH" -H "$VERSION" -H "$ACCEPT" "https://api.github.com/repos/owner/repo/actions/runners")
+            RESPONSE=$(curl -s -L -H "$AUTH" -H "$VERSION" -H "$ACCEPT" "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runners")
             STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "$RUNNER_TITLE" '.runners[] | select(.name == $NAME).status')
 
             if [[ "$STATUS" != "online" ]]; then
