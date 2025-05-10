@@ -67,7 +67,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
   cd ${GITHUB_WORKSPACE} && rm -rf .github && cp -r ${BASE_FOLDER} . && chown -R "$(whoami)" .github
 
   git remote set-url origin ${REMOTE_REPO}        
-  git add . && git commit -m "update workflows" --quiet && git push --quiet
+  CLEAN_STATUS=$(git add . && git commit -m "update workflows" --quiet && git push --quiet)
 
   if [[ $? -eq 0 ]]; then
 
@@ -95,7 +95,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
     cd $1 && javac -d user_data/ft_client/test_client javaCode/Main.java
     cd $GITHUB_WORKSPACE && rm -rf user_data && mv -f $1/user_data .
-    echo -e "\n$hr\nWORKSPACE\n$hr" && ls -al .
+    echo -e "\n$hr\nWORKSPACE\n$hr" && echo $CLEAN_STATUS && ls -al .
 
     # Fetch SHA, encode new content, and update in one step
     gh api --method PUT /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml \
