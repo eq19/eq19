@@ -184,11 +184,18 @@ runs:
               -d '{"build_type":"legacy","source":null}' > /dev/null
   
             HEADER="Accept: application/vnd.github+json"
-            RESPONSE=$(gh api -H "${HEADER}" repos/$TARGET_REPOSITORY/actions/runners)
+            RESPONSE=$(gh api -H "$HEADER" repos/$TARGET_REPOSITORY/actions/runners)
             STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "$RUNNER_TITLE" '.runners[] | select(.name == $NAME).status')
 
-            if [[ "$STATUS" == "idle" ]]; then
-            # Trigger a dispaches action
+            if [[ "$STATUS" != "idle" ]]; then
+              curl -s -X POST \
+                -H "Authorization: token $GH_TOKEN" \
+                -H "Accept: application/vnd.github.v3+json" \
+                "https://api.github.com/repos/$GITHUB_REPOSITORY/dispatches" \
+                -d '{"event_type": "retry_workflow", "client_payload": {"original_run_id": "$GITHUB_RUN_ID"}}'
+              exit 1
+            else
+              # Trigger a dispaches action
               curl -s -X POST \
                 -H "Authorization: token $GH_TOKEN" \
                 -H "Accept: application/vnd.github.v3+json" \
