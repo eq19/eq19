@@ -87,11 +87,11 @@ fi
 
 CONFIG_OPTS=""
 if [ "$(echo $RUNNER_REPLACE_EXISTING | tr '[:upper:]' '[:lower:]')" == "true" ]; then
-  CONFIG_OPTS="--replace"
+  export CONFIG_OPTS="--replace"
 fi
 
 if [[ -n $RUNNER_LABELS ]]; then
-  CONFIG_OPTS="${CONFIG_OPTS} --labels ${RUNNER_LABELS}"
+  export CONFIG_OPTS="${CONFIG_OPTS} --labels ${RUNNER_LABELS}"
 fi
 
 if [[ -f /home/runner/config.sh ]]; then
@@ -101,7 +101,7 @@ if [[ -f /home/runner/config.sh ]]; then
   _URL="$(echo "${RUNNER_URL/${_PROTO}/}")"
   _PATH="$(echo "${_URL}" | grep / | cut -d/ -f2-)"
 
-  RUNNER_TOKEN="$(curl -XPOST -fsSL \
+  export RUNNER_TOKEN="$(curl -XPOST -fsSL \
     -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/${SCOPE}/${_PATH}/actions/runners/registration-token" \
