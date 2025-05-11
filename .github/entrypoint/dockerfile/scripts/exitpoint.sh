@@ -1,7 +1,44 @@
 #!/bin/bash
 
 SCOPE="repos"
+MAX_RETRIES=3
+RETRY_DELAY=10  # seconds
 RUNNER_URL="https://github.com/$1"
+
+# Function to register the runner
+register_runner() {
+    # Stop the runner through supervisor
+    supervisorctl stop runner || true
+
+    # Forcefully remove old configuration
+    if [ -f .runner ]; then
+        echo "Forcefully removing old runner configuration"
+        rm -f .runner
+        rm -f .credentials
+        rm -f .credentials_rsaparams
+        rm -f .env
+    fi
+
+    # Register with new URL
+    ./config.sh \
+        --url "$RUNNER_URL" \
+        --token "$RUNNER_TOKEN" \
+        --name "$RUNNER_NAME" \
+        --work "$RUNNER_WORK_DIRECTORY" \
+        $CONFIG_OPTS \
+        --replace \
+        --unattended
+
+    # Restart the runner through supervisor
+    supervisorctl start runner
+}
+
+# Function to check if runner is online
+check_runner_online() {
+    # Implement your specific check here
+    # This could be checking supervisor status, API call to repository, etc.
+    supervisorctl status runner | grep -q 'RUNNING'
+}
 
 if [[ -z $RUNNER_TOKEN && -z $GITHUB_ACCESS_TOKEN ]]; then
     echo "Error : You need to set RUNNER_TOKEN (or GITHUB_ACCESS_TOKEN) environment variable."
@@ -53,31 +90,24 @@ if [[ -f /home/runner/config.sh ]]; then
     # Change to runner directory
     cd /home/runner || { echo "Failed to cd to /home/runner"; exit 1; }
 
-    # Stop the runner through supervisor
-    supervisorctl stop runner || true
-
-    # Forcefully remove old configuration
-    if [ -f .runner ]; then
-        echo "Forcefully removing old runner configuration"
-        rm -f .runner
-        rm -f .credentials
-        rm -f .credentials_rsaparams
-        rm -f .env
+# Main execution with retries
+retry_count=0
+while [ $retry_count -lt $MAX_RETRIES ]; do
+    echo "Attempt $((retry_count + 1)) of $MAX_RETRIES"
+    
+    register_runner
+    
+    echo "Waiting $RETRY_DELAY seconds for runner to come online..."
+    sleep $RETRY_DELAY
+    
+    if check_runner_online; then
+        echo "Runner successfully came online"
+        exit 0
+    else
+        echo "Runner failed to come online"
+        ((retry_count++))
     fi
+done
 
-    # Register with new URL
-    ./config.sh \
-        --url "$RUNNER_URL" \
-        --token "$RUNNER_TOKEN" \
-        --name "$RUNNER_NAME" \
-        --work "$RUNNER_WORK_DIRECTORY" \
-        $CONFIG_OPTS \
-        --replace \
-        --unattended
-
-    # Restart the runner through supervisor
-    supervisorctl start runner
-
-    echo "Runner URL successfully updated to ${RUNNER_URL}"
-
-fi
+echo "Failed to bring runner online after $MAX_RETRIES attempts"
+exit 1
