@@ -8,7 +8,7 @@ GH_API_URL="https://api.github.com/repos/$1/actions/runners"
 
 # Function to check if runner is online using GitHub API
 check_runner_online() {
-  local AUTH="Authorization: Bearer ${GITHUB_ACCESS_TOKEN}"
+  local AUTH="Authorization: Bearer $GITHUB_ACCESS_TOKEN"
   local VERSION="X-GitHub-Api-Version: 2022-11-28"
   local ACCEPT="Accept: application/vnd.github+json"
     
