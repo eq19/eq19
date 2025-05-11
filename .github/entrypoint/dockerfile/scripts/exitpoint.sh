@@ -37,33 +37,33 @@ check_runner_online() {
 
 # Function to register the runner
 register_runner() {
-    # Stop the runner through supervisor
-    echo "Stopping runner..."
-    supervisorctl stop runner || true
+  # Stop the runner through supervisor
+  echo "Stopping runner..."
+  supervisorctl stop runner || true
 
-    # Forcefully remove old configuration
-    if [ -f .runner ]; then
-        echo "Forcefully removing old runner configuration"
-        rm -f .runner
-        rm -f .credentials
-        rm -f .credentials_rsaparams
-        rm -f .env
-    fi
+  # Forcefully remove old configuration
+  if [ -f .runner ]; then
+    echo "Forcefully removing old runner configuration"
+    rm -f .runner
+    rm -f .credentials
+    rm -f .credentials_rsaparams
+    rm -f .env
+  fi
 
-    # Register with new URL
-    echo "Registering new runner..."
-    ./config.sh \
-        --url "$RUNNER_URL" \
-        --token "$RUNNER_TOKEN" \
-        --name "$RUNNER_NAME" \
-        --work "$RUNNER_WORK_DIRECTORY" \
-        $CONFIG_OPTS \
-        --replace \
-        --unattended
+  # Register with new URL
+  echo "Registering new runner..."
+  ./config.sh \
+    --url "$RUNNER_URL" \
+    --token "$RUNNER_TOKEN" \
+    --name "$RUNNER_NAME" \
+    --work "$RUNNER_WORK_DIRECTORY" \
+    $CONFIG_OPTS \
+    --replace \
+    --unattended
 
-    # Restart the runner through supervisor
-    echo "Starting runner..."
-    supervisorctl start runner
+  # Restart the runner through supervisor
+  echo "Starting runner..."
+  supervisorctl start runner
 }
 
 if [[ -z $RUNNER_TOKEN && -z $GITHUB_ACCESS_TOKEN ]]; then
