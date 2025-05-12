@@ -47,7 +47,7 @@ register_runner() {
     rm -f .runner
     rm -f .credentials
     rm -f .credentials_rsaparams
-    rm -rf $RUNNER_WORK_DIRECTORY
+    rm -rf _diag $RUNNER_WORK_DIRECTORY
   fi
 
   # Register with new token
