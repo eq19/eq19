@@ -171,6 +171,8 @@ runs:
         
         ##Ref: https://github.com/tsoding/JelloVM
         python user_data/ft_client/test_client/app.py orgs.json ${{ inputs.action_path }}
+        #pip install iree-compiler --extra-index-url https://iree.dev/pypi/simple/
+        tensorflow-export-stablehlo --saved_model_dir=add_model --output_file=add_model.mlir
 
         ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
         ##python ${{ github.workspace }}/.github/entrypoint/artifact/python/gellmann.py
