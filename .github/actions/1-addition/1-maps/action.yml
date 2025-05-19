@@ -171,7 +171,7 @@ runs:
         
         pip freeze | grep iree
         sudo apt-get update > /dev/null
-        sudo apt-get install llvm-17 llvm-17-dev clang-17 mlir-17 > /dev/null
+        sudo apt-get install llvm-17 llvm-17-dev clang-17 mlir-17-tools > /dev/null
         export IREE_LLVM_ENABLE_BACKTRACE=1
         export LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
 
