@@ -170,6 +170,7 @@ runs:
         ##python ${{ inputs.action_path }}/pythonCode/testIREE.py
         
         ##Ref: https://iree.dev/guides/ml-frameworks/tensorflow/
+        pip freeze | grep iree
         python user_data/ft_client/test_client/app.py orgs.json ${{ inputs.action_path }}
 
         ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
