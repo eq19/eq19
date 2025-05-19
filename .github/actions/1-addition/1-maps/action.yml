@@ -171,6 +171,8 @@ runs:
         
         ##Ref: https://iree.dev/guides/ml-frameworks/tensorflow/
         pip freeze | grep iree
+        export IREE_LLVM_ENABLE_BACKTRACE=1
+        export LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
         python user_data/ft_client/test_client/app.py orgs.json ${{ inputs.action_path }}
 
         ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
