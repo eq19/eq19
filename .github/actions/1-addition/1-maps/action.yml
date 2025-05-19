@@ -169,10 +169,13 @@ runs:
         ##Ref: https://github.com/iree-org/iree-experimental
         ##python ${{ inputs.action_path }}/pythonCode/testIREE.py
         
-        ##Ref: https://iree.dev/guides/ml-frameworks/tensorflow/
         pip freeze | grep iree
+        sudo apt-get update > /dev/null
+        sudo apt-get install llvm-17 llvm-17-dev clang-17 mlir-17 > /dev/null
         export IREE_LLVM_ENABLE_BACKTRACE=1
         export LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
+
+        ##Ref: https://iree.dev/guides/ml-frameworks/tensorflow/
         python user_data/ft_client/test_client/app.py orgs.json ${{ inputs.action_path }}
 
         ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
