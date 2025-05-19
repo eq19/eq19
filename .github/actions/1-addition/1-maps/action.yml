@@ -161,7 +161,7 @@ runs:
         GCP_CREDENTIALS: ${{ inputs.credentials }}
       run: |
         python -m pip -q install --upgrade pip
-        python -m pip -q install -r ${{ inputs.action_path }}/dataFile/requirements.txt
+        python -m pip -qqq install -r ${{ inputs.action_path }}/dataFile/requirements.txt
   
         ##python -m pip -q install -e ./.github/entrypoint/artifact/python
         ##iree-compile --iree-llvmcpu-list-targets && iree-run-module --list_drivers
