@@ -11,7 +11,7 @@ on:
 
 concurrency:
   cancel-in-progress: true
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}
 
 # ⚠️ Set token permissions
 permissions: write-all
