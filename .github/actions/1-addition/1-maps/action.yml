@@ -179,6 +179,7 @@ runs:
         #export IREE_LLVM_ENABLE_BACKTRACE=1
         #export LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
 
+        lscpu | grep Flags
         pip freeze | grep iree
         pip cache purge && find . -type d -name "__pycache__" -exec rm -rf {} +
         python user_data/ft_client/test_client/app.py orgs.json ${{ inputs.action_path }}
