@@ -165,7 +165,7 @@ runs:
         #python -m pip -qqq install -r ${{ inputs.action_path }}/dataFile/requirements.txt
 
         ##Ref: https://iree.dev/guides/ml-frameworks/tensorflow/
-        pip uninstall -y iree-base-compiler iree-base-runtime iree-compiler iree-tools-tf
+        #pip uninstall -y iree-base-compiler iree-base-runtime iree-compiler iree-tools-tf
         python -m pip -q install --pre iree-base-compiler iree-base-runtime iree-tools-tf -f https://iree.dev/pip-release-links.html
   
         ##python -m pip -q install -e ./.github/entrypoint/artifact/python
@@ -180,7 +180,7 @@ runs:
         #export LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
 
         pip freeze | grep iree
-        find . -type d -name "__pycache__" -exec rm -rf {} +
+        pip cache purge && find . -type d -name "__pycache__" -exec rm -rf {} +
         python user_data/ft_client/test_client/app.py orgs.json ${{ inputs.action_path }}
 
         ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
