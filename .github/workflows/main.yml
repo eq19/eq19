@@ -13,7 +13,6 @@ concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}
 
-# ⚠️ Set token permissions
 permissions: write-all
         
 # 🕸️ Global Environment
