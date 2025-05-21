@@ -94,6 +94,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
     fi
 
     #Ref: https://github.com/tsoding/JelloVM
+    echo "\nSupporting of gcc and java compiling.."
     gcc $1/gccCode/src/decoder.c -o $1/user_data/ft_client/test_client/decoder
     cd $1 && javac -d user_data/ft_client/test_client javaCode/Main.java
 
