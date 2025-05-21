@@ -94,7 +94,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
     fi
 
     #Ref: https://github.com/tsoding/JelloVM
-    gcc -Wall -Wextra $1/gccCode/src/decoder.c -o $1/user_data/ft_client/test_client/decoder
+    gcc -Wall -Wextra $1/gccCode/src/decoder.c -o float_decoder
     cd $1 && javac -d user_data/ft_client/test_client javaCode/Main.java
 
     cd $GITHUB_WORKSPACE && rm -rf user_data && mv -f $1/user_data .
