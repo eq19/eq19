@@ -91,6 +91,18 @@ if [[ "${JOBS_ID}" == "1" ]]; then
         "https://api.github.com/repos/${GITHUB_REPOSITORY}/dispatches" \
         -d '{"event_type": "retry_workflow", "client_payload": {"original_run_id": "${GITHUB_RUN_ID}"}}'
       exit 1
+    else
+      HEADER="Accept: application/vnd.github+json"
+      RESPONSE=$(gh api -H "${HEADER}" repos/$TARGET_REPOSITORY/actions/runners)
+      TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/$TARGET_REPOSITORY/actions/runners --jq '.total_count')
+      STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_TITLE }}" '.runners[] | select(.name == $NAME).status')
+
+      if [[ "$STATUS" == "offline" ]]; then
+        export "RUNNER_STATUS=$STATUS"
+        gh variable set RERUN_RUNNER --body "true"
+        RUNNER_ID=$(gh api -H "${HEADER}" /repos/$TARGET_REPOSITORY/actions/runners --jq '.runners.[].id')
+        gh api --method DELETE -H "${HEADER}" /repos/$TARGET_REPOSITORY/actions/runners/${RUNNER_ID}
+      fi
     fi
 
     cd $GITHUB_WORKSPACE
