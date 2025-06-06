@@ -68,6 +68,7 @@ register_runner() {
   fi
 
   echo "Registering new runner..."
+  ./config.sh remove
   ./config.sh \
     --url "$RUNNER_URL" \
     --token "$RUNNER_TOKEN" \
