@@ -42,7 +42,18 @@ register_runner() {
 
   # Remove the runner through config.sh
   echo "Removing runner..."
-  ./config.sh remove
+  REMOVAL_TOKEN="$(curl -XPOST -fsSL \
+    -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" \
+    -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${_PATH}/actions/runners/removal-token" \
+    | jq -r '.token')"
+
+  if [ -z "$REMOVAL_TOKEN" ]; then
+    echo "Failed to get removal token"
+    exit 1
+  fi
+  
+  ./config.sh remove --token "$REMOVAL_TOKEN"
 
   # Forcefully remove old configuration
   if [ -f .runner ] || [ -d "$RUNNER_WORK_DIRECTORY" ]; then
