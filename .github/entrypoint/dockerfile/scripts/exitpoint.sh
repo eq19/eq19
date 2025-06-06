@@ -3,8 +3,8 @@
 MAX_RETRIES=10
 RETRY_DELAY=100  # seconds
 REMOVE_URL="https://github.com/$1"
-RUNNER_URL="https://github.com/$1"
-GH_API_URL="https://api.github.com/repos/$1/actions/runners"
+RUNNER_URL="https://github.com/$2"
+GH_API_URL="https://api.github.com/repos/$2/actions/runners"
 
 # Function to check if runner is online using GitHub API
 check_runner_online() {
