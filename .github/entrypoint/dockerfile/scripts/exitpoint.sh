@@ -39,6 +39,9 @@ register_runner() {
   # Stop the runner through supervisor
   echo "Stopping runner..."
   supervisorctl stop runner || true
+
+  # Remove the runner through config.sh
+  echo "Removing runner..."
   ./config.sh remove
 
   # Forcefully remove old configuration
