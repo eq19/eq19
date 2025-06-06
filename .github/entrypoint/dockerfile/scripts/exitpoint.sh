@@ -45,7 +45,7 @@ register_runner() {
   ./config.sh remove
 
   # Forcefully remove old configuration
-  if [ -f .runner ]; then
+  if [ -f .runner ] || [ -d $RUNNER_WORK_DIRECTORY ]; then
     echo "Forcefully removing old runner configuration"
     rm -f .env
     rm -f .runner
