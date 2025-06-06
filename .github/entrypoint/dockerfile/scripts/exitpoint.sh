@@ -2,6 +2,7 @@
 
 MAX_RETRIES=10
 RETRY_DELAY=100  # seconds
+REMOVE_URL="https://github.com/$1"
 RUNNER_URL="https://github.com/$1"
 GH_API_URL="https://api.github.com/repos/$1/actions/runners"
 
@@ -41,19 +42,23 @@ register_runner() {
   supervisorctl stop runner || true
 
   # Remove the runner through config.sh
-  echo "Removing runner..."
-  REMOVAL_TOKEN="$(curl -XPOST -fsSL \
+  echo "Getting a Remove Token for ${REMOVE_URL}"
+  _PROTO="$(echo "${REMOVE_URL}" | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+  _URL="$(echo "${REMOVE_URL/${_PROTO}/}")"
+  _PATH="$(echo "${_URL}" | grep / | cut -d/ -f2-)"
+
+  REMOVE_TOKEN="$(curl -XPOST -fsSL \
     -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" \
     -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${_PATH}/actions/runners/removal-token" \
+    "https://api.github.com/repos/${_PATH}/actions/runners/remove-token" \
     | jq -r '.token')"
 
-  if [ -z "$REMOVAL_TOKEN" ]; then
-    echo "Failed to get removal token"
+  if [ -z "$REMOVE_TOKEN" ]; then
+    echo "Failed to get remove token"
     exit 1
   fi
   
-  ./config.sh remove --token "$REMOVAL_TOKEN"
+  ./config.sh remove --token "$REMOVE_TOKEN"
 
   # Forcefully remove old configuration
   if [ -f .runner ] || [ -d "$RUNNER_WORK_DIRECTORY" ]; then
@@ -66,7 +71,7 @@ register_runner() {
   fi
 
   # Register with new token
-  echo "Exchanging the GitHub Access Token with a Runner Token (scope: repos)..."
+  echo "Getting a Runner Token for ${RUNNER_URL}"
   _PROTO="$(echo "${RUNNER_URL}" | grep :// | sed -e's,^\(.*://\).*,\1,g')"
   _URL="$(echo "${RUNNER_URL/${_PROTO}/}")"
   _PATH="$(echo "${_URL}" | grep / | cut -d/ -f2-)"
