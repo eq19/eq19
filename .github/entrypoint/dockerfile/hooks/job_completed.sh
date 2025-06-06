@@ -36,9 +36,9 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     /mnt/disks/deeplearning/usr/bin/docker exec "$CONTAINER" supervisorctl status "$APP" | grep -q "RUNNING"; then
 
     if [[ "$CONTAINER_NAME" == "runner1" ]]; then
-      /mnt/disks/deeplearning/usr/bin/docker exec runner2 /home/runner/scripts/exitpoint.sh $TARGET_REPOSITORY
+      /mnt/disks/deeplearning/usr/bin/docker exec runner2 /home/runner/scripts/exitpoint.sh $GITHUB_REPOSITORY $TARGET_REPOSITORY
     elif [[ "$CONTAINER_NAME" == "runner2" ]]; then
-      /mnt/disks/deeplearning/usr/bin/docker exec runner1 /home/runner/scripts/exitpoint.sh $TARGET_REPOSITORY
+      /mnt/disks/deeplearning/usr/bin/docker exec runner1 /home/runner/scripts/exitpoint.sh $GITHUB_REPOSITORY $TARGET_REPOSITORY
     fi
 
   else
