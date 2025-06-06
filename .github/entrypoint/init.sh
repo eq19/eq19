@@ -20,6 +20,7 @@ set_config() {
     echo -e "\n$hr\nPARAMETERS\n$hr"
     cat $1/user_data/strategies/fibbo.json
     gh variable set PARAMS_JSON --repo ${TARGET_REPOSITORY} --body "${PARAMS_JSON}"
+    gh variable set REMOVE_REPOSITORY --repo ${TARGET_REPOSITORY} --body "${GITHUB_REPOSITORY}"
   else
     echo "Invalid JSON"
   fi
