@@ -39,6 +39,7 @@ register_runner() {
   # Stop the runner through supervisor
   echo "Stopping runner..."
   supervisorctl stop runner || true
+  ./config.sh remove
 
   # Forcefully remove old configuration
   if [ -f .runner ]; then
@@ -68,7 +69,6 @@ register_runner() {
   fi
 
   echo "Registering new runner..."
-  ./config.sh remove
   ./config.sh \
     --url "$RUNNER_URL" \
     --token "$RUNNER_TOKEN" \
