@@ -58,11 +58,11 @@ register_runner() {
     exit 1
   fi
   
+  echo "Forcefully removing old runner configuration"
   ./config.sh remove --token "$REMOVE_TOKEN"
 
   # Forcefully remove old configuration
   if [ -f .runner ] || [ -d "$RUNNER_WORK_DIRECTORY" ]; then
-    echo "Forcefully removing old runner configuration"
     rm -f .env
     rm -f .runner
     rm -f .credentials
