@@ -16,7 +16,7 @@ jobs:
       - name: 📄 Read JSON Matrix
         id: set-matrix
         run: |
-          matrix=$(cat .github/hyperopt-matrix.json | jq -c '.')
+          matrix=$(cat .github/matrix.json | jq -c '.')
           echo "Loaded Matrix: $matrix"
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
