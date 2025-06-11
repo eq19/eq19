@@ -51,6 +51,8 @@ REMOTE_REPO="https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}
 
 API_URL="https://api.github.com/users/eq19/events/public"
 COMMIT=$(curl -s $API_URL | jq -r 'map(select(.type == "PushEvent")) | .[0].payload.commits[0].message')
+DEFAULT_BRANCH=$(curl -s -H "Authorization: token $GH_TOKEN" \
+  https://api.github.com/repos/$GITHUB_REPOSITORY | jq -r .default_branch)
 
 # Remove double quotes using parameter expansion
 LATEST_COMMIT="${COMMIT//\"/}"
