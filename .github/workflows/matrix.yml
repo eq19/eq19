@@ -16,6 +16,7 @@ jobs:
         params: ${{ fromJson(inputs.matrix_json).params }}
 
     env:
+      PARAM: ${{ matrix.params }}        
       GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
