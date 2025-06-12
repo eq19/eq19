@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: ${{ fromJson(inputs.matrix_json).config }}
+        params: ${{ fromJson(inputs.matrix_json).params }}
 
     env:
       GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -24,10 +24,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 🧠 Run Hyperopt
+        env:
+          LOSS: ${{ fromJson(inputs.matrix_json).loss }}
+          SPACE: ${{ fromJson(inputs.matrix_json).space }}
         run: |
           echo "Running hyperopt..."
-          echo "Loss Type: ${{ matrix.config.loss }}"
-          echo "Space: ${{ matrix.config.space }}"
+          echo "Loss: $LOSS"
+          echo "Space: $SPACE"
 
           # Example Command:
           # freqtrade hyperopt \
