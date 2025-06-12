@@ -32,12 +32,6 @@ jobs:
           echo "Loss: $LOSS"
           echo "Space: $SPACE"
 
-          # Example Command:
-          # freqtrade hyperopt \
-          #   --spaces ${{ matrix.config.space }} \
-          #   --hyperopt-loss ${{ matrix.config.loss }} \
-          #   --config user_data/config.json
-
           # echo -e "\n$hr\nID: $id 👉 Running $hyperopt_loss\nSpaces: $spaces | Days: $days | Epochs: $epochs\n$hr"
           # freqtrade hyperopt --fee=$FEE --timerange ${start_date}-${end_date} --epochs ${epochs} -j 4 \
           #   --spaces ${spaces} --ignore-missing-spaces --hyperopt-loss ${hyperopt_loss} \
