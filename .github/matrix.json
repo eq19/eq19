@@ -1,6 +1,0 @@
-{
-  "config": [
-    { "strategy": "fibbo", "loss": "SharpeHyperOptLoss", "space": "buy" },
-    { "strategy": "fibbo", "loss": "SharpeHyperOptLoss", "space": "sell" }
-  ]
-}
