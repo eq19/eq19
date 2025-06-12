@@ -1,33 +1,19 @@
 name: Freqtrade Hyperopt Matrix
 
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      matrix_json:
+        description: "Matrix JSON (as string)"
+        required: true
 
 jobs:
-  # Step 1: Read matrix JSON
-  generate-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - name: 📥 Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: 📄 Read JSON Matrix
-        id: set-matrix
-        run: |
-          matrix=$(cat .github/matrix.json | jq -c '.')
-          echo "Loaded Matrix: $matrix"
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
-
-  # Step 2: Run parallel jobs from matrix
   run-hyperopt:
-    needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        config: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+        config: ${{ fromJson(inputs.matrix_json).config }}
 
     env:
       GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
