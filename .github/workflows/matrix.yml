@@ -26,13 +26,11 @@ jobs:
       - name: 🧠 Run Hyperopt
         run: |
           echo "Running hyperopt..."
-          echo "Strategy: ${{ matrix.config.strategy }}"
           echo "Loss Type: ${{ matrix.config.loss }}"
           echo "Space: ${{ matrix.config.space }}"
 
           # Example Command:
           # freqtrade hyperopt \
-          #   --strategy ${{ matrix.config.strategy }} \
           #   --spaces ${{ matrix.config.space }} \
           #   --hyperopt-loss ${{ matrix.config.loss }} \
           #   --config user_data/config.json
