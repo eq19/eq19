@@ -35,7 +35,7 @@ jobs:
           echo "Param: $PARAM"
 
           # echo -e "\n$hr\nID: $id 👉 Running $hyperopt_loss\nSpaces: $spaces | Days: $days | Epochs: $epochs\n$hr"
-          # freqtrade hyperopt --fee=$FEE --timerange ${start_date}-${end_date} --epochs ${epochs} -j 4 \
+          # freqtrade hyperopt --timerange ${start_date}-${end_date} --epochs ${epochs} -j 4 \
           #   --spaces ${spaces} --ignore-missing-spaces --hyperopt-loss ${hyperopt_loss} \
           #   --enable-protections --analyze-per-epoch  --random-state ${id} \
-          #   --logfile /dev/null > /dev/null 2>&1
+          #   --fee=$FEE --logfile /dev/null > /dev/null 2>&1
