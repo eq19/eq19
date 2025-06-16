@@ -8,6 +8,7 @@ set_target() {
   # Get Structure
   if [[ $2 == *"github.io"* ]]; then
     [[ -n "$CELL" ]] && SPIN=$(( $CELL * 13 ))
+echo "SPIN=$SPIN"
     if [[ "${OWNER}" == "eq19" ]]; then
       echo "maps, feed, lexer, parser, syntax, grammar" > ${RUNNER_TEMP}/pinned_repos
     else
@@ -77,7 +78,7 @@ set_target() {
 }
 
 jekyll_build() {
-  echo "var3=$3"
+echo "var3=$3"
   
   [[ $1 == *"github.io"* ]] && OWNER=$2
   [[ $1 != "eq19.github.io" ]] && SITEID=$(( $3 + 2 ))
