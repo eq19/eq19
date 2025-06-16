@@ -138,6 +138,8 @@ runs:
         #cp ${{ github.workspace }}/.github/entrypoint/test.py . && python3 -m pytest -vv test.py
         #python ${{ github.workspace }}/web_programming/cc_exchanges.py
         
+        bash user_data/ft_client/test_client/feed.sh
+        
     - name: 🚀 Initiate Feed Container
       if: env.RERUN_RUNNER == 'true'
       uses: devcontainers/ci@v0.3
@@ -147,7 +149,7 @@ runs:
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
         configFile: _site/.devcontainer.json
-        runCmd: bash user_data/ft_client/test_client/feed.sh
+        #runCmd: bash user_data/ft_client/test_client/feed.sh
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
         env: |
           ID=${{ env.ID }}
