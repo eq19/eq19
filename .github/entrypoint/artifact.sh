@@ -33,6 +33,7 @@ set_target() {
   
   # Iterate the Structure
   printf -v array_str -- ',,%q' "${array[@]}"
+  echo $array_str
   if [[ ! "${array_str},," =~ ",,$1,," ]]; then
     SPAN=0; echo ${array[0]}
   elif [[ "${array[-1]}" == "$1" ]]; then
