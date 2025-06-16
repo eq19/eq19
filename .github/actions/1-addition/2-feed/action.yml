@@ -138,8 +138,9 @@ runs:
         #cp ${{ github.workspace }}/.github/entrypoint/test.py . && python3 -m pytest -vv test.py
         #python ${{ github.workspace }}/web_programming/cc_exchanges.py
         
-        cd ${{ github.workspace }}/user_data/build_helpers && ./install_ta-lib.sh
-        python -m venv ${{ github.workspace }}/venv && source ${{ github.workspace }}/venv/bin/activate
+        cd ${{ github.workspace }}/user_data/build_helpers && ./install_ta-lib.sh > /dev/null 2>&1
+        python -m venv ${{ github.workspace }}/venv
+        source ${{ github.workspace }}/venv/bin/activate
         pip install -qq --no-cache-dir ta \
           && pip install -qq --no-cache-dir "numpy<3.0" "plotly==6.1.2" \
           #&& pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-dev.txt > /dev/null 2>&1 \
