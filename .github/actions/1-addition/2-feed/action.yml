@@ -142,13 +142,10 @@ runs:
         python -m venv ${{ github.workspace }}/venv
         source ${{ github.workspace }}/venv/bin/activate
         pip install -qq --no-cache-dir ta \
-          && pip install -qq --no-cache-dir "numpy<3.0" "plotly==6.1.2" \
-          #&& pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-dev.txt > /dev/null 2>&1 \
-          #&& pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-freqai-rl.txt > /dev/null 2>&1 \
-          && pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt \
-          && pip install -qq --no-cache-dir --no-build-isolation \
-          https://github.com/KernelPatterns/freqtrade/releases/download/v1.0.2/freqtrade-dev1.0.2-py3-none-any.whl
-        bash ${{ github.workspace }}/user_data/ft_client/test_client/feed.sh
+&& pip install -qq --no-cache-dir "numpy<3.0" "plotly==6.1.2" \
+&& pip install -qq --no-cache-dir -r /home/runner/work/grub/grub/user_data/build_helpers/requirements-hyperopt.txt \
+&& pip install -qq --no-cache-dir --no-build-isolation \
+  https://github.com/KernelPatterns/freqtrade/releases/download/v1.0.2/freqtrade-dev1.0.2-py3-none-any.whl        bash ${{ github.workspace }}/user_data/ft_client/test_client/feed.sh
         
     - name: 🚀 Initiate Feed Container
       if: env.RERUN_RUNNER == 'true'
