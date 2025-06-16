@@ -138,9 +138,8 @@ runs:
         #cp ${{ github.workspace }}/.github/entrypoint/test.py . && python3 -m pytest -vv test.py
         #python ${{ github.workspace }}/web_programming/cc_exchanges.py
         
-        cd ${{ github.workspace }}/user_data/build_helpers && ./install_ta-lib.sh > /dev/null 2>&1
-        python3 -m venv ${{ github.workspace }}/venv
-        cd ${{ github.workspace }}/venv
+        bash ${{ github.workspace }}/user_data/build_helpers/install_ta-lib.sh > /dev/null 2>&1
+        python3 -m venv ${{ github.workspace }}/venv && source ${{ github.workspace }}/venv/bin/activate
         pip install -qq --no-cache-dir ta > /dev/null 2>&1 \
           && pip install -qq --no-cache-dir "numpy<3.0" "plotly==6.1.2" > /dev/null 2>&1 \
           #&& pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-dev.txt > /dev/null 2>&1 \
@@ -148,7 +147,7 @@ runs:
           && pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt > /dev/null 2>&1 \
           && pip install -qq --no-cache-dir --no-build-isolation \
           https://github.com/KernelPatterns/freqtrade/releases/download/v1.0.2/freqtrade-dev1.0.2-py3-none-any.whl > /dev/null 2>&1
-        cd ${{ github.workspace }} && bash user_data/ft_client/test_client/feed.sh
+        bash ${{ github.workspace }}/user_data/ft_client/test_client/feed.sh
         
     - name: 🚀 Initiate Feed Container
       if: env.RERUN_RUNNER == 'true'
