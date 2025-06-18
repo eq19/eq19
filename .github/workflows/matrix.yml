@@ -16,8 +16,8 @@ jobs:
         params: ${{ fromJson(inputs.matrix_json).params }}
 
     env:
+      JOBS_ID: 1
       GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
     steps:
       - name: 📥 Checkout Repo
@@ -39,7 +39,7 @@ jobs:
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           initiate_pauli_sum: ${{ toJSON(steps.build-parser.outputs) }}
 
-      - name: 🪂 Download data
+      - name: 🪂 Install freqtrade
         shell: bash
         run: |
           cd ${{ github.workspace }}/user_data/build_helpers && ./install_ta-lib.sh > /dev/null 2>&1
@@ -49,7 +49,7 @@ jobs:
           pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
           cd ${{ github.workspace }} && cat user_data/config_examples/config_exchange.example.json > user_data/config.json
 
-      - name: Download data as artifact
+      - name: 🪂 Download data
         uses: actions/download-artifact@v3
         with:
           name: freqtrade-data
