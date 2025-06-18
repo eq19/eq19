@@ -32,6 +32,7 @@ jobs:
         id: build-parser
         env:
           JOBS_ID: 1
+          PARAM: ${{ matrix.params }}
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           chat_id: ${{ secrets.MESSAGE_API }}
@@ -91,14 +92,12 @@ jobs:
 
       - name: 🧠 Run Hyperopt
         env:
-          PARAM: ${{ matrix.params }}        
           LOSS: ${{ fromJson(inputs.matrix_json).loss }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
         run: |
           echo "Running hyperopt..."
           echo "Loss: $LOSS"
           echo "Space: $SPACE"
-          echo "Param: $PARAM"
           bash user_data/ft_client/test_client/feed.sh
 
           # echo -e "\n$hr\nID: $id 👉 Running $hyperopt_loss\nSpaces: $spaces | Days: $days | Epochs: $epochs\n$hr"
