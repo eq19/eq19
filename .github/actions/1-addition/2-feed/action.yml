@@ -103,7 +103,7 @@ runs:
         mv -f ${{ inputs.action_path }} ${{ github.workspace }}/_site
         mkdir -p ${{ inputs.action_path }} && cp -R ${{ github.workspace }}/_site/. ${{ inputs.action_path }}/
   
-    - name: 🪂 Test Client
+    - name: 🪂 Download data
       if: env.RERUN_RUNNER == 'false'
       shell: bash
       run: |
@@ -122,7 +122,7 @@ runs:
       with:
         name: freqtrade-data
         path: user_data/data/
-        
+
     - uses: ikalnytskyi/action-setup-postgres@v7
       if: env.RERUN_RUNNER == 'false'
       id: postgres
