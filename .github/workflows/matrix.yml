@@ -59,7 +59,8 @@ jobs:
         with:
           script: |
             const artifactName = 'freqtrade-data';
-            const runId = context.payload.inputs.matrix_json.run_id;
+            const matrix = JSON.parse(context.payload.inputs.matrix_json);
+            const runId = matrix.run_id;
 
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
               owner: context.repo.owner,
