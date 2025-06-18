@@ -144,8 +144,14 @@ runs:
         pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
         pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
         cd ${{ github.workspace }} && cat user_data/config_examples/config_exchange.example.json > user_data/config.json
+        freqtrade download-data --timeframes $TIMEFRAMES --timerange="$TD" --verbose
+
+    - name: 🪂 Test Client
+      if: env.RERUN_RUNNER == 'false'
+      shell: bash
+      run: |
         bash user_data/ft_client/test_client/feed.sh
-        
+
     - name: 🚀 Initiate Feed Container
       if: env.RERUN_RUNNER == 'true'
       uses: devcontainers/ci@v0.3
