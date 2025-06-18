@@ -73,18 +73,14 @@ jobs:
 
             const downloadUrl = match.archive_download_url;
 
-            const axios = require('axios');
-            const fs = require('fs');
-            const res = await axios.get(downloadUrl, {
-              responseType: 'arraybuffer',
-              headers: {
-                Authorization: `Bearer ${process.env.GH_TOKEN}`,
-                Accept: 'application/vnd.github+json'
-              }
-            });
-
-            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/${artifactName}.zip`, res.data);
-
+      - name: Download artifact zip using curl
+        run: |
+          curl -L \
+           -H "Authorization: Bearer $GH_TOKEN" \
+           -H "Accept: application/vnd.github+json" \
+           https://api.github.com/repos/${{ github.repository }}/actions/artifacts/${{ steps.get-artifact-id.outputs.artifact_id }}/zip \
+           -o freqtrade-data.zip            
+               
       - name: Extract artifact
         run: unzip freqtrade-data.zip -d extracted-files/
 
