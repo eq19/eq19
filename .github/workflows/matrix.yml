@@ -84,7 +84,7 @@ jobs:
             -o freqtrade-data.zip            
                
       - name: Extract artifact
-        run: unzip freqtrade-data.zip -d user_data/data/
+        run: unzip -o freqtrade-data.zip -d user_data/data/
 
       - name: Show contents
         run: ls -R user_data/data/
