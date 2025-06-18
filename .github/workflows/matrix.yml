@@ -23,6 +23,22 @@ jobs:
       - name: 📥 Checkout Repo
         uses: actions/checkout@v4
 
+      - name: 🪂 Download data
+        shell: bash
+        run: |
+          #cd ${{ github.workspace }}/user_data/build_helpers && ./install_ta-lib.sh > /dev/null 2>&1
+          python -m venv ${{ github.workspace }}/venv && source ${{ github.workspace }}/venv/bin/activate
+          pip install -qq --no-cache-dir ta "numpy<3.0" "plotly==6.1.2"
+          pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
+          pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
+          cd ${{ github.workspace }} && cat user_data/config_examples/config_exchange.example.json > user_data/config.json
+
+      - name: Download data as artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: freqtrade-data
+          path: user_data/data/
+
       - name: 🧠 Run Hyperopt
         env:
           PARAM: ${{ matrix.params }}        
