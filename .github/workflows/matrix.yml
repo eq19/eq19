@@ -54,24 +54,28 @@ jobs:
           pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
           cat user_data/config_examples/config_exchange.example.json > user_data/config.json
 
-      - name: 🪂 Download artifact using GitHub API
+      - name: ⚙️ Get artifact ID
+        id: get-artifact-id
         uses: actions/github-script@v7
         with:
           script: |
-            const artifactName = 'freqtrade-data';
             const matrix = JSON.parse(context.payload.inputs.matrix_json);
+            const artifactName = 'freqtrade-data';
             const runId = matrix.run_id;
 
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              run_id: runId
+              run_id: runId,
             });
 
             const match = artifacts.data.artifacts.find(a => a.name === artifactName);
-            if (!match) throw new Error(`Artifact '${artifactName}' not found in run ${runId}`);
+            if (!match) {
+              throw new Error(`Artifact '${artifactName}' not found in run ${runId}`);
+            }
 
-            const downloadUrl = match.archive_download_url;
+            core.setOutput('artifact_id', match.id);
+            core.setOutput('run_id', runId);
 
       - name: Download artifact zip using curl
         run: |
