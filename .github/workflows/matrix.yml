@@ -16,8 +16,9 @@ jobs:
         params: ${{ fromJson(inputs.matrix_json).params }}
 
     env:
-      JOBS_ID: 1
       GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      RUNNER_TITLE: "Google-optimized-instance"
+      TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
 
     steps:
       - name: 📥 Checkout Repo
@@ -26,6 +27,8 @@ jobs:
       - name: ⚙️ Build Maps
         uses: eq19/maps@v8
         id: build-parser
+        env:
+          JOBS_ID: 1
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           chat_id: ${{ secrets.MESSAGE_API }}
