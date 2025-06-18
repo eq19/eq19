@@ -117,7 +117,7 @@ runs:
         freqtrade download-data --timeframes "1m 15m" --timerange="$(date -u -d "13 days ago" +%Y%m%d)-$(date -u +%Y%m%d)" --verbose
 
     - name: Upload downloaded data as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: env.RERUN_RUNNER == 'false'
       with:
         name: freqtrade-data
