@@ -180,7 +180,7 @@ runs:
         #export LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
 
         FILE="user_data/config_examples/config_params.example.json"
-        [[ -n "$PARAM" ]] && jq --arg param "$PARAM" 'walk(if type == "object" and has("optimize") then .optimize = (path | last == $param) else . end)' "$FILE" > tmp.json && mv tmp.json "$FILE"
+        [[ -n "$PARAM" ]] && jq --arg param "$PARAM" '(.. | objects | select(has("optimize")).optimize = false | (.. | objects | select(has("optimize") and (path[-1] == $param)).optimize = true' "$FILE" > tmp.json && mv tmp.json "$FILE"
         python user_data/ft_client/test_client/app.py orgs.json ${{ env.ID }}
 
         ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
