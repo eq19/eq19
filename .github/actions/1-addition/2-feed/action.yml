@@ -103,17 +103,6 @@ runs:
         mv -f ${{ inputs.action_path }} ${{ github.workspace }}/_site
         mkdir -p ${{ inputs.action_path }} && cp -R ${{ github.workspace }}/_site/. ${{ inputs.action_path }}/
   
-    - uses: ikalnytskyi/action-setup-postgres@v7
-      if: env.RERUN_RUNNER == 'false'
-      id: postgres
-      with:
-        username: yoda
-        password: GrandMaster
-        database: jedi_order
-        port: 34837
-        postgres-version: "17"
-        ssl: true
-
     - name: 🪂 Test postgres
       if: env.RERUN_RUNNER == 'false'
       env:
@@ -127,6 +116,17 @@ runs:
         cd ${{ github.workspace }} && cat user_data/config_examples/config_exchange.example.json > user_data/config.json
         echo -e "\nTEST DOWNLOAD\n" && freqtrade download-data --help
         freqtrade download-data --timeframes "1m 15m" --timerange="$TD" --verbose
+
+    - uses: ikalnytskyi/action-setup-postgres@v7
+      if: env.RERUN_RUNNER == 'false'
+      id: postgres
+      with:
+        username: yoda
+        password: GrandMaster
+        database: jedi_order
+        port: 34837
+        postgres-version: "17"
+        ssl: true
 
     - name: 🪂 Test Client
       if: env.RERUN_RUNNER == 'false'
