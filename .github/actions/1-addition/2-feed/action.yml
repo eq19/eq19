@@ -94,7 +94,6 @@ runs:
   using: composite
   steps:
     - name: 💎 Set Artifact
-      if: env.RERUN_RUNNER == 'true'          
       id: artifact
       shell: bash
       run: |      
