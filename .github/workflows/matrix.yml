@@ -55,7 +55,7 @@ jobs:
           cat user_data/config_examples/config_exchange.example.json > user_data/config.json
 
       - name: 🪂 Download artifact using GitHub API
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const artifactName = 'freqtrade-data';
