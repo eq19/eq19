@@ -229,6 +229,6 @@ runs:
       if: always()
       run: |
         if [[ "${{ contains(join(steps.*.conclusion, ','), 'failure') }}" == "true" ]]; then
-          [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml" --ref $GITHUB_REF
+          [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml"
           exit 1
         fi
