@@ -224,3 +224,11 @@ runs:
         MAX_DELETIONS: 15
       run: |
         ./.github/entrypoint/remote.sh
+
+    - name: ⚧️ Rerun workflow if failed
+      if: always()
+      run: |
+        if [[ "${{ contains(join(steps.*.conclusion, ','), 'failure') }}" == "true" ]]; then
+          gh workflow run "main.yml" --ref $GITHUB_REF
+          exit 1
+        fi
