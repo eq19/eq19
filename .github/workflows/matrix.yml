@@ -96,7 +96,7 @@ jobs:
 
       - name: 🧠 Run Hyperopt
         env:
-          HYPEROPTS: ${{ matrix.hyperopts }}
+          HYPEROPT: ${{ matrix.hyperopts }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
         run: |
