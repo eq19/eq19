@@ -57,7 +57,7 @@ inputs:
     required: true
   api_secret:
     description: 'The api secret'
-    required: false
+    required: true
   token:
     description: 'The deploy token'
     required: false
