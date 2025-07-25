@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: ⚙️ Build Maps
-        uses: eq19/maps@v7
+        uses: eq19/maps@v8
         id: build-parser
         env:
           JOBS_ID: 1
