@@ -194,8 +194,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   fi
 
   # Get the strategy file and params value then save to fibbo.py and fibbo.json
+  cp /home/runner/user_data/strategies/utils /home/runner/data_dry/strategies/utils
+  cp /home/runner/user_data/strategies/utils /home/runner/data_live/strategies/utils
   cp /home/runner/user_data/strategies/fibbo.py /home/runner/data_dry/strategies/fibbo.py 
   cp /home/runner/user_data/strategies/fibbo.py /home/runner/data_live/strategies/fibbo.py 
+  cp /home/runner/user_data/strategies/__init__.py /home/runner/data_dry/strategies/__init__.py 
+  cp /home/runner/user_data/strategies/__init__.py /home/runner/data_live/strategies/__init__.py 
   cp /home/runner/user_data/strategies/hyperopt_params.json /home/runner/data_dry/strategies/hyperopt_params.json
   cp /home/runner/user_data/strategies/hyperopt_params.json /home/runner/data_live/strategies/hyperopt_params.json
 
