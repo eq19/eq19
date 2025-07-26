@@ -170,6 +170,16 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
   
 elif [[ "${JOBS_ID}" == "3" ]]; then
 
+  # Setup freqtrade userdir
+  if ! /mnt/disks/deeplearning/usr/bin/docker exec mydb [ -d "/home/runner/data_dry" ]; then
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb freqtrade create-userdir --userdir /home/runner/data_dry
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb mkdir -p /home/runner/data_live/strategies/utils
+  fi
+
+  if ! /mnt/disks/deeplearning/usr/bin/docker exec mydb [ -d "/home/runner/data_live" ]; then
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb freqtrade create-userdir --userdir /home/runner/data_live
+  fi
+
   CONFIG=/home/runner/user_data/config.json
   CONFIG_DRY=/home/runner/data_dry/config.json
   CONFIG_LIVE=/home/runner/data_live/config.json
