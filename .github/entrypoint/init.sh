@@ -173,14 +173,15 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   # Configuration
   MAX_RETRIES=3
   FILES=(
-    "fibbo.py"
-    "__init__.py"
-    "hyperopt_params.json"
-    "utils/__init__.py"
-    "utils/indodax_patch.py"
+    ""
+    "strategies/fibbo.py"
+    "strategies/__init__.py"
+    "strategies/hyperopt_params.json"
+    "strategies/utils/__init__.py"
+    "strategies/utils/indodax_patch.py"
   )
-  BASE_PATH="user_data/strategies"
-  BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/$BASE_PATH"
+  BASE_PATH="/strategies"
+  BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
 
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
@@ -191,7 +192,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     DOWNLOAD_URL="$BASE_URL/$REL_PATH"
     DEST_PATH="/home/runner/$BASE_PATH/$REL_PATH"
 
-    # Download with retries (always overwrite)
+    # Download with retries (always overwrite
     for attempt in $(seq 1 $MAX_RETRIES); do
       echo "⌛ [Attempt $attempt/$MAX_RETRIES] Downloading: $REL_PATH"
     
