@@ -222,7 +222,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 set -euo pipefail  # Strict error handling
 
 # Configuration
-BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data/strategies"
+MAX_RETRIES=3
 FILES=(
   "fibbo.py"
   "__init__.py"
@@ -230,7 +230,7 @@ FILES=(
   "utils/__init__.py"
   "utils/indodax_patch.py"
 )
-MAX_RETRIES=3
+BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data/strategies"
 
 for REL_PATH in "${FILES[@]}"; do
   DEST_PATH="/home/runner/data_dry/strategies/$REL_PATH"
