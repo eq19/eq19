@@ -170,9 +170,53 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
   
 elif [[ "${JOBS_ID}" == "3" ]]; then
 
-  CONFIG=/home/runner/user_data/config.json
-  CONFIG_DRY=/home/runner/data_dry/config.json
-  CONFIG_LIVE=/home/runner/data_live/config.json
+  # Configuration
+  MAX_RETRIES=3
+  FILES=(
+    "fibbo.py"
+    "__init__.py"
+    "hyperopt_params.json"
+    "utils/__init__.py"
+    "utils/indodax_patch.py"
+  )
+  BASE_PATH="user_data/strategies"
+  BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/$BASE_PATH"
+
+  CONFIG="/home/runner/user_data/config.json"
+  CONFIG_DRY="/home/runner/data_dry/config.json"
+  CONFIG_LIVE="/home/runner/data_live/config.json"
+
+  set -euo pipefail  # Strict error handling
+  for REL_PATH in "${FILES[@]}"; do
+    DOWNLOAD_URL="$BASE_URL/$REL_PATH"
+    DEST_PATH="/home/runner/$BASE_PATH/$REL_PATH"
+
+    # Download with retries (always overwrite)
+    for attempt in $(seq 1 $MAX_RETRIES); do
+      echo "⌛ [Attempt $attempt/$MAX_RETRIES] Downloading: $REL_PATH"
+    
+      if /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$DEST_PATH" "$DOWNLOAD_URL"; then
+        if /mnt/disks/deeplearning/usr/bin/docker exec mydb test -s "$DEST_PATH"; then
+          echo "✅ [SUCCESS] Downloaded: $DEST_PATH"
+          break
+        else
+          echo "⚠️ [WARNING] Empty file (retrying...)"
+        fi
+      else
+        echo "⚠️ [WARNING] Download failed (retrying...)"
+      fi
+
+      # Final attempt failure
+      if [ "$attempt" -eq "$MAX_RETRIES" ]; then
+        echo "❌ [ERROR] Failed to download: $REL_PATH" >&2
+        exit 1
+      fi
+      sleep 2
+    done
+  done
+
+  echo "🚀 All files updated (forced overwrite)!"
+  exit 0
 
   # Setup freqtrade config.json
   if [ -f /home/runner/user_data/config.json ]; then
@@ -215,56 +259,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
 
 
-set -euo pipefail  # Strict error handling
-
-# Configuration
-MAX_RETRIES=3
-DIRS=(
-  "data_dry/strategies"
-  "data_live/strategies"
-)
-FILES=(
-  "fibbo.py"
-  "__init__.py"
-  "hyperopt_params.json"
-  "utils/__init__.py"
-  "utils/indodax_patch.py"
-)
-BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data/strategies"
-
-for DIR_PATH in "${DIRS[@]}"; do
-  for REL_PATH in "${FILES[@]}"; do
-    DOWNLOAD_URL="$BASE_URL/$REL_PATH"
-    DEST_PATH="/home/runner/$DIR_PATH/$REL_PATH"
-
-    # Download with retries (always overwrite)
-    for attempt in $(seq 1 $MAX_RETRIES); do
-      echo "⌛ [Attempt $attempt/$MAX_RETRIES] Downloading: $REL_PATH"
-    
-      if /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$DEST_PATH" "$DOWNLOAD_URL"; then
-        if /mnt/disks/deeplearning/usr/bin/docker exec mydb test -s "$DEST_PATH"; then
-          echo "✅ [SUCCESS] Downloaded: $DEST_PATH"
-          break
-        else
-          echo "⚠️ [WARNING] Empty file (retrying...)"
-        fi
-      else
-        echo "⚠️ [WARNING] Download failed (retrying...)"
-      fi
-
-      # Final attempt failure
-      if [ "$attempt" -eq "$MAX_RETRIES" ]; then
-        echo "❌ [ERROR] Failed to download: $REL_PATH" >&2
-        exit 1
-      fi
-      sleep 2
-    done
-  done
-done
-
-echo "🚀 All files updated (forced overwrite)!"
-exit 0
-
+  
 
 
 
