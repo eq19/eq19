@@ -99,14 +99,5 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   #echo -e "\n$hr\nDeepLearning Locate Terraform\n$hr" 
   #find /mnt/disks/deeplearning -type d -name '*terraform*' | sort
 
-  # Setup freqtrade userdir
-  if ! /mnt/disks/deeplearning/usr/bin/docker exec mydb [ -d "/home/runner/data_dry" ]; then
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb freqtrade create-userdir --userdir /home/runner/data_dry
-  fi
-
-  if ! /mnt/disks/deeplearning/usr/bin/docker exec mydb [ -d "/home/runner/data_live" ]; then
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb freqtrade create-userdir --userdir /home/runner/data_live
-  fi
-
 fi
 
