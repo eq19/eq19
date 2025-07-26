@@ -173,24 +173,17 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   # Configuration
   MAX_RETRIES=3
   FILES=(
-    ""
     "strategies/fibbo.py"
     "strategies/__init__.py"
-    "strategies/hyperopt_params.json"
     "strategies/utils/__init__.py"
     "strategies/utils/indodax_patch.py"
   )
-  BASE_PATH="/strategies"
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
-
-  CONFIG="/home/runner/user_data/config.json"
-  CONFIG_DRY="/home/runner/data_dry/config.json"
-  CONFIG_LIVE="/home/runner/data_live/config.json"
 
   set -euo pipefail  # Strict error handling
   for REL_PATH in "${FILES[@]}"; do
     DOWNLOAD_URL="$BASE_URL/$REL_PATH"
-    DEST_PATH="/home/runner/$BASE_PATH/$REL_PATH"
+    DEST_PATH="/home/runner/user_data/$REL_PATH"
 
     # Download with retries (always overwrite
     for attempt in $(seq 1 $MAX_RETRIES); do
@@ -220,35 +213,39 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   exit 0
 
   # Setup freqtrade config.json
-  if [ -f /home/runner/user_data/config.json ]; then
-    sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
-    sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
+  CONFIG="/home/runner/user_data/config.json"
+  CONFIG_DRY="/home/runner/data_dry/config.json"
+  CONFIG_LIVE="/home/runner/data_live/config.json"
+  CONFIG_BASE="$BASE_URL/config_examples/config_exchange.example.json"
+    
+  if /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASE"; then
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
 
-    jq '.telegram.enabled = true' $CONFIG > $CONFIG_DRY
-    jq '.telegram.enabled = true' $CONFIG > $CONFIG_LIVE
-    #jq '.telegram.enabled = true | .dry_run = false' $CONFIG > $CONFIG_LIVE
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb jq '.telegram.enabled = true' $CONFIG > $CONFIG_DRY
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb jq '.telegram.enabled = true' $CONFIG > $CONFIG_LIVE
+    #/mnt/disks/deeplearning/usr/bin/docker exec mydb jq '.telegram.enabled = true | .dry_run = false' $CONFIG > $CONFIG_LIVE
 
-    sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
-    sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
-    sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
-    sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
-    sed -i "s|user_data/strategies|/home/runner/data_dry/strategies|g" $CONFIG_DRY
-    sed -i "s|user_data/strategies|/home/runner/data_live/strategies|g" $CONFIG_LIVE
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|user_data/strategies|/home/runner/data_dry/strategies|g" $CONFIG_DRY
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|user_data/strategies|/home/runner/data_live/strategies|g" $CONFIG_LIVE
   fi
 
   # Get the strategy file and params value then save to fibbo.py and fibbo.json
   cp /home/runner/user_data/strategies/hyperopt_params.json /home/runner/data_dry/strategies/hyperopt_params.json
   cp /home/runner/user_data/strategies/hyperopt_params.json /home/runner/data_live/strategies/hyperopt_params.json
 
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/$REPOSITORY/actions/variables/PARAMS_DRY" \
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb \
+    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY" \
     | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/$REPOSITORY/actions/variables/PARAMS_LIVE" \
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb \
+    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE" \
     | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json
-
-  find -not -path "./.git/*" -not -name ".git" -delete
-  shopt -s dotglob && cp -R /mnt/disks/deeplearning/tmp/_site/* .
 
   # Get the config value and save to file.json
   curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
@@ -257,12 +254,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
     | jq -r '.value' > _config.yml
-
-
-
-  
-
-
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
