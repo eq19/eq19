@@ -185,6 +185,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     DOWNLOAD_URL="$BASE_URL/$REL_PATH"
     DEST_PATH="/home/runner/user_data/$REL_PATH"
 
+    # Ensure parent directory exists (no file existence check)
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb mkdir -p "$(dirname "$DEST_PATH")"
+
     # Download with retries (always overwrite
     for attempt in $(seq 1 $MAX_RETRIES); do
       echo "⌛ [Attempt $attempt/$MAX_RETRIES] Downloading: $REL_PATH"
