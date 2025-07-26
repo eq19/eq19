@@ -194,6 +194,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   fi
 
   # Get the strategy file and params value then save to fibbo.py and fibbo.json
+  curl -o fibbo.py https://raw.githubusercontent.com/eq19/maps/v8/user_data/strategies/fibbo.py
   cp /home/runner/user_data/strategies/utils /home/runner/data_dry/strategies/utils
   cp /home/runner/user_data/strategies/utils /home/runner/data_live/strategies/utils
   cp /home/runner/user_data/strategies/fibbo.py /home/runner/data_dry/strategies/fibbo.py 
