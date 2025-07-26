@@ -44,6 +44,8 @@ git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 git config --global credential.helper store
 echo "https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com" > ~/.git-credentials
 
+export MAP_BRANCH=$(curl -s -H "Authorization: token $GH_TOKEN" \
+  https://api.github.com/repos/eq19/maps | jq -r .default_branch)
 export DEFAULT_BRANCH=$(curl -s -H "Authorization: token $GH_TOKEN" \
   https://api.github.com/repos/$GITHUB_REPOSITORY | jq -r .default_branch)
 export RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
@@ -190,7 +192,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   fi
 
   # Get the strategy file and params value then save to fibbo.py and fibbo.json
-  curl -o fibbo.py https://raw.githubusercontent.com/eq19/maps/v8/user_data/strategies/fibbo.py
+  curl -o fibbo.py https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data/strategies/fibbo.py
   cp /home/runner/user_data/strategies/utils /home/runner/data_dry/strategies/utils
   cp /home/runner/user_data/strategies/utils /home/runner/data_live/strategies/utils
   cp /home/runner/user_data/strategies/fibbo.py /home/runner/data_dry/strategies/fibbo.py 
