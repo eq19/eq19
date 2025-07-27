@@ -224,8 +224,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
 
     /mnt/disks/deeplearning/usr/bin/docker exec mydb jq '.telegram.enabled = true' $CONFIG > $CONFIG_DRY
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb jq '.telegram.enabled = true' $CONFIG > $CONFIG_LIVE
-    #/mnt/disks/deeplearning/usr/bin/docker exec mydb jq '.telegram.enabled = true | .dry_run = false' $CONFIG > $CONFIG_LIVE
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb jq '.telegram.enabled = true | .dry_run = false' $CONFIG > $CONFIG_LIVE
 
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
