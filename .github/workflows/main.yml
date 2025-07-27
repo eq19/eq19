@@ -19,6 +19,7 @@ permissions: write-all
 # 🕸️ Global Environment
 env:
   GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  RERUN_RUNNER: ${{ vars.RERUN_RUNNER }}
   RUNNER_TITLE: "Google-optimized-instance"
   TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
 
@@ -93,7 +94,7 @@ jobs:
           initiate_pauli_sum: ${{ toJSON(steps.feed-mapping.outputs) }}
 
       - name: 📋 Generate Outputs
-        if: ${{ env.JOBS_ID == 2 }}
+        if: ${{ env.JOBS_ID == 2 && env.RERUN_RUNNER == 'true' }}
         id: gen_outputs
         shell: bash
         run: |
