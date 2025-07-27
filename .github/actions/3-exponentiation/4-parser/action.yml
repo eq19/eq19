@@ -76,6 +76,7 @@ runs:
       env:
         BASE: "https://github.com/eq19/eq19.github.io.wiki.git"
         WIKI: "https://github.com/${{ env.TARGET_REPOSITORY }}.wiki.git"
+        TELEGRAM_CHAT_ID
       run: |
         if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           export PAULI_SUM=$(echo -n "${{ inputs.pauli_sum }}" | base64 --decode);
