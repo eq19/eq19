@@ -212,9 +212,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     done
   done
 
-  echo "🚀 All files updated (forced overwrite)!"
-  exit 0
-
   # Setup freqtrade config.json
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
@@ -236,6 +233,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|user_data/strategies|/home/runner/data_dry/strategies|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|user_data/strategies|/home/runner/data_live/strategies|g" $CONFIG_LIVE
+    echo "🚀 All files updated (forced overwrite)!"
   fi
 
   /mnt/disks/deeplearning/usr/bin/docker exec mydb \
