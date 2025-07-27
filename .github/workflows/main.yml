@@ -94,18 +94,18 @@ jobs:
           initiate_pauli_sum: ${{ toJSON(steps.feed-mapping.outputs) }}
 
       - name: 📋 Generate Outputs
-        if: ${{ env.JOBS_ID == 2 && env.RERUN_RUNNER == 'true' }}
-        id: gen_outputs
         shell: bash
+        id: gen_outputs
+        if: ${{ env.JOBS_ID == 2 && env.RERUN_RUNNER == 'true' }}
         run: |
           output=${{ steps.feed-mapping.outputs.addition ||steps.set-lexering.outputs.multiplication }}
           echo "output_${id}=${output}" >> "${GITHUB_OUTPUT}"
 
-          HEADER="Accept: application/vnd.github+json"
-          RESPONSE=$(gh api -H "${HEADER}" repos/${{ github.repository }}/actions/runners)
-          TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
-          STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_TITLE }}" '.runners[] | select(.name == $NAME).status')
-          if [[ "$TOTAL_COUNT" -eq 0 ]] || [[ "$STATUS" == "offline" ]]; then gh workflow run "main.yml"; fi
+          #HEADER="Accept: application/vnd.github+json"
+          #RESPONSE=$(gh api -H "${HEADER}" repos/${{ github.repository }}/actions/runners)
+          #TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
+          #STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_TITLE }}" '.runners[] | select(.name == $NAME).status')
+          #if [[ "$TOTAL_COUNT" -eq 0 ]] || [[ "$STATUS" == "offline" ]]; then gh workflow run "main.yml"; fi
 
     outputs:
       # ♻️ Simulate Gell-Mann Matrices
