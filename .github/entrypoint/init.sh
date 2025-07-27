@@ -263,6 +263,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   /mnt/disks/deeplearning/usr/bin/docker exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
   /mnt/disks/deeplearning/usr/bin/docker exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb ls -alR /home/runner/data_dry
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb ls -alR /home/runner/data_live
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
