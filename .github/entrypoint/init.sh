@@ -218,7 +218,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_LIVE="/home/runner/data_live/config.json"
   CONFIG_BASE="$BASE_URL/config_examples/config_exchange.example.json"
   HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
-    
+
+  TELEGRAM_CHAT_ID=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TELEGRAM_CHAT_ID" | jq -r '.value')
+  MONITOR_BOT_TOKEN=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/MONITOR_BOT_TOKEN" | jq -r '.value')
+  TRADING_BOT_TOKEN=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TRADING_BOT_TOKEN" | jq -r '.value')
+
   if /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASE"; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
