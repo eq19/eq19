@@ -237,12 +237,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     echo "🚀 All files updated (forced overwrite)!"
   fi
 
-  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c "\
-    curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c \
+    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
     https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
     | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
-  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c "\
-    curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c \
+    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
     https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
     | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
 
