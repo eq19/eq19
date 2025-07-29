@@ -265,8 +265,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   # Get the strategy file and params value then save to fibbo.py and fibbo.json
   BEARER=$(/mnt/disks/deeplearning/usr/bin/gcloud auth print-identity-token)
-  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c "\
-    curl -s -X POST -H 'Authorization: Bearer ${BEARER}' -H 'Content-Type: application/json' \
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c \
+    "curl -s -X POST -H 'Authorization: Bearer ${BEARER}' -H 'Content-Type: application/json' \
     https://us-central1-feedmapping.cloudfunctions.net/function \
     --data @_data/orgs.json | jq '.' > $HYPEROPT_PARAM"
 
