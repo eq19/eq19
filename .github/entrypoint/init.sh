@@ -255,6 +255,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
     https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
     | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c \
+    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+    https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+    | jq -r '.value' > $HYPEROPT_BASE"
 
   # Get the config value and save to file.json
   curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
