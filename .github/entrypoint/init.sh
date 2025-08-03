@@ -224,12 +224,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
   CONFIG_LIVE="/home/runner/data_live/config.json"
+  CONFIG_FULL="$BASE_URL/config_examples/config_full.example.json"
   CONFIG_BASE="$BASE_URL/config_examples/config_exchange.example.json"
   HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
+  EXCHANGE_PARAM="/home/runner/user_data/config_examples/config_exchange.example.json"
 
   set -euo pipefail  # Strict error handling
   /mnt/disks/deeplearning/usr/bin/docker exec mydb rm -rf "$CONFIG"
-  if /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASE"; then
+  if /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$CONFIG" "$CONFIG_FULL"; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
 
