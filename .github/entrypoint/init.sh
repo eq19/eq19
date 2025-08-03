@@ -242,10 +242,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $CONFIG_LIVE
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $CONFIG_LIVE
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
+
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$EXCHANGE_PARAM" "$CONFIG_BASE"
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
 
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|TELEGRAM_CHAT_ID|$TELEGRAM_CHAT_ID|g" /freqtrade.sh
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|WARNING_BOT_TOKEN|$WARNING_BOT_TOKEN|g" /freqtrade.sh
