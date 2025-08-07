@@ -103,7 +103,7 @@ jobs:
           echo "Running hyperopt..."
           echo "Space: $SPACE"
           echo "Score: $SCORE"
-          bash user_data/ft_client/test_client/feed.sh
+          bash user_data/ft_client/test_client/feed.sh hyperopt
 
           # echo -e "\n$hr\nID: $id 👉 Running $hyperopt_loss\nSpaces: $spaces | Days: $days | Epochs: $epochs\n$hr"
           # freqtrade hyperopt --timerange ${start_date}-${end_date} --epochs ${epochs} -j 4 \
