@@ -113,7 +113,19 @@ runs:
           #Jekyll Quick Reference https://gist.github.com/DrOctogon/bfb6e392aa5654c63d12
           JEKYLL_GITHUB_TOKEN=${{ inputs.token }} DISABLE_WHITELIST=true bundle exec jekyll build --profile --trace -t -d ./docs
 
-          if [[ "${TARGET_REPOSITORY}" == "eq19/eq19.github.io" ]]; then echo "www.eq19.com" > ./docs/CNAME; fi
+          if [[ "${TARGET_REPOSITORY}" == "eq19/eq19.github.io" ]]; then
+            domain="eq19.com"
+            if host "$domain" &> /dev/null; then
+              if curl -s --head --request GET "https://$domain" | grep "200\|301\|302" > /dev/null; then
+                echo "✅ $domain is registered and responding."
+                echo "www.eq19.com" > ./docs/CNAME
+              else
+                echo "⚠️ $domain resolves but no valid HTTP response."
+              fi
+            else
+              echo "❌ $domain does not resolve."
+            fi
+          fi
           rm -rf ./docs/.nojekyll && touch ./docs/.nojekyll
 
           echo -e "\n$hr\nFinal Pages\n$hr"
