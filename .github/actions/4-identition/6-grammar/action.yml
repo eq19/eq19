@@ -87,6 +87,7 @@ runs:
     - name: ⏪ Rewind all jobs on failure
       shell: bash
       env:
+        DOMAIN: "www.eq19.com"
         GH_TOKEN: ${{ inputs.token }}
         BASE: "D:/a/_actions/eq19/eq19/v2/.github"
       run: |
@@ -114,16 +115,15 @@ runs:
           JEKYLL_GITHUB_TOKEN=${{ inputs.token }} DISABLE_WHITELIST=true bundle exec jekyll build --profile --trace -t -d ./docs
 
           if [[ "${TARGET_REPOSITORY}" == "eq19/eq19.github.io" ]]; then
-            domain="eq19.com"
-            if host "$domain" &> /dev/null; then
-              if curl -s --head --request GET "https://$domain" | grep "200\|301\|302" > /dev/null; then
-                echo "✅ $domain is registered and responding."
-                echo "www.eq19.com" > ./docs/CNAME
+            if host "$DOMAIN" &> /dev/null; then
+              if curl -s --head --request GET "https://$DOMAIN" | grep "200\|301\|302" > /dev/null; then
+                echo "✅ $DOMAIN is registered and responding."
+                echo "$DOMAIN" > ./docs/CNAME
               else
-                echo "⚠️ $domain resolves but no valid HTTP response."
+                echo "⚠️ $DOMAIN resolves but no valid HTTP response."
               fi
             else
-              echo "❌ $domain does not resolve."
+              echo "❌ $DOMAIN does not resolve."
             fi
           fi
           rm -rf ./docs/.nojekyll && touch ./docs/.nojekyll
