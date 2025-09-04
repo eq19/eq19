@@ -137,7 +137,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   done
 
   echo "Condition not fulfilled after $max_retries checks ❌"
-  export GH_TOKEN=$GITHUB_ACCESS_TOKEN
-  gh workflow run "main.yml" --repo "$REPO_NAME"
+  gh workflow run "main.yml" --repo "$REPOSITORY"
 
 fi
