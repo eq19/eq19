@@ -12,10 +12,9 @@ for ((i=1; i<=max_retries; i++)); do
     RESPONSE=$(gh api -H "${HEADER}" repos/${{ env.REPO_NAME }}/actions/runners)
     TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ env.REPO_NAME }}/actions/runners --jq '.total_count')
     STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_TITLE }}" '.runners[] | select(.name == $NAME).status')
-    #if [[ "$TOTAL_COUNT" -eq 0 ]] || [[ "$STATUS" == "offline" ]]; then gh workflow run "main.yml" --repo ${{ env.REPO_NAME }}; fi
 
     # Replace this with your condition
-    if some_command_or_condition; then
+    if [[ ! "$TOTAL_COUNT" -eq 0 ]] && [[ "$STATUS" != "offline" ]]; then
         echo "Condition fulfilled ✅"
         exit 0
     fi
