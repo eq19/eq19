@@ -102,8 +102,8 @@ register_runner() {
   supervisorctl start runner
 }
 
-if [[ -z $RUNNER_TOKEN && -z $GITHUB_ACCESS_TOKEN ]]; then
-  echo "Error : You need to set RUNNER_TOKEN (or GITHUB_ACCESS_TOKEN) environment variable."
+if [[ -z $RUNNER_TOKEN && -z $GH_TOKEN ]]; then
+  echo "Error : You need to set RUNNER_TOKEN (or GH_TOKEN) environment variable."
   exit 1
 fi
 
