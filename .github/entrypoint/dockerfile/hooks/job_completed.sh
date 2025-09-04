@@ -18,17 +18,17 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   $DOCKER network inspect bridge
 
   RERUN_RUNNER=$(curl -s \
-    -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
+    -H "Authorization: token $GH_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
 
   REMOVE_REPOSITORY=$(curl -s \
-    -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
+    -H "Authorization: token $GH_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/REMOVE_REPOSITORY" | jq -r '.value')
 
   TARGET_REPOSITORY=$(curl -s \
-    -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
+    -H "Authorization: token $GH_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TARGET_REPOSITORY" | jq -r '.value')
 
