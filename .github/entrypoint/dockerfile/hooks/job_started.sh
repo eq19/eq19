@@ -97,7 +97,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   #find /mnt/disks/deeplearning -type d -name '*terraform*' | sort
 
   # Max retries
-  max_retries=10
+  max_retries=30
   # Interval between checks (10 retries in 10 minutes -> 60s each)
   interval=60
 
