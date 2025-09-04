@@ -125,7 +125,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb mkdir -p /home/runner/data_live/strategies/utils
       elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
         $DOCKER exec mydb supervisorctl stop freqtrade_live || true
-        $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+        $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true to 
       fi
 
       exit 0
@@ -137,6 +137,9 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   done
 
   echo "Condition not fulfilled after $max_retries checks ❌"
+  HEADER="Accept: application/vnd.github+json"
+  RUNNER_ID=$(gh api -H "${HEADER}" /repos/$REPOSITORY/actions/runners --jq '.runners.[].id')
+  gh api --method DELETE -H "${HEADER}" /repos/$REPOSITORY/actions/runners/${RUNNER_ID}
   gh workflow run "main.yml" --repo "$REPOSITORY"
 
 fi
