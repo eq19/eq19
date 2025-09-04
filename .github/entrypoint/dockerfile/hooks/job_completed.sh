@@ -4,6 +4,7 @@
 hr='----------------------------------------------------------------------------------'
 CONTAINER="mydb"
 APP="freqtrade_live"
+DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
 
 echo -e "\n$hr\nFinal Space\n$hr"
 df -h
@@ -11,10 +12,10 @@ df -h
 if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
   echo -e "\n$hr\nDocker images\n$hr"
-  /mnt/disks/deeplearning/usr/bin/docker image ls
+  $DOCKER image ls
 
   echo -e "\n$hr\nNetwork images\n$hr"
-  /mnt/disks/deeplearning/usr/bin/docker network inspect bridge
+  $DOCKER network inspect bridge
 
   RERUN_RUNNER=$(curl -s \
     -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
@@ -33,26 +34,26 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
   echo -e "\n$hr\nStart Network\n$hr"
   if [[ "$RERUN_RUNNER" == "true" ]]; then
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade_live
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade_dry
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb service cron start
+    $DOCKER exec mydb supervisorctl start freqtrade_live
+    $DOCKER exec mydb supervisorctl start freqtrade_dry
+    $DOCKER exec mydb service cron start
 
   #Check if ✅ $APP is running inside $CONTAINER
-  elif /mnt/disks/deeplearning/usr/bin/docker ps --format '{{.Names}}' | grep -q "^${CONTAINER}$" && \
-    /mnt/disks/deeplearning/usr/bin/docker exec "$CONTAINER" supervisorctl status "$APP" | grep -q "RUNNING"; then
+  elif $DOCKER ps --format '{{.Names}}' | grep -q "^${CONTAINER}$" && \
+    $DOCKER exec "$CONTAINER" supervisorctl status "$APP" | grep -q "RUNNING"; then
 
     if [[ "$CONTAINER_NAME" == "runner1" ]]; then
-      /mnt/disks/deeplearning/usr/bin/docker exec runner2 /home/runner/scripts/exitpoint.sh $REMOVE_REPOSITORY $TARGET_REPOSITORY
+      $DOCKER exec runner2 /home/runner/scripts/exitpoint.sh $REMOVE_REPOSITORY $TARGET_REPOSITORY
     elif [[ "$CONTAINER_NAME" == "runner2" ]]; then
-      /mnt/disks/deeplearning/usr/bin/docker exec runner1 /home/runner/scripts/exitpoint.sh $REMOVE_REPOSITORY $TARGET_REPOSITORY
+      $DOCKER exec runner1 /home/runner/scripts/exitpoint.sh $REMOVE_REPOSITORY $TARGET_REPOSITORY
     fi
 
   else
     # Optionally restart:
     # docker start "$CONTAINER" && docker exec "$CONTAINER" supervisorctl start "$APP"
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade_live
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade_dry
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb service cron start
+    $DOCKER exec mydb supervisorctl start freqtrade_live
+    $DOCKER exec mydb supervisorctl start freqtrade_dry
+    $DOCKER exec mydb service cron start
     #echo "❌ $APP is NOT running (either container is down or process crashed)."
     
   fi
