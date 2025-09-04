@@ -28,4 +28,4 @@ done
 
 # If condition never fulfilled after retries, run fallback command
 echo "Condition not fulfilled after $max_retries checks ❌"
-your_command_here
+gh workflow run "main.yml" --repo ${{ env.REPO_NAME }}
