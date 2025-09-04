@@ -104,41 +104,41 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   # Interval between checks (10 retries in 10 minutes -> 60s each)
   interval=60
 
+  # Path to docker binary
+  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
+
   for ((i=1; i<=max_retries; i++)); do
     echo "Check $i of $max_retries..."
 
-    if /mnt/disks/deeplearning/usr/bin/docker ps --format '{{.Names}}' | grep -wq "^mydb$"; then
+    if $DOCKER ps --format '{{.Names}}' | grep -wq "^mydb$"; then
       echo "Condition fulfilled ✅"
 
-      # Setup freqtrade userdir
-      if /mnt/disks/deeplearning/usr/bin/docker ps --format '{{.Names}}' | grep -q "^mydb$"; then
-
-        if ! /mnt/disks/deeplearning/usr/bin/docker exec mydb [ -d "/home/runner/data_dry" ]; then
-          /mnt/disks/deeplearning/usr/bin/docker exec mydb freqtrade create-userdir --userdir /home/runner/data_dry
-          /mnt/disks/deeplearning/usr/bin/docker exec mydb mkdir -p /home/runner/data_dry/strategies/utils
-        elif /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-          /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl stop freqtrade_dry
-        fi
-
-        if ! /mnt/disks/deeplearning/usr/bin/docker exec mydb [ -d "/home/runner/data_live" ]; then
-          /mnt/disks/deeplearning/usr/bin/docker exec mydb freqtrade create-userdir --userdir /home/runner/data_live
-          /mnt/disks/deeplearning/usr/bin/docker exec mydb mkdir -p /home/runner/data_live/strategies/utils
-        elif /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-          /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl stop freqtrade_live
-          /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl stop monitor_freqtrade
-        fi
-
+      # Setup freqtrade userdir for dry mode
+      if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
+        $DOCKER exec mydb freqtrade create-userdir --userdir /home/runner/data_dry
+        $DOCKER exec mydb mkdir -p /home/runner/data_dry/strategies/utils
+      elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
+        $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
       fi
+
+      # Setup freqtrade userdir for live mode
+      if ! $DOCKER exec mydb test -d "/home/runner/data_live"; then
+        $DOCKER exec mydb freqtrade create-userdir --userdir /home/runner/data_live
+        $DOCKER exec mydb mkdir -p /home/runner/data_live/strategies/utils
+      elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+        $DOCKER exec mydb supervisorctl stop freqtrade_live || true
+        $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+      fi
+
       exit 0
     fi
 
     if [ $i -lt $max_retries ]; then
-        sleep $interval
+      sleep $interval
     fi
   done
 
   echo "Condition not fulfilled after $max_retries checks ❌"
   gh workflow run "main.yml" --repo "$REPO_NAME"
-  
-fi
 
+fi
