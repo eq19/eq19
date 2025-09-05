@@ -221,6 +221,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   done
 
   # Setup freqtrade config.json
+  CONF="/etc/supervisor/supervisord.conf"
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
   CONFIG_LIVE="/home/runner/data_live/config.json"
@@ -247,6 +248,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
+
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$CONF" "$SUPERVISORD_CONF"
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONF
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONF
 
     /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$PAIRLIST_PARAM" "$CONFIG_PAIR"
     /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$EXCHANGE_PARAM" "$CONFIG_BASE"
