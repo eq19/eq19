@@ -138,9 +138,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   done
 
   echo "Condition not fulfilled after $max_retries checks ❌"
-  HEADER="Accept: application/vnd.github+json"
-  RUNNER_ID=$(gh api -H "${HEADER}" /repos/$REPOSITORY/actions/runners --jq '.runners.[].id')
-  gh api --method DELETE -H "${HEADER}" /repos/$REPOSITORY/actions/runners/${RUNNER_ID}
   gh workflow run "main.yml" --repo "$REPOSITORY"
 
 fi
