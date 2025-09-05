@@ -224,6 +224,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
   CONFIG_LIVE="/home/runner/data_live/config.json"
+  SUPERVISORD_CONF="$BASE_URL/ft_client/supervisord.conf"
   CONFIG_FULL="$BASE_URL/config_examples/config_full.example.json"
   CONFIG_BASE="$BASE_URL/config_examples/config_exchange.example.json"
   CONFIG_PAIR="$BASE_URL/config_examples/config_pairlist.example.json"
