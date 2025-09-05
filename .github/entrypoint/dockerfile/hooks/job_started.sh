@@ -132,7 +132,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     fi
 
     if [ $i -lt $max_retries ]; then
-      wait=$(($i * $interval))
+      wait=$((i * interval))
       sleep $wait
     fi
   done
