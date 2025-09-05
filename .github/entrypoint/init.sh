@@ -250,8 +250,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
 
     /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$CONF" "$SUPERVISORD_CONF"
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONF
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONF
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|FREQAIMODEL_DRY|tradesv3_dry|g" $CONF
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|FREQAIMODEL_LIVE|tradesv3_live|g" $CONF
 
     /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$PAIRLIST_PARAM" "$CONFIG_PAIR"
     /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$EXCHANGE_PARAM" "$CONFIG_BASE"
