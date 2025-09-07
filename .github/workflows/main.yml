@@ -6,15 +6,15 @@ on:
   workflow_run:
     types: [completed]
     workflows: ["pages-build-deployment"]
+  repository_dispatch:
+    types: [trigger_action, retry_workflow]
   workflow_dispatch:
     inputs:
       REMOVE_RUNNER:
-        description: 'remove runner if set'
+        description: 'remove runner if is set'
         required: false
         type: string
-  repository_dispatch:
-    types: [trigger_action, retry_workflow]
-
+        
 concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}
