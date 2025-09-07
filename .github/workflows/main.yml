@@ -7,6 +7,11 @@ on:
     types: [completed]
     workflows: ["pages-build-deployment"]
   workflow_dispatch:
+    inputs:
+      custom_var:
+        description: 'Custom variable'
+        required: false
+        type: string
   repository_dispatch:
     types: [trigger_action, retry_workflow]
 
