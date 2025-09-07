@@ -8,7 +8,7 @@ on:
     workflows: ["pages-build-deployment"]
   workflow_dispatch:
     inputs:
-      custom_var:
+      REMOVE_RUNNER:
         description: 'Custom variable'
         required: false
         type: string
