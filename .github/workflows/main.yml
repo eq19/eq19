@@ -28,6 +28,7 @@ env:
   RERUN_RUNNER: ${{ vars.RERUN_RUNNER }}
   RUNNER_TITLE: "Google-optimized-instance"
   TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
+  REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
 
 jobs:
   lexering:
