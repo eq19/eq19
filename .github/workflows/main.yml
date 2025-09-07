@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       REMOVE_RUNNER:
-        description: 'Custom variable'
+        description: 'remove runner if set'
         required: false
         type: string
   repository_dispatch:
