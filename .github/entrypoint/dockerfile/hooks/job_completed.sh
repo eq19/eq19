@@ -33,7 +33,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TARGET_REPOSITORY" | jq -r '.value')
 
   echo -e "\n$hr\nStart Network\n$hr"
-  $DOCKER exec mydb supervisorctl reload
+  $DOCKER exec mydb supervisorctl reread
+  $DOCKER exec mydb supervisorctl update
   if [[ "$RERUN_RUNNER" == "true" ]]; then
     #$DOCKER exec mydb supervisorctl start freqtrade_dry
     $DOCKER exec mydb supervisorctl start freqtrade_live
