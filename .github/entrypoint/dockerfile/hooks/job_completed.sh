@@ -22,6 +22,7 @@ set_monitor() {
     if $DOCKER exec mydb test -f "$FILE_PATH"; then
       $DOCKER exec mydb supervisorctl start monitor_freqtrade
       $DOCKER exec mydb service cron start
+      echo -e "\n$hr\njob completed ✅"
       exit 0
     fi
 
@@ -82,5 +83,3 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     set_monitor
   fi
 fi
-
-echo -e "\njob completed"
