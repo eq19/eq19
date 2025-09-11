@@ -38,7 +38,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   if [[ "$RERUN_RUNNER" == "true" ]]; then
     $DOCKER exec mydb supervisorctl start freqtrade_dry
     $DOCKER exec mydb supervisorctl start freqtrade_live
-    $DOCKER exec mydb supervisorctl start monitor_freqtrade
+    sleep 600 && $DOCKER exec mydb supervisorctl start monitor_freqtrade
     $DOCKER exec mydb service cron start
 
   #Check if ✅ $APP is running inside $CONTAINER
@@ -57,7 +57,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     echo "❌ $APP is NOT running (either container is down or process crashed)."
     $DOCKER exec mydb supervisorctl start freqtrade_dry
     $DOCKER exec mydb supervisorctl start freqtrade_live
-    $DOCKER exec mydb supervisorctl start monitor_freqtrade
+    sleep 600 && $DOCKER exec mydb supervisorctl start monitor_freqtrade
     $DOCKER exec mydb service cron start
     
   fi
