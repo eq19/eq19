@@ -9,44 +9,16 @@ DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
 echo -e "\n$hr\nFinal Space\n$hr"
 df -h
 
-set_monitor(){
+set_monitor() {
   # Max retries
   max_retries=10
   # Interval between checks (10 retries in 10 minutes -> 60s each)
   interval=60
 
-  # Path to docker binary
-  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
-
   for ((i=1; i<=max_retries; i++)); do
     echo "Check $i of $max_retries..."
 
     if $DOCKER ps --format '{{.Names}}' | grep -wq "^mydb$"; then
-      echo -e "\n$hr\nDeepLearning Final Cloud\n$hr" && /mnt/disks/deeplearning/usr/bin/gcloud info
-      echo -e "\n$hr\n" && /mnt/disks/deeplearning/usr/bin/gcloud info --run-diagnostics
-  
-      echo -e "\n$hr\nDeepLearning Docker info\n$hr" && $DOCKER info
-      echo -e "\n$hr\n" && $DOCKER container ls -a
-
-      echo -e "\n$hr\nCondition fulfilled ✅"
-
-      # Setup freqtrade userdir for dry mode
-      if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
-        $DOCKER exec mydb freqtrade create-userdir --userdir /home/runner/data_dry
-        $DOCKER exec mydb mkdir -p /home/runner/data_dry/strategies/utils
-      elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-        $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
-      fi
-
-      # Setup freqtrade userdir for live mode
-      if ! $DOCKER exec mydb test -d "/home/runner/data_live"; then
-        $DOCKER exec mydb freqtrade create-userdir --userdir /home/runner/data_live
-        $DOCKER exec mydb mkdir -p /home/runner/data_live/strategies/utils
-      elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-        $DOCKER exec mydb supervisorctl stop freqtrade_live || true
-        $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true to 
-      fi
-
       exit 0
     fi
 
