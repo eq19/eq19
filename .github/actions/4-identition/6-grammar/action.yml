@@ -85,6 +85,7 @@ runs:
   
   steps:
     - name: ⏪ Rewind all jobs on failure
+      if: runner.os != 'Windows'
       shell: bash
       env:
         DOMAIN: "www.eq19.com"
