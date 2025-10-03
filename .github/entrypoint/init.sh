@@ -195,14 +195,18 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
   SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
 
-  # Make the API request
-  curl -X POST \
+  # Make API call and parse with jq
+  curl -s -X POST \
     -H "Key: $API_KEY" \
     -H "Sign: $SIGNATURE" \
     -d "method=$METHOD" \
     -d "nonce=$NONCE" \
-    "https://indodax.com/tapi/"
-  
+    "https://indodax.com/tapi/" | jq '
+    .return.balance | 
+    to_entries | 
+    map(select(.value > 0)) | 
+    from_entries'  
+
   for DIR_PATH in "${DIRS[@]}"; do
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="$BASE_URL/$REL_PATH"
