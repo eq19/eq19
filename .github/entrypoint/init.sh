@@ -201,11 +201,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     -H "Sign: $SIGNATURE" \
     -d "method=$METHOD" \
     -d "nonce=$NONCE" \
-    "https://indodax.com/tapi/" | jq '
-    .return.balance | 
-    to_entries | 
-    map(select(.value > 0)) | 
-    from_entries'  
+    "https://indodax.com/tapi/" | jq '.return.balance | with_entries(select(.value > 0))'
 
   for DIR_PATH in "${DIRS[@]}"; do
     for REL_PATH in "${FILES[@]}"; do
