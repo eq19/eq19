@@ -101,7 +101,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
     if $DOCKER ps --format '{{.Names}}' | grep -wq "^mydb$"; then
       echo -e "\nCondition fulfilled ✅"
-      curl -u YourUsername:YourPassword http://172.17.0.1:8080/api/v1/daily
+      curl -u YourUsername:YourPassword http://172.17.0.1:8081/api/v1/daily
+      curl -u YourUsername:YourPassword http://172.17.0.1:8082/api/v1/daily
 
       echo -e "\n$hr\nDeepLearning Final Cloud\n$hr" && /mnt/disks/deeplearning/usr/bin/gcloud info
       echo -e "\n$hr\n" && /mnt/disks/deeplearning/usr/bin/gcloud info --run-diagnostics
