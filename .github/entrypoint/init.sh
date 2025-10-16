@@ -196,8 +196,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
-  curl -u YourUsername:YourPassword http://172.17.0.1:8080/api/v1/daily
-
+  
   for DIR_PATH in "${DIRS[@]}"; do
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="$BASE_URL/$REL_PATH"
