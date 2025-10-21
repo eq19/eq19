@@ -86,5 +86,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     $DOCKER exec mydb supervisorctl start freqtrade_dry
     $DOCKER exec mydb supervisorctl start freqtrade_live
     set_monitor
+    #curl -u YourUsername:YourPassword -X POST http://127.17.0.1:8081/api/v1/reload_config
+    #curl -u YourUsername:YourPassword -X POST http://127.17.0.1:8082/api/v1/reload_config
   fi
 fi
