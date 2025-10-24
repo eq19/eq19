@@ -74,8 +74,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     $DOCKER exec "$CONTAINER" supervisorctl status "$APP" | grep -q "RUNNING"; then
 
     echo "🌀 Reload all application's configs upon the updated configuration."
-    curl -u YourUsername:YourPassword -X POST http://127.17.0.1:8081/api/v1/reload_config
-    curl -u YourUsername:YourPassword -X POST http://127.17.0.1:8082/api/v1/reload_config
+    $DOCKER exec mydb curl -s -u YourUsername:YourPassword -X POST http://127.17.0.1:8081/api/v1/reload_config
+    $DOCKER exec mydb curl -s -u YourUsername:YourPassword -X POST http://127.17.0.1:8082/api/v1/reload_config
 
     if [[ "$CONTAINER_NAME" == "runner1" ]]; then
       $DOCKER exec runner2 /home/runner/scripts/exitpoint.sh $REMOVE_REPOSITORY $TARGET_REPOSITORY
