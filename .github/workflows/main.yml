@@ -10,8 +10,8 @@ on:
     types: [trigger_action, retry_workflow]
   workflow_dispatch:
     inputs:
-      HYPEROPT_MODEL:
-        description: 'the model of hyperopt to run'
+      FREQAI_MODEL:
+        description: 'the model of FreqAI to run'
         default: 'false'
         required: false
         type: string
@@ -49,8 +49,8 @@ jobs:
       JOBS_ID: ${{ matrix.config.jobs_id }}
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'
+      FREQAI_MODEL: ${{ github.event.inputs.FREQAI_MODEL }}
       REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
-      HYPEROPT_MODEL: ${{ github.event.inputs.HYPEROPT_MODEL }}
       
     # 🔧 Commutation relations
     runs-on: ${{ matrix.config.os }}
