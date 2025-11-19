@@ -83,6 +83,7 @@ jobs:
           sudo ln -s /mnt/extra "$GITHUB_WORKSPACE"
 
           echo "📌 Workspace successfully expanded."
+          df -h
 
       - name: 📥 Checkout
         uses: actions/checkout@v4
