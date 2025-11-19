@@ -116,29 +116,6 @@ if [[ "${JOBS_ID}" == "1" ]]; then
     javac -d $1/user_data/ft_client/test_client $1/javaCode/Main.java
     rm -rf .dockerignore user_data && mv -f $1/user_data .
 
-    echo "🧹 Free disk"
-    sudo rm -rf /usr/share/dotnet
-    sudo rm -rf /usr/local/lib/android
-    sudo rm -rf /usr/lib/google-cloud-sdk
-    docker system prune -af || true
-    docker builder prune -af || true
-
-    echo "⏫ Setting up 100GB tmpfs"
-    sudo mkdir -p /mnt/extra
-    sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
-          
-    echo "➡️ Syncing workspace"
-    sudo rsync -a "$GITHUB_WORKSPACE/" /mnt/extra/
-
-    echo "➡️ Switching workspace"
-    echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_ENV
-    echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_OUTPUT
-
-    # optional symlink to avoid tool breakage
-    sudo rm -rf "$GITHUB_WORKSPACE"
-    sudo ln -s /mnt/extra "$GITHUB_WORKSPACE"
-
-    echo "📌 Workspace successfully expanded." && df -h
     echo -e "\n$hr\nWORKSPACE\n$hr" && ls -al .
 
     # Fetch SHA, encode new content, and update in one step
