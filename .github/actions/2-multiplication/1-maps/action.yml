@@ -110,6 +110,7 @@ runs:
 
         if [ "$job1_status" = "cancelled" ]; then
           echo "Job 1 was cancelled (likely due to timeout)."
+          gh workflow run "main.yml" --raw-field "FREQAI_MODEL=$FREQAI_MODEL"
         else
           echo "Job 1 was NOT cancelled."
         fi
