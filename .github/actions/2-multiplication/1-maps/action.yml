@@ -7,6 +7,10 @@ inputs:
   id:
     description: The deploy id
     required: false
+  run_id:
+    description: 'The run_id'
+    default: ${{ github.run_id }}
+    required: false
   hub_username:
     description: Username for Docker Hub
     default: ${{ github.actor }}
@@ -93,7 +97,7 @@ runs:
     - name: Detect if jobs_id=1 was cancelled
       run: |
         echo "Checking if job 1 was cancelled…"
-        run_id=${{ github.run_id }}
+        run_id=${{ inputs.run_id }}
 
         # Query all jobs for this workflow run
         curl -s -H "Authorization: Bearer ${{ github.token }}" \
