@@ -91,10 +91,8 @@ runs:
   using: composite
   steps:
     - name: Detect if jobs_id=1 was cancelled
-      if: matrix.config.jobs_id == 2
       run: |
         echo "Checking if job 1 was cancelled…"
-
         run_id=${{ github.run_id }}
 
         # Query all jobs for this workflow run
