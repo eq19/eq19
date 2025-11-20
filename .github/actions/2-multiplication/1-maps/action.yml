@@ -90,6 +90,32 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Detect if jobs_id=1 was cancelled
+      if: matrix.config.jobs_id == 2
+      run: |
+        echo "Checking if job 1 was cancelled…"
+
+        run_id=${{ github.run_id }}
+
+        # Query all jobs for this workflow run
+        curl -s -H "Authorization: Bearer ${{ github.token }}" \
+          "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run_id/jobs" \
+          > jobs.json
+
+        echo "Jobs returned:"
+        cat jobs.json
+
+        # Find job 1 status (matrix index 1 corresponds to first job)
+        job1_status=$(jq -r '.jobs[] | select(.name | contains("jobs_id: 1")) | .conclusion')
+
+        echo "Job 1 conclusion = $job1_status"
+
+        if [ "$job1_status" = "cancelled" ]; then
+          echo "Job 1 was cancelled (likely due to timeout)."
+        else
+          echo "Job 1 was NOT cancelled."
+        fi
+
     - name: Login to DockerHub
       uses: docker/login-action@v3
       if: runner.os == '-Windows'
