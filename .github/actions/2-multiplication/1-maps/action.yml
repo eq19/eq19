@@ -95,6 +95,7 @@ runs:
   using: composite
   steps:
     - name: Detect if jobs_id=1 was cancelled
+      shell: bash
       run: |
         echo "Checking if job 1 was cancelled…"
         run_id=${{ inputs.run_id }}
