@@ -172,6 +172,7 @@ runs:
         DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
         DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
         GCP_CREDENTIALS: ${{ inputs.credentials }}
+        HYPEROPT_PARAM: "user_data/strategies/hyperopt_params.json"
       run: |
         python -m pip -q install --upgrade pip
         python -m pip -qqq install tensorflow-cpu
