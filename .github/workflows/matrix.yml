@@ -55,7 +55,7 @@ jobs:
           cd user_data/build_helpers && ./install_ta-lib.sh > /dev/null 2>&1
           cd ${{ github.workspace }}
           #python -m venv venv && source venv/bin/activate
-          pip install -qq --no-cache-dir ta "numpy<3.0" tensorflow-cpu
+          pip install -qq --no-cache-dir ta "numpy<3.0"
           pip install -qq --no-cache-dir -r user_data/build_helpers/requirements-plot.txt
           pip install -qq --no-cache-dir -r user_data/build_helpers/requirements-hyperopt.txt
           pip install -qq --no-cache-dir -r user_data/build_helpers/requirements-freqai-rl.txt
