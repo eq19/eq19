@@ -243,8 +243,8 @@ runs:
         HUB_PASSWORD: "${{ inputs.hub_password }}"
         MAX_DELETIONS: 15
       run: |
-        ./.github/entrypoint/remote.sh
         python -m pip -qqq uninstall -y tensorflow tensorflow-cpu keras keras-preprocessing keras-nightly
+        ./.github/entrypoint/remote.sh
                 
 
     - name: ⚧️ Rerun workflow if failed
