@@ -159,9 +159,20 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         freqtrade_total_profit 8082
         TOTAL2=$TOTAL
 
-        $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
-        $DOCKER exec mydb supervisorctl stop freqtrade_live || true
-        $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+        if (( $(echo "$TOTAL2 > $TOTAL1" | bc -l) )); then
+          echo "Live mode is better than dry-run"
+          $DOCKER exec mydb supervisorctl stop freqtrade_dry || true    
+        else
+          echo "Dry-run is better than Live mode"
+          $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
+          $DOCKER exec mydb supervisorctl stop freqtrade_live || true
+          $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+          #mv dry dry_ && mv live live_ && mv dry_ live && mv live_ dry
+          #for folder in tradesv3.dry.*; do mv "$folder" "${folder/tradesv3.dry/tradesv3.dry_}"; done
+          #for folder in tradesv3.live.*; do mv "$folder" "${folder/tradesv3.live/tradesv3.live_}"; done
+          #for folder in tradesv3.dry_.*; do mv "$folder" "${folder/tradesv3.dry_/tradesv3.live}"; done
+          #for folder in tradesv3.live_.*; do mv "$folder" "${folder/tradesv3.live_/tradesv3.dry}"; done
+        fi
       fi
 
       exit 0
