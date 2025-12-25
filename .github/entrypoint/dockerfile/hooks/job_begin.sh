@@ -171,10 +171,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           $DOCKER exec mydb mv /home/runner/data_live /home/runner/data_live_
           $DOCKER exec mydb mv /home/runner/data_dry_ /home/runner/data_live
           $DOCKER exec mydb mv /home/runner/data_live_ /home/runner/data_dry
-          $DOCKER exec mydb for folder in /home/runner/tradesv3.dry.*; do mv "$folder" "${folder/tradesv3.dry/tradesv3.dry_}"; done
-          $DOCKER exec mydb for folder in /home/runner/tradesv3.live.*; do mv "$folder" "${folder/tradesv3.live/tradesv3.live_}"; done
-          $DOCKER exec mydb for folder in /home/runner/tradesv3.dry_.*; do mv "$folder" "${folder/tradesv3.dry_/tradesv3.live}"; done
-          $DOCKER exec mydb for folder in /home/runner/tradesv3.live_.*; do mv "$folder" "${folder/tradesv3.live_/tradesv3.dry}"; done
+          $DOCKER exec mydb for folder in /home/runner/tradesv3_dry.*; do mv "$folder" "${folder/tradesv3_dry/tradesv3_dry_}"; done
+          $DOCKER exec mydb for folder in /home/runner/tradesv3_live.*; do mv "$folder" "${folder/tradesv3_live/tradesv3_live_}"; done
+          $DOCKER exec mydb for folder in /home/runner/tradesv3_dry_.*; do mv "$folder" "${folder/tradesv3_dry_/tradesv3_live}"; done
+          $DOCKER exec mydb for folder in /home/runner/tradesv3_live_.*; do mv "$folder" "${folder/tradesv3_live_/tradesv3_dry}"; done
         fi
       fi
 
