@@ -60,9 +60,6 @@ dpkg -l | sort
 echo -e "\n$hr\nExecutables\n$hr"
 find ${PATH//:/ } -maxdepth 1 -executable | sort
 
-# Path to docker binary
-DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
-
 freqtrade_total_loss() {
   local PORT="$1"
   local USER="YourUsername"
@@ -71,15 +68,13 @@ freqtrade_total_loss() {
   
   # Get daily profit
   local DAILY
-  DAILY=$($DOCKER exec "$CONTAINER" curl -s \
-    -u "$USER:$PASS" \
+  DAILY=$(curl -s -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/daily" \
     | jq '[.data[].abs_profit // 0] | add // 0')
   
   # Get open profit
   local OPEN
-  OPEN=$($DOCKER exec "$CONTAINER" curl -s \
-    -u "$USER:$PASS" \
+  OPEN=$(curl -s -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/status" \
     | jq '[.[].profit_abs // 0] | add // 0')
   
@@ -128,12 +123,13 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   # Interval between checks (10 retries in 10 minutes -> 60s each)
   interval=60
 
+  # Path to docker binarDOCKER="/mnt/disks/deeplearning/usr/bin/docker"
+
   for ((i=1; i<=max_retries; i++)); do
     echo "Check $i of $max_retries..."
 
     if $DOCKER ps --format '{{.Names}}' | grep -wq "^mydb$"; then
       echo -e "\nCondition fulfilled ✅"
-
 
       echo -e "\n$hr\nDeepLearning Final Cloud\n$hr" && /mnt/disks/deeplearning/usr/bin/gcloud info
       echo -e "\n$hr\n" && /mnt/disks/deeplearning/usr/bin/gcloud info --run-diagnostics
