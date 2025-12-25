@@ -146,9 +146,9 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb mkdir -p /home/runner/data_dry/strategies/utils
         $DOCKER exec mydb rm -rf /home/runner/data_dry/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels
-      #elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-        #curl -s -u YourUsername:YourPassword http://172.17.0.1:8081/api/v1/daily | jq '.data | map(.abs_profit) | add'
-        #$DOCKER exec mydb supervisorctl stop freqtrade_dry || true
+      elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
+        freqtrade_total_loss 8081
+        $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
       fi
 
       # Setup freqtrade userdir for live mode
@@ -158,9 +158,9 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb rm -rf /home/runner/data_live/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels
       #elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-        #curl -s -u YourUsername:YourPassword http://172.17.0.1:8082/api/v1/daily | jq '.data | map(.abs_profit) | add'
-        #$DOCKER exec mydb supervisorctl stop freqtrade_live || true
-        #$DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+        freqtrade_total_loss 8082
+        $DOCKER exec mydb supervisorctl stop freqtrade_live || true
+        $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
       fi
 
       exit 0
