@@ -142,7 +142,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb rm -rf /home/runner/data_dry/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels
       elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-        freqtrade_total_loss 8081 && echo $TOTAL
+        freqtrade_total_loss 8081 && TOTAL1=$TOTAL && echo $TOTAL1
         $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
       fi
 
@@ -153,7 +153,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb rm -rf /home/runner/data_live/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels
       elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-        freqtrade_total_loss 8082 && echo $TOTAL
+        freqtrade_total_loss 8082 && TOTAL2=$TOTAL && echo $TOTAL2
         $DOCKER exec mydb supervisorctl stop freqtrade_live || true
         $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
       fi
