@@ -69,12 +69,12 @@ freqtrade_total_loss () {
   PASS="YourPassword"
   CONTAINER="mydb"
 
-  DAILY=$(docker exec "$CONTAINER" curl -s \
+  DAILY=$($DOCKER exec "$CONTAINER" curl -s \
     -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/daily" \
     | jq '[.data[].abs_profit] | add')
 
-  OPEN=$(docker exec "$CONTAINER" curl -s \
+  OPEN=$($DOCKER exec "$CONTAINER" curl -s \
     -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/status" \
     | jq '[.[].profit_abs] | add')
