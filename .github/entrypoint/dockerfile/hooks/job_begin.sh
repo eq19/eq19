@@ -167,11 +167,14 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
           $DOCKER exec mydb supervisorctl stop freqtrade_live || true
           $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
-          #mv dry dry_ && mv live live_ && mv dry_ live && mv live_ dry
-          #for folder in tradesv3.dry.*; do mv "$folder" "${folder/tradesv3.dry/tradesv3.dry_}"; done
-          #for folder in tradesv3.live.*; do mv "$folder" "${folder/tradesv3.live/tradesv3.live_}"; done
-          #for folder in tradesv3.dry_.*; do mv "$folder" "${folder/tradesv3.dry_/tradesv3.live}"; done
-          #for folder in tradesv3.live_.*; do mv "$folder" "${folder/tradesv3.live_/tradesv3.dry}"; done
+          $DOCKER exec mydb mv /home/runner/data_dry /home/runner/data_dry_
+          $DOCKER exec mydb mv /home/runner/data_live /home/runner/data_live_
+          $DOCKER exec mydb mv /home/runner/data_dry_ /home/runner/data_live
+          $DOCKER exec mydb mv /home/runner/data_live_ /home/runner/data_dry
+          $DOCKER exec mydb for folder in /home/runner/tradesv3.dry.*; do mv "$folder" "${folder/tradesv3.dry/tradesv3.dry_}"; done
+          $DOCKER exec mydb for folder in /home/runner/tradesv3.live.*; do mv "$folder" "${folder/tradesv3.live/tradesv3.live_}"; done
+          $DOCKER exec mydb for folder in /home/runner/tradesv3.dry_.*; do mv "$folder" "${folder/tradesv3.dry_/tradesv3.live}"; done
+          $DOCKER exec mydb for folder in /home/runner/tradesv3.live_.*; do mv "$folder" "${folder/tradesv3.live_/tradesv3.dry}"; done
         fi
       fi
 
