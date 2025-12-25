@@ -156,6 +156,11 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         freqtrade_total_loss 8082 && TOTAL2=$TOTAL && echo $TOTAL2
         $DOCKER exec mydb supervisorctl stop freqtrade_live || true
         $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+        if (( $(echo "$TOTAL2 > $TOTAL1" | bc -l) )); then
+          echo "8082 is better than 8081"
+        else
+          echo "8081 is better or equal"
+        fi
       fi
 
       exit 0
