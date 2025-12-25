@@ -147,9 +147,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
         freqtrade_total_profit 8081
         TOTAL1=$TOTAL
-        echo "Total for port 8081: $TOTAL1 IDR"
-        #curl -s -u YourUsername:YourPassword http://172.17.0.1:8081/api/v1/daily | jq '.data | map(.abs_profit) | add'
-        #$DOCKER exec mydb supervisorctl stop freqtrade_dry || true
       fi
 
       # Setup freqtrade userdir for live mode
@@ -161,10 +158,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
         freqtrade_total_profit 8082
         TOTAL2=$TOTAL
-        echo "Total for port 8082: $TOTAL2 IDR"
-        #curl -s -u YourUsername:YourPassword http://172.17.0.1:8082/api/v1/daily | jq '.data | map(.abs_profit) | add'
-        #$DOCKER exec mydb supervisorctl stop freqtrade_live || true
-        #$DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+
+        $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
+        $DOCKER exec mydb supervisorctl stop freqtrade_live || true
+        $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
       fi
 
       exit 0
