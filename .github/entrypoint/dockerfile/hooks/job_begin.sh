@@ -60,7 +60,7 @@ dpkg -l | sort
 echo -e "\n$hr\nExecutables\n$hr"
 find ${PATH//:/ } -maxdepth 1 -executable | sort
 
-freqtrade_total_loss() {
+freqtrade_total_profit() {
   local PORT="$1"
   local USER="YourUsername"
   local PASS="YourPassword"
@@ -144,7 +144,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb rm -rf /home/runner/data_dry/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels
       elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-        freqtrade_total_loss 8081
+        freqtrade_total_profit 8081
         TOTAL1=$TOTAL
         echo "Total for port 8081: $TOTAL1 IDR"
         #curl -s -u YourUsername:YourPassword http://172.17.0.1:8081/api/v1/daily | jq '.data | map(.abs_profit) | add'
@@ -158,7 +158,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb rm -rf /home/runner/data_live/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels
       elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-        freqtrade_total_loss 8082
+        freqtrade_total_profit 8082
         TOTAL2=$TOTAL
         echo "Total for port 8082: $TOTAL2 IDR"
         #curl -s -u YourUsername:YourPassword http://172.17.0.1:8082/api/v1/daily | jq '.data | map(.abs_profit) | add'
