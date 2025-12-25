@@ -69,21 +69,17 @@ freqtrade_total_loss () {
   PASS="YourPassword"
   CONTAINER="mydb"
 
-  if [ -z "$PORT" ]; then
-    echo "Usage: freqtrade_total_loss <port>"
-    return 1
-  fi
-
-  DAILY=$($DOCKER exec "$CONTAINER" curl -s \
+  DAILY=$(docker exec "$CONTAINER" curl -s \
     -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/daily" \
     | jq '[.data[].abs_profit] | add')
 
-  OPEN=$($DOCKER exec "$CONTAINER" curl -s \
+  OPEN=$(docker exec "$CONTAINER" curl -s \
     -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/status" \
     | jq '[.[].profit_abs] | add')
 
+  declare -g TOTAL
   TOTAL=$(jq -n "$DAILY + $OPEN")
 
   echo "Port      : $PORT"
