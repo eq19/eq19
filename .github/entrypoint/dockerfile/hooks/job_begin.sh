@@ -165,7 +165,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           #for folder in tradesv3.live.*; do mv "$folder" "${folder/tradesv3.live/tradesv3.live_}"; done
           #for folder in tradesv3.dry_.*; do mv "$folder" "${folder/tradesv3.dry_/tradesv3.live}"; done
           #for folder in tradesv3.live_.*; do mv "$folder" "${folder/tradesv3.live_/tradesv3.dry}"; done
-       fi
+        fi
       fi
 
       exit 0
