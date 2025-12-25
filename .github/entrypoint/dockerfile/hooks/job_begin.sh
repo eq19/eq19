@@ -38,12 +38,12 @@ curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/
 #Expected one of --config-file, --system or --docs arguments
 sudo cloud-init schema --config-file cloud-config.yml
 pwd && cat cloud-config.yml
-echo -e "\n$hr\n"
-grep -i error /host/var/log/cloud-init.log
-echo -e "\n$hr\n"
-cat /host/var/log/cloud-init.log
-echo -e "\n$hr\n"
-cat /host/var/log/cloud-init-output.log
+#echo -e "\n$hr\n"
+#grep -i error /host/var/log/cloud-init.log
+#echo -e "\n$hr\n"
+#cat /host/var/log/cloud-init.log
+#echo -e "\n$hr\n"
+#cat /host/var/log/cloud-init-output.log
 
 echo -e "\n$hr\nSupervisor\n$hr"
 apt-cache show supervisor
@@ -133,7 +133,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     if $DOCKER ps --format '{{.Names}}' | grep -wq "^mydb$"; then
       echo -e "\nCondition fulfilled ✅"
 
-
       echo -e "\n$hr\nDeepLearning Final Cloud\n$hr" && /mnt/disks/deeplearning/usr/bin/gcloud info
       echo -e "\n$hr\n" && /mnt/disks/deeplearning/usr/bin/gcloud info --run-diagnostics
   
@@ -147,7 +146,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb rm -rf /home/runner/data_dry/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels
       elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-        freqtrade_total_loss 8081
+        freqtrade_total_loss 8081 && echo $TOTAL
         $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
       fi
 
@@ -157,8 +156,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb mkdir -p /home/runner/data_live/strategies/utils
         $DOCKER exec mydb rm -rf /home/runner/data_live/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels
-      #elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-        freqtrade_total_loss 8082
+      elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+        freqtrade_total_loss 8082 && echo $TOTAL
         $DOCKER exec mydb supervisorctl stop freqtrade_live || true
         $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
       fi
