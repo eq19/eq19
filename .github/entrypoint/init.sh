@@ -178,11 +178,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   NONCE=$(date +%s)
   METHOD="getInfo"
   MAX_RETRIES=3
-  DIRS=(
-    "data_dry"
-    "user_data"
-  )
-  if [[ "$RERUN_RUNNER" == "true" ]]; then
+  if [[ "$RERUN_RUNNER" == "false" ]]; then
+    DIRS=(
+      "data_dry"
+      "user_data"
+    )
+  else
     DIRS=(
       "data_dry"
       "data_live"
