@@ -86,8 +86,12 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   else
     # Optionally reload:
     echo "🏃 Rerun all applications upon the given configuration."
-    $DOCKER exec mydb supervisorctl start freqtrade_live
-    $DOCKER exec mydb supervisorctl start freqtrade_dry
-    set_monitor
+    if $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then       
+      $DOCKER exec mydb supervisorctl start freqtrade_dry
+    fi
+    if $DOCKER exec mydb supervisorctl status freqtrade_libe | grep -q "RUNNING"; then       
+      $DOCKER exec mydb supervisorctl start freqtrade_live
+      set_monitor
+    fi
   fi
 fi
