@@ -180,9 +180,15 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   MAX_RETRIES=3
   DIRS=(
     "data_dry"
-    "data_live"
     "user_data"
   )
+  if [[ "$RERUN_RUNNER" == "true" ]]; then
+    DIRS=(
+      "data_dry"
+      "data_live"
+      "user_data"
+    )
+  fi
   FILES=(
     "strategies/fibbo.py"
     "strategies/__init__.py"
