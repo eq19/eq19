@@ -315,6 +315,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
     echo "Live mode is worse than dry-run. Let dry-run to take over live mode."
 
+    rm -rf $CONFIG_DRY
+    $DOCKER exec mydb sed -i "s|8081|8082|g" $CONFIG_LIVE
+    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
+
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     $DOCKER exec mydb sed -i "s|tradesv3_dry|tradesv3_live|g" $CONFIG_LIVE
     $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
