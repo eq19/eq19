@@ -260,12 +260,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   set -euo pipefail
   $DOCKER exec mydb rm -rf "$CONFIG"
   $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
+  $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
   # Case on rerun self host runner 
   if [[ "$RERUN_RUNNER" == "true" ]]; then
-    $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
-    #$DOCKER exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
-
     $DOCKER exec mydb ls -al /home/runner/user_data
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
     if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
