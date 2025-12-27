@@ -315,6 +315,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
     echo "Live mode is worse than dry-run. Let dry-run to take over live mode."
 
+    $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
+    $DOCKER exec mydb sed -i "s|tradesv3_dry|tradesv3_live|g" $CONFIG_LIVE
+    $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+    $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
+
   # Case Live mode is better than dry-run
   elif [[ "$RERUN_RUNNER" == "false" ]] && \
     $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
