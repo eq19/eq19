@@ -331,7 +331,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
     $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
 
-a  # Case Live mode is better than dry-run
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
+      | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
+
+  # Case Live mode is better than dry-run
   elif [[ "$RERUN_RUNNER" == "false" ]] && \
     $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
     echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
@@ -341,6 +346,11 @@ a  # Case Live mode is better than dry-run
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
     $DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
+
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
+      | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
 
   fi
 
