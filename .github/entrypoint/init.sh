@@ -326,6 +326,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     FREQAIMODEL=$($DOCKER exec mydb sed -n '/^\[program freqtrade_dry\]/,/^\[/ {/--freqaimodel/s/.*--freqaimodel[[:space:]]\+\([^[:space:]]\+\).*/\1/p}' $CONF)
     $DOCKER exec mydb sed -i '/\[program freqtrade_live\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL"'/}' $CONF
+    $DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
 
   # Case Live mode is better than dry-run
   elif [[ "$RERUN_RUNNER" == "false" ]] && \
@@ -336,6 +337,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+    $DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
 
   fi
 
