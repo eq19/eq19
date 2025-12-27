@@ -315,11 +315,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   # Case Dry-run is better than live mode
   elif [[ "$RERUN_RUNNER" == "false" ]] && \
     $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
+    echo "Live mode is worse than dry-run"
 
   # Case Live mode is better than dry-run
   elif [[ "$RERUN_RUNNER" == "false" ]] && \
     $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-
+    echo "Live mode is better than dry-run"
   fi
 
   $DOCKER exec mydb ls -alR /home/runner/data_dry
