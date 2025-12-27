@@ -195,6 +195,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "strategies/__init__.py"
     "strategies/utils/__init__.py"
     "strategies/utils/indodax_patch.py"
+    "config_examples/config_freqai.example.json"
+    "config_examples/config_pairlist.example.json"
+    "config_examples/config_hyperopt.example.json"
+    "config_examples/config_exchange.example.json"
+    
   )
   PARAMS="method=${METHOD}&nonce=${NONCE}"
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
@@ -255,7 +260,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   $DOCKER exec mydb rm -rf "$CONFIG"
   if $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"; then
     $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
-    $DOCKER exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
+    #$DOCKER exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
 
     $DOCKER exec mydb ls -al /home/runner/user_data
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
