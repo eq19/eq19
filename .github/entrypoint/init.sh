@@ -312,11 +312,19 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
 
-    $DOCKER exec mydb ls -alR /home/runner/data_dry
-    $DOCKER exec mydb ls -alR /home/runner/data_live
+  # Case Dry-run is better than live mode
+  elif [[ "$RERUN_RUNNER" == "false" ]] && \
+    $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
 
-    echo "🚀 All files updated (forced overwrite)!"
+  # Case Live mode is better than dry-run
+  elif [[ "$RERUN_RUNNER" == "false" ]] && \
+    $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+
   fi
+
+  $DOCKER exec mydb ls -alR /home/runner/data_dry
+  $DOCKER exec mydb ls -alR /home/runner/data_live
+  echo "🚀 All files updated (forced overwrite)!"
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
