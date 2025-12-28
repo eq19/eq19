@@ -207,8 +207,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
   SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
-  ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
-
+  ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')    
   
   for DIR_PATH in "${DIRS[@]}"; do
     for REL_PATH in "${FILES[@]}"; do
@@ -257,9 +256,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
   EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
   PAIRLIST_PARAM="/home/runner/user_data/config_examples/config_pairlist.example.json"
+  $GCLOUD auth application-default print-access-token > /tmp/token || { echo "Failed to get token"; exit 1; }
 
   # Strict handling
   set -euo pipefail
+  TOKEN=$(cat /tmp/token)
   $DOCKER exec mydb rm -rf "$CONFIG"
   $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
   $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
@@ -320,7 +321,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     ID=$(sed -n 's/^id:[[:space:]]*//p' _config.yml)
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_live "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
-    $DOCKER exec mydb bash /home/runner/user_data/ft_client/test_client/maps.sh
+
+    HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
+    ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
+    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
+
+    HYPEROPT_PARAM="/home/runner/data_live/strategies/hyperopt_params.json"
+    ARTIFACT="/home/runner/data_live/ft_client/test_client/results/orgs.json"
+    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
   # Case Dry-run is better than live mode
   elif [[ "$RERUN_RUNNER" == "false" ]] && \
@@ -361,9 +369,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       | jq -r '.value' > _config.yml
 
     ID=$(sed -n 's/^id:[[:space:]]*//p' _config.yml)
+    HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
+    ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
+
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
-    $DOCKER exec mydb bash /home/runner/user_data/ft_client/test_client/maps.sh
-    $DOCKER exec mydb cat /home/runner/data_dry/strategies/hyperopt_params.json
+    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
+    $DOCKER exec mydb cat "$HYPEROPT_PARAM"
 
   # Case Live mode is better than dry-run
   elif [[ "$RERUN_RUNNER" == "false" ]] && \
@@ -394,14 +405,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       | jq -r '.value' > _config.yml
 
     ID=$(sed -n 's/^id:[[:space:]]*//p' _config.yml)
-    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
-
-    $GCLOUD auth application-default print-access-token > /tmp/token || { echo "Failed to get token"; exit 1; }
-    TOKEN=$(cat /tmp/token)
-
     HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
     ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
+    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
     $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
     $DOCKER exec mydb cat "$HYPEROPT_PARAM"
 
