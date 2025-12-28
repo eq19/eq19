@@ -306,11 +306,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
       | jq -r '.value' > _config.yml
 
+    ID=$(sed -n 's/^id: //p' _config.yml)
     $DOCKER exec mydb cat $HYPEROPT_PARAM
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
-    #$DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry ${{ env.ID }} ${{ env.PARAM || 'nil' }} ${{ env.EPOCHS || 100 }}"
-    #$DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_live ${{ env.ID }} ${{ env.PARAM || 'nil' }} ${{ env.EPOCHS || 100 }}"
+    #$DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry ${ID} ${{ env.PARAM || 'nil' }} ${{ env.EPOCHS || 100 }}"
+    #$DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_live ${ID} ${{ env.PARAM || 'nil' }} ${{ env.EPOCHS || 100 }}"
     #bash /home/runner/user_data/ft_client/test_client/maps.sh
 
   # Case Dry-run is better than live mode
