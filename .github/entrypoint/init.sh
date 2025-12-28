@@ -215,9 +215,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       ORGS_PATH="/home/runner/$DIR_PATH/ft_client/test_client/results/orgs.json"
 
       # Ensure parent directory exists (no file existence check)
-      $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")" "$(dirname "$ORGS_PATH")"
       $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/__pycache__"
       $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/utils/__pycache__"
+      $DOCKER exec mydb bash -c 'mkdir -p "$(dirname "$DEST_PATH")" "$(dirname "$ORGS_PATH")"'
 
       # Download with retries (always overwrite
       for attempt in $(seq 1 $MAX_RETRIES); do
