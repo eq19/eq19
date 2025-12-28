@@ -212,9 +212,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="$BASE_URL/$REL_PATH"
       DEST_PATH="/home/runner/$DIR_PATH/$REL_PATH"
+      ORGS_PATH="/home/runner/$DIR_PATH/ft_client/test_client/results/orgs.json"
 
       # Ensure parent directory exists (no file existence check)
-      $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
+      $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")" "$(dirname "$ORGS_PATH")"
       $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/__pycache__"
       $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/utils/__pycache__"
 
@@ -298,6 +299,15 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
       | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
 
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > /home/runner/data_live/ft_client/test_client/results/orgs.json"
+
     # Get the config value and save to file.json
     curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
       "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
@@ -336,6 +346,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
       | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
     # Get the config value and save to file.json
     curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
@@ -365,6 +379,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
       | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
     # Get the config value and save to file.json
     curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
