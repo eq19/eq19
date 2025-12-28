@@ -199,11 +199,20 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "config_examples/config_pairlist.example.json"
     "config_examples/config_hyperopt.example.json"
     "config_examples/config_exchange.example.json"
-    
   )
+
+  # Get the config value and save to file.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+    | jq -r '.value' > _data/orgs.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+    | jq -r '.value' > _config.yml
+
   PARAMS="method=${METHOD}&nonce=${NONCE}"
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"
+  ID=$(sed -n 's/^id:[[:space:]]*//p' _config.yml)
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
   SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
@@ -310,15 +319,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
       | jq -r '.value' > /home/runner/data_live/ft_client/test_client/results/orgs.json"
 
-    # Get the config value and save to file.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-      | jq -r '.value' > _data/orgs.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-      | jq -r '.value' > _config.yml
-
-    ID=$(sed -n 's/^id:[[:space:]]*//p' _config.yml)
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_live "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
 
@@ -360,15 +360,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
       | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
-    # Get the config value and save to file.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-      | jq -r '.value' > _data/orgs.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-      | jq -r '.value' > _config.yml
-
-    ID=$(sed -n 's/^id:[[:space:]]*//p' _config.yml)
     HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
     ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
@@ -396,15 +387,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
       | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
-    # Get the config value and save to file.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-      | jq -r '.value' > _data/orgs.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-      | jq -r '.value' > _config.yml
-
-    ID=$(sed -n 's/^id:[[:space:]]*//p' _config.yml)
     HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
     ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
