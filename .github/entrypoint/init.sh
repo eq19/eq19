@@ -310,9 +310,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb cat $HYPEROPT_PARAM
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
-    #$DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry ${{ env.ID }} ${{ env.PARAM || 'nil' }} ${{ env.EPOCHS || 100 }}"
-    #$DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_live ${{ env.ID }} ${{ env.PARAM || 'nil' }} ${{ env.EPOCHS || 100 }}"
-    #bash /home/runner/user_data/ft_client/test_client/maps.sh
 
   # Case Dry-run is better than live mode
   elif [[ "$RERUN_RUNNER" == "false" ]] && \
