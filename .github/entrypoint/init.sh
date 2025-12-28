@@ -272,6 +272,19 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
     | jq -r '.value' > _config.yml
 
+     $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
+      | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
+      | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
+
   # Case on rerun self host runner 
   if [[ "$RERUN_RUNNER" == "true" ]]; then
     $DOCKER exec mydb ls -al /home/runner/user_data
@@ -299,29 +312,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|TELEGRAM_CHAT_ID|$TELEGRAM_CHAT_ID|g" /freqtrade.sh
     $DOCKER exec mydb sed -i "s|WARNING_BOT_TOKEN|$WARNING_BOT_TOKEN|g" /freqtrade.sh
 
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
-      | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
-      | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
-
     $DOCKER exec mydb cat $HYPEROPT_PARAM
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
 
   else
-
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
-      | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
-      | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
     # Get the values
     ID=$(yq '.id' _config.yml)
