@@ -264,6 +264,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
   $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
+  # Get the config value and save to file.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+    | jq -r '.value' > _data/orgs.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+    | jq -r '.value' > _config.yml
+
   # Case on rerun self host runner 
   if [[ "$RERUN_RUNNER" == "true" ]]; then
     $DOCKER exec mydb ls -al /home/runner/user_data
@@ -300,14 +308,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
       | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
 
-    # Get the config value and save to file.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-      | jq -r '.value' > _data/orgs.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-      | jq -r '.value' > _config.yml
-
     $DOCKER exec mydb cat $HYPEROPT_PARAM
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
@@ -322,14 +322,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
       | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
-
-    # Get the config value and save to file.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-      | jq -r '.value' > _data/orgs.json
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-      | jq -r '.value' > _config.yml
 
     # Get the values
     ID=$(yq '.id' _config.yml)
