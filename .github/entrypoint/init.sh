@@ -208,8 +208,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
-  $GCLOUD auth application-default print-access-token > /tmp/token || { echo "Failed to get token"; exit 1; };
-  TOKEN=$(cat /tmp/token)
 
   
   for DIR_PATH in "${DIRS[@]}"; do
@@ -257,7 +255,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_BASIC="$BASE_URL/config_examples/config_basic.example.json"
   CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
   CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
-  HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
   EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
   PAIRLIST_PARAM="/home/runner/user_data/config_examples/config_pairlist.example.json"
 
@@ -398,8 +395,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     ID=$(sed -n 's/^id:[[:space:]]*//p' _config.yml)
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
-    $DOCKER exec mydb bash /home/runner/user_data/ft_client/test_client/maps.sh
-    $DOCKER exec mydb cat /home/runner/data_dry/strategies/hyperopt_params.json
+
+    $GCLOUD auth application-default print-access-token > /tmp/token || { echo "Failed to get token"; exit 1; };
+    TOKEN=$(cat /tmp/token)
+  
+    HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
+    ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
+    $DOCKER exec mydb bash -c "curl -s -X POST 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @${ARTIFACT} | jq '.' > $HYPEROPT_PARAM"
+    $DOCKER exec mydb cat $HYPEROPT_PARAM
 
   fi
 
