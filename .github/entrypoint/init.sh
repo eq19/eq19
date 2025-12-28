@@ -348,6 +348,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     # Get the values
     ID=$(yq '.id' _config.yml)
+    $GCLOUD auth application-default print-access-token > /tmp/token || { echo "Failed to get token"; exit 1; }
+    TOKEN=$(cat /tmp/token)
 
   # Case Live mode is better than dry-run
   elif [[ "$RERUN_RUNNER" == "false" ]] && \
@@ -375,6 +377,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     # Get the values
     ID=$(yq '.id' _config.yml)
+    $GCLOUD auth application-default print-access-token > /tmp/token || { echo "Failed to get token"; exit 1; }
+    TOKEN=$(cat /tmp/token)
 
   fi
 
