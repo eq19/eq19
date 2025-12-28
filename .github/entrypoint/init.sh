@@ -312,21 +312,19 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
 
-  # Case Dry-run is better than live mode
-  elif [[ "$RERUN_RUNNER" == "false" ]] && \
-    $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
-    echo "Live mode is worse than dry-run. Let dry-run to take over the live mode."
-
-
-  # Case Live mode is better than dry-run
-  elif [[ "$RERUN_RUNNER" == "false" ]] && \
-    $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-    echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
-
   else
-    echo "RERUN_RUNNER=$RERUN_RUNNER"
-    $DOCKER exec mydb supervisorctl status freqtrade_live
-    
+
+    # Case Dry-run is better than live mode
+    if $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
+      echo "Live mode is worse than dry-run. Let dry-run to take over the live mode."
+
+
+    # Case Live mode is better than dry-run
+    elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+      echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
+
+
+    fi    
   fi
 
   $DOCKER exec mydb ls -alR /home/runner/data_dry
