@@ -349,6 +349,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
     ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
+    $DOCKER exec mydb rm "$HYPEROPT_PARAM"
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
     $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
     $DOCKER exec mydb cat "$HYPEROPT_PARAM"
@@ -393,6 +394,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
     ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
 
+    $DOCKER exec mydb rm "$HYPEROPT_PARAM"
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
     $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
     $DOCKER exec mydb cat "$HYPEROPT_PARAM"
