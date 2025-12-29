@@ -353,7 +353,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
 
     # Case Live mode is better than dry-run
-    elif echo "$STATUS"  | grep -q "RUNNING"; then
+    elif echo "$STATUS" | grep -q "RUNNING"; then
       echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
 
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
