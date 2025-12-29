@@ -360,6 +360,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
 
+    else
+
+      echo "STATUS=$STATUS"
+      echo "$STATUS" | grep -q "STOPPED"
+      echo "$STATUS" | grep -q "RUNNING"
+  
     fi    
   fi
 
