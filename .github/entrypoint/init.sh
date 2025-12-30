@@ -365,8 +365,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       echo "STATUS=$STATUS"
       echo "$STATUS" | grep -q "STOPPED"
       echo "$STATUS" | grep -q "RUNNING"
-  
-    fi    
+
+    fi
   fi
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
