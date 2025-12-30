@@ -333,9 +333,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     $DOCKER exec mydb rm $CONFIG_DRY
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
-
     STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live) && echo "$STATUS"
-    #FREQAIMODEL=$($DOCKER exec mydb sed -n '/^\[program freqtrade_dry\]/,/^\[/ {/--freqaimodel/s/.*--freqaimodel[[:space:]]\+\([^[:space:]]\+\).*/\1/p}' $CONF) && echo "$FREQAIMODEL"
     
     # Case Dry-run is better than live mode
     if echo "$STATUS" | grep -q "STOPPED"; then
@@ -350,7 +348,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
 
       #$DOCKER exec mydb sed -i '/\[program freqtrade_live\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL"'/}' $CONF
-      #$DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
+      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
 
     # Case Live mode is better than dry-run
     elif echo "$STATUS" | grep -q "RUNNING"; then
@@ -358,7 +356,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
-      #$DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
+      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
 
     else
 
