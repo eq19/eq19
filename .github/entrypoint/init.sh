@@ -339,6 +339,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     if echo "$STATUS" | grep -q "STOPPED"; then
       echo "Live mode is worse than dry-run. Let dry-run to take over the live mode."
 
+      $DOCKER exec mydb sed -i 's/_dry/_dry_/g' $CONF
+      $DOCKER exec mydb sed -i 's/_live/_live_/g' $CONF
+      $DOCKER exec mydb sed -i 's/_dry_/_live/g' $CONF
+      $DOCKER exec mydb sed -i 's/_live_/_dry/g' $CONF
       $DOCKER exec mydb sed -i "s|8081|8082|g" $CONFIG_LIVE
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|tradesv3_dry|tradesv3_live|g" $CONFIG_LIVE
@@ -346,11 +350,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
-
-      $DOCKER exec mydb sed -i 's/_dry/_dry_/g' $CONF
-      $DOCKER exec mydb sed -i 's/_live/_live_/g' $CONF
-      $DOCKER exec mydb sed -i 's/_dry_/_live/g' $CONF
-      $DOCKER exec mydb sed -i 's/_live_/_dry/g' $CONF
       $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
 
     # Case Live mode is better than dry-run
