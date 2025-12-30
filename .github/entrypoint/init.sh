@@ -232,6 +232,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   for idx in "${!DIRS[@]}"; do
     echo "Folder: ${DIRS[$idx]} → Params: ${PARAMS[$idx]}"
     ARTIFACT="/home/runner/${DIRS[$idx]}/ft_client/test_client/results/orgs.json"
+    $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
 
     $DOCKER exec mydb bash -c \
       "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
