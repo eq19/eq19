@@ -217,6 +217,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
+  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
 
   for idx in "${!DIRS[@]}"; do
     echo "Folder: ${DIRS[$idx]} → Params: ${PARAMS[$idx]}"
@@ -292,7 +293,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
   EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
   PAIRLIST_PARAM="/home/runner/user_data/config_examples/config_pairlist.example.json"
-  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
 
   # Strict handling
   set -euo pipefail
