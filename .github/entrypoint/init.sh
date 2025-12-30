@@ -208,8 +208,18 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "config_examples/config_pairlist.example.json"
     "config_examples/config_hyperopt.example.json"
     "config_examples/config_exchange.example.json"
-    
   )
+
+  # Get the config value and save to file.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+    | jq -r '.value' > _data/orgs.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+    | jq -r '.value' > _config.yml
+
+  # Setup freqtrade config.json
+  ID=$(yq '.id' _config.yml)
   METHODS="method=${METHOD}&nonce=${NONCE}"
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
@@ -272,16 +282,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   echo -e "\n🚀 All files updated (forced overwrite)!\n"
 
-  # Get the config value and save to file.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-    | jq -r '.value' > _data/orgs.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-    | jq -r '.value' > _config.yml
-
-  # Setup freqtrade config.json
-  ID=$(yq '.id' _config.yml)
   CONF="/etc/supervisor/supervisord.conf"
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
