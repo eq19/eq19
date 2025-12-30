@@ -236,14 +236,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/${DIRS[$idx]} "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
     $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
-   for REL_PATH in "${FILES[@]}"; do
-     DOWNLOAD_URL="$BASE_URL/$REL_PATH"
-     DEST_PATH="/home/runner/${DIRS[$idx]}/$REL_PATH"
+    for REL_PATH in "${FILES[@]}"; do
+      DOWNLOAD_URL="$BASE_URL/$REL_PATH"
+      DEST_PATH="/home/runner/${DIRS[$idx]}/$REL_PATH"
 
-     # Ensure parent directory exists (no file existence check)
-     $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
-     $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/__pycache__"
-     $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/utils/__pycache__"
+      # Ensure parent directory exists (no file existence check)
+      $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
+      $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/__pycache__"
+      $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/utils/__pycache__"
 
       # Download with retries (always overwrite
       for attempt in $(seq 1 $MAX_RETRIES); do
