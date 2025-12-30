@@ -182,11 +182,20 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       "data_dry"
       "user_data"
     )
+    PARAMS=(
+      "PARAMS_DRY"
+      "PARAMS_JSON"
+    )
   else
     DIRS=(
       "data_dry"
       "data_live"
       "user_data"
+    )
+    PARAMS=(
+      "PARAMS_DRY"
+      "PARAMS_LIVE"
+      "PARAMS_JSON"
     )
   fi
   FILES=(
