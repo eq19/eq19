@@ -347,7 +347,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
 
-      #$DOCKER exec mydb sed -i '/\[program freqtrade_live\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL"'/}' $CONF
+      $DOCKER exec mydb sed -i 's/_dry/_dry_/g' $CONF
+      $DOCKER exec mydb sed -i 's/_live/_live_/g' $CONF
+      $DOCKER exec mydb sed -i 's/_dry_/_live/g' $CONF
+      $DOCKER exec mydb sed -i 's/_live_/_dry/g' $CONF
       $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
 
     # Case Live mode is better than dry-run
