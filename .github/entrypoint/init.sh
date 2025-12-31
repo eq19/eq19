@@ -193,7 +193,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
   STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live)
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
-  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
 
   # Get the config value and save to file.json
   curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
@@ -215,6 +214,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
   EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
+  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
 
