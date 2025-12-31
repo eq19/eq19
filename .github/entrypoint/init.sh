@@ -181,7 +181,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
     | jq -r '.value' > _config.yml
 
-  # Configuration
   MAX_RETRIES=3
   METHOD="getInfo"
   NONCE=$(date +%s)
@@ -207,6 +206,23 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "config_examples/config_hyperopt.example.json"
     "config_examples/config_exchange.example.json"
   )
+
+  # Configuration
+  CONF="/etc/supervisor/supervisord.conf"
+  CONFIG="/home/runner/user_data/config.json"
+  CONFIG_DRY="/home/runner/data_dry/config.json"
+  CONFIG_LIVE="/home/runner/data_live/config.json"
+  SUPERVISORD_CONF="$BASE_URL/ft_client/supervisord.conf"
+  CONFIG_BASIC="$BASE_URL/config_examples/config_basic.example.json"
+  CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
+  CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
+  EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
+
+  # Strict handling
+  set -euo pipefail
+  $DOCKER exec mydb rm -rf "$CONFIG"
+  $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
+  $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
   if [[ "$RERUN_RUNNER" == "true" ]]; then
     DIRS=(
@@ -301,7 +317,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         -d "$(jq -n '{name:"PARAMS_LIVE", value:$value}' \
         --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
         https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
-
    fi 
   fi
 
@@ -360,37 +375,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   done
 
   echo -e "\n🚀 All files updated (forced overwrite)!\n"
-
-  CONF="/etc/supervisor/supervisord.conf"
-  CONFIG="/home/runner/user_data/config.json"
-  CONFIG_DRY="/home/runner/data_dry/config.json"
-  CONFIG_LIVE="/home/runner/data_live/config.json"
-  SUPERVISORD_CONF="$BASE_URL/ft_client/supervisord.conf"
-  CONFIG_BASIC="$BASE_URL/config_examples/config_basic.example.json"
-  CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
-  CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
-  EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
-
-  # Strict handling
-  set -euo pipefail
-  $DOCKER exec mydb rm -rf "$CONFIG"
-  $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
-  $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
-
-  # Case on rerun self host runner 
-  if [[ "$RERUN_RUNNER" == "true" ]]; then 
-
-  else
-
-    # Case Dry-run is better than live mode
-    if echo "$STATUS" | grep -q "STOPPED"; then
-
-    # Case Live mode is better than dry-run
-    elif echo "$STATUS" | grep -q "RUNNING"; then
-
-
-    fi
-  fi
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
