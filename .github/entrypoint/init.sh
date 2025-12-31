@@ -63,6 +63,7 @@ echo 'TARGET_REPOSITORY='${TARGET_REPOSITORY} >> ${GITHUB_ENV}
 TARGET_REPO="https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com/${TARGET_REPOSITORY}.git"
 REMOTE_REPO="https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
+DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
 API_URL="https://api.github.com/users/eq19/events/public"
 COMMIT=$(curl -s $API_URL | jq -r 'map(select(.type == "PushEvent")) | .[0].payload.commits[0].message')
 
@@ -221,7 +222,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   # Setup freqtrade config.json
   ID=$(yq '.id' _config.yml)
   METHODS="method=${METHOD}&nonce=${NONCE}"
-  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
