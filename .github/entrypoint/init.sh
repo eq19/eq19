@@ -173,28 +173,6 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
   
 elif [[ "${JOBS_ID}" == "3" ]]; then
 
-  # Get the config value and save to file.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-    | jq -r '.value' > _data/orgs.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-    | jq -r '.value' > _config.yml
-
-  MAX_RETRIES=3
-  METHOD="getInfo"
-  NONCE=$(date +%s)
-  ID=$(yq '.id' _config.yml)
-  METHODS="method=${METHOD}&nonce=${NONCE}"
-  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
-  GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
-  STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live)
-  BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
-  SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
-  BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
-  ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
-  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
-
   FILES=(
     "strategies/fibbo.py"
     "strategies/__init__.py"
@@ -207,7 +185,26 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "config_examples/config_exchange.example.json"
   )
 
+  MAX_RETRIES=3
+  METHOD="getInfo"
+  NONCE=$(date +%s)
+  METHODS="method=${METHOD}&nonce=${NONCE}"
+  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
+  GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
+  STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live)
+  BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
+  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
+
+  # Get the config value and save to file.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+    | jq -r '.value' > _data/orgs.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+    | jq -r '.value' > _config.yml
+
   # Configuration
+  ID=$(yq '.id' _config.yml)
   CONF="/etc/supervisor/supervisord.conf"
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
@@ -217,6 +214,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
   CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
   EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
+  SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
+  BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
+  ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
 
   # Strict handling
   set -euo pipefail
