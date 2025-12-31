@@ -173,48 +173,28 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
   
 elif [[ "${JOBS_ID}" == "3" ]]; then
 
+  # Get the config value and save to file.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+    | jq -r '.value' > _data/orgs.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+    | jq -r '.value' > _config.yml
+
   # Configuration
-  NONCE=$(date +%s)
-  METHOD="getInfo"
   MAX_RETRIES=3
-
+  METHOD="getInfo"
+  NONCE=$(date +%s)
+  ID=$(yq '.id' _config.yml)
+  METHODS="method=${METHOD}&nonce=${NONCE}"
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
-  STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live) && echo "$STATUS"
-
-  if [[ "$RERUN_RUNNER" == "true" ]]; then
-    DIRS=(
-      "data_dry"
-      "data_live"
-      "user_data"
-    )
-    PARAMS=(
-      "PARAMS_DRY"
-      "PARAMS_LIVE"
-      "PARAMS_JSON"
-    )
-  else
-    if echo "$STATUS" | grep -q "RUNNING"; then
-      echo -e "Live mode is better than dry-run.\nLet dry-run to challenge a new config."
-
-      DIRS=(
-        "data_dry"
-        "user_data"
-      )
-      PARAMS=(
-        "PARAMS_JSON"
-        "PARAMS_DRY"
-      )
-    elif echo "$STATUS" | grep -q "STOPPED"; then
-      echo -e "Live mode is worse than dry-run.\nLet dry-run to take over the live mode."
-            
-      DIRS=(
-        "user_data"
-      )
-      PARAMS=(
-        "PARAMS_JSON"
-      )
-   fi 
-  fi
+  GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
+  STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live)
+  BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
+  SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
+  BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
+  ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
+  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
 
   FILES=(
     "strategies/fibbo.py"
@@ -228,23 +208,102 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "config_examples/config_exchange.example.json"
   )
 
-  # Get the config value and save to file.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-    | jq -r '.value' > _data/orgs.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-    | jq -r '.value' > _config.yml
+  if [[ "$RERUN_RUNNER" == "true" ]]; then
+    DIRS=(
+      "data_dry"
+      "data_live"
+      "user_data"
+    )
+    PARAMS=(
+      "PARAMS_DRY"
+      "PARAMS_LIVE"
+      "PARAMS_JSON"
+    )
 
-  # Setup freqtrade config.json
-  ID=$(yq '.id' _config.yml)
-  METHODS="method=${METHOD}&nonce=${NONCE}"
-  GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
-  BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
-  SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
-  BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
-  ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
-  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
+    WALLET=$(echo $BALANCE | jq '.return.balance.idr')
+    if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
+
+    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
+    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082' $CONFIG > $CONFIG_LIVE"
+    #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082 | .dry_run = false' $CONFIG > $CONFIG_LIVE"
+
+    $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
+    $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
+    $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+    $DOCKER exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
+
+    $DOCKER exec mydb curl -sf -o "$CONF" "$SUPERVISORD_CONF"
+    $DOCKER exec mydb sed -i "s|FREQAIMODEL_DRY|$FREQAIMODEL_DRY|g" $CONF
+    $DOCKER exec mydb sed -i "s|FREQAIMODEL_LIVE|$FREQAIMODEL_LIVE|g" $CONF
+
+    $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
+    $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
+
+    $DOCKER exec mydb sed -i "s|TELEGRAM_CHAT_ID|$TELEGRAM_CHAT_ID|g" /freqtrade.sh
+    $DOCKER exec mydb sed -i "s|WARNING_BOT_TOKEN|$WARNING_BOT_TOKEN|g" /freqtrade.sh
+
+  else
+  
+    $DOCKER exec mydb rm $CONFIG_DRY
+    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
+
+    curl -L -s -X PATCH \
+      -H "Accept: application/vnd.github+json" \
+      -H "Authorization: Bearer $GH_TOKEN" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      -d "$(jq -n '{name:"PARAMS_DRY", value:$value}' \
+      --arg value "$($DOCKER exec mydb cat /home/runner/data_dry/strategies/fibbo.json)")" \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY
+
+    if echo "$STATUS" | grep -q "RUNNING"; then
+      echo -e "Live mode is better than dry-run.\nLet dry-run to challenge a new config."
+
+      DIRS=(
+        "data_dry"
+        "user_data"
+      )
+      PARAMS=(
+        "PARAMS_JSON"
+        "PARAMS_DRY"
+      )
+
+      $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
+
+    elif echo "$STATUS" | grep -q "STOPPED"; then
+      echo -e "Live mode is worse than dry-run.\nLet dry-run to take over the live mode."
+            
+      DIRS=(
+        "user_data"
+      )
+      PARAMS=(
+        "PARAMS_JSON"
+      )
+
+      $DOCKER exec mydb sed -i 's/_dry/_dry_/g' $CONF
+      $DOCKER exec mydb sed -i 's/_live/_live_/g' $CONF
+      $DOCKER exec mydb sed -i 's/_dry_/_live/g' $CONF
+      $DOCKER exec mydb sed -i 's/_live_/_dry/g' $CONF
+      $DOCKER exec mydb sed -i "s|8081|8082|g" $CONFIG_LIVE
+      $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "s|tradesv3_dry|tradesv3_live|g" $CONFIG_LIVE
+      $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
+      $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
+      $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
+      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
+
+      curl -L -s -X PATCH \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        -d "$(jq -n '{name:"PARAMS_LIVE", value:$value}' \
+        --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
+        https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
+
+   fi 
+  fi
 
   for idx in "${!DIRS[@]}"; do
     PARAM_NAME="${PARAMS[$idx]}"
@@ -319,78 +378,16 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
   # Case on rerun self host runner 
-  if [[ "$RERUN_RUNNER" == "true" ]]; then
-    WALLET=$(echo $BALANCE | jq '.return.balance.idr')
-    if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
-
-    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
-    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082' $CONFIG > $CONFIG_LIVE"
-    #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082 | .dry_run = false' $CONFIG > $CONFIG_LIVE"
-
-    $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
-    $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
-    $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
-    $DOCKER exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
-
-    $DOCKER exec mydb curl -sf -o "$CONF" "$SUPERVISORD_CONF"
-    $DOCKER exec mydb sed -i "s|FREQAIMODEL_DRY|$FREQAIMODEL_DRY|g" $CONF
-    $DOCKER exec mydb sed -i "s|FREQAIMODEL_LIVE|$FREQAIMODEL_LIVE|g" $CONF
-
-    $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
-    $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
-
-    $DOCKER exec mydb sed -i "s|TELEGRAM_CHAT_ID|$TELEGRAM_CHAT_ID|g" /freqtrade.sh
-    $DOCKER exec mydb sed -i "s|WARNING_BOT_TOKEN|$WARNING_BOT_TOKEN|g" /freqtrade.sh
+  if [[ "$RERUN_RUNNER" == "true" ]]; then 
 
   else
-
-    $DOCKER exec mydb rm $CONFIG_DRY
-    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
-
-    curl -L -s -X PATCH \
-      -H "Accept: application/vnd.github+json" \
-      -H "Authorization: Bearer $GH_TOKEN" \
-      -H "X-GitHub-Api-Version: 2022-11-28" \
-      -d "$(jq -n '{name:"PARAMS_DRY", value:$value}' \
-      --arg value "$($DOCKER exec mydb cat /home/runner/data_dry/strategies/fibbo.json)")" \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY
 
     # Case Dry-run is better than live mode
     if echo "$STATUS" | grep -q "STOPPED"; then
 
-      $DOCKER exec mydb sed -i 's/_dry/_dry_/g' $CONF
-      $DOCKER exec mydb sed -i 's/_live/_live_/g' $CONF
-      $DOCKER exec mydb sed -i 's/_dry_/_live/g' $CONF
-      $DOCKER exec mydb sed -i 's/_live_/_dry/g' $CONF
-      $DOCKER exec mydb sed -i "s|8081|8082|g" $CONFIG_LIVE
-      $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
-      $DOCKER exec mydb sed -i "s|tradesv3_dry|tradesv3_live|g" $CONFIG_LIVE
-      $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
-      $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
-      $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
-      $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
-      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
-
-      curl -L -s -X PATCH \
-        -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer $GH_TOKEN" \
-        -H "X-GitHub-Api-Version: 2022-11-28" \
-        -d "$(jq -n '{name:"PARAMS_LIVE", value:$value}' \
-        --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
-        https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
-
     # Case Live mode is better than dry-run
     elif echo "$STATUS" | grep -q "RUNNING"; then
 
-      $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
-      $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
-      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
-
-    else
-
-      echo "STATUS=$STATUS"
-      echo "$STATUS" | grep -q "STOPPED"
-      echo "$STATUS" | grep -q "RUNNING"
 
     fi
   fi
