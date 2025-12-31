@@ -193,15 +193,29 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       "PARAMS_JSON"
     )
   else
-    DIRS=(
-      "data_dry"
-      "user_data"
-    )
-    PARAMS=(
-      "PARAMS_DRY"
-      "PARAMS_JSON"
-    )
+    if echo "$STATUS" | grep -q "RUNNING"; then
+      echo -e "Live mode is better than dry-run.\nLet dry-run to challenge a new config."
+
+      DIRS=(
+        "data_dry"
+        "user_data"
+      )
+      PARAMS=(
+        "PARAMS_JSON"
+        "PARAMS_DRY"
+      )
+    elif echo "$STATUS" | grep -q "STOPPED"; then
+      echo -e "Live mode is worse than dry-run.\nLet dry-run to take over the live mode."
+            
+      DIRS=(
+        "user_data"
+      )
+      PARAMS=(
+        "PARAMS_JSON"
+      )
+   fi 
   fi
+
   FILES=(
     "strategies/fibbo.py"
     "strategies/__init__.py"
@@ -335,7 +349,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     
     # Case Dry-run is better than live mode
     if echo "$STATUS" | grep -q "STOPPED"; then
-      echo "Live mode is worse than dry-run. Let dry-run to take over the live mode."
 
       $DOCKER exec mydb sed -i 's/_dry/_dry_/g' $CONF
       $DOCKER exec mydb sed -i 's/_live/_live_/g' $CONF
@@ -352,7 +365,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     # Case Live mode is better than dry-run
     elif echo "$STATUS" | grep -q "RUNNING"; then
-      echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
 
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
