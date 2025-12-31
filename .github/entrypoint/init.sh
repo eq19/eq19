@@ -63,7 +63,6 @@ echo 'TARGET_REPOSITORY='${TARGET_REPOSITORY} >> ${GITHUB_ENV}
 TARGET_REPO="https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com/${TARGET_REPOSITORY}.git"
 REMOTE_REPO="https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
-DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
 API_URL="https://api.github.com/users/eq19/events/public"
 COMMIT=$(curl -s $API_URL | jq -r 'map(select(.type == "PushEvent")) | .[0].payload.commits[0].message')
 
@@ -178,16 +177,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   NONCE=$(date +%s)
   METHOD="getInfo"
   MAX_RETRIES=3
-  if [[ "$RERUN_RUNNER" == "false" ]]; then
-    DIRS=(
-      "data_dry"
-      "user_data"
-    )
-    PARAMS=(
-      "PARAMS_DRY"
-      "PARAMS_JSON"
-    )
-  else
+
+  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
+  STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live) && echo "$STATUS"
+
+  if [[ "$RERUN_RUNNER" == "true" ]]; then
     DIRS=(
       "data_dry"
       "data_live"
@@ -196,6 +190,15 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     PARAMS=(
       "PARAMS_DRY"
       "PARAMS_LIVE"
+      "PARAMS_JSON"
+    )
+  else
+    DIRS=(
+      "data_dry"
+      "user_data"
+    )
+    PARAMS=(
+      "PARAMS_DRY"
       "PARAMS_JSON"
     )
   fi
@@ -329,7 +332,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     $DOCKER exec mydb rm $CONFIG_DRY
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
-    STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live) && echo "$STATUS"
     
     # Case Dry-run is better than live mode
     if echo "$STATUS" | grep -q "STOPPED"; then
