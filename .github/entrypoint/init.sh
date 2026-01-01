@@ -202,6 +202,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
     | jq -r '.value' > _config.yml
 
+  echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
+  echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
+
   # Configuration
   ID=$(yq '.id' _config.yml)
   CONF="/etc/supervisor/supervisord.conf"
@@ -374,8 +377,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   done
 
   echo -e "\n🚀 All files updated (forced overwrite)!"
-  echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
-  echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
 
   gist.sh ${BASE} $(pwd)
   if [[ "${WIKI}" != "${BASE}" ]]; then
