@@ -373,8 +373,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     done
   done
 
-  echo -e "\n🚀 All files updated (forced overwrite)!\n"
-
+  echo -e "\n🚀 All files updated (forced overwrite)!"
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
 
