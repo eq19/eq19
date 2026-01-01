@@ -182,7 +182,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "config_examples/config_freqai.example.json"
     "config_examples/config_pairlist.example.json"
     "config_examples/config_hyperopt.example.json"
-    "config_examples/config_exchange.example.json"
   )
 
   MAX_RETRIES=3
@@ -255,6 +254,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_DRY|$FREQAIMODEL_DRY|g" $CONF
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_LIVE|$FREQAIMODEL_LIVE|g" $CONF
 
+    $DOCKER exec mydb curl -sf -o "$EXCHANGE_PARAM" "$CONFIG_EXCHANGE"
     $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
     $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
 
@@ -289,6 +289,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i 's/_dry_/_live/g' $CONF
       $DOCKER exec mydb sed -i 's/_live_/_dry/g' $CONF
       $DOCKER exec mydb sed -i "s|8081|8082|g" $CONFIG_LIVE
+
+      $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|tradesv3_dry|tradesv3_live|g" $CONFIG_LIVE
       $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
@@ -316,6 +318,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         "PARAMS_DRY"
       )
 
+      $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
    fi 
