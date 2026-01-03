@@ -267,9 +267,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   else
   
-    $DOCKER exec mydb rm $CONFIG_DRY
-    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
-
     curl -L -s -X PATCH \
       -H "Accept: application/vnd.github+json" \
       -H "Authorization: Bearer $GH_TOKEN" \
@@ -323,6 +320,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         "PARAMS_DRY"
       )
 
+      $DOCKER exec mydb rm $CONFIG_DRY
       $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
