@@ -142,7 +142,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
         $DOCKER exec mydb freqtrade create-userdir --userdir /home/runner/data_dry
         $DOCKER exec mydb mkdir -p /home/runner/data_dry/strategies/utils
-        $DOCKER exec mydb rm -rf /home/runner/data_dry/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels
       elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
         freqtrade_total_profit 8081
@@ -153,7 +152,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       if ! $DOCKER exec mydb test -d "/home/runner/data_live"; then
         $DOCKER exec mydb freqtrade create-userdir --userdir /home/runner/data_live
         $DOCKER exec mydb mkdir -p /home/runner/data_live/strategies/utils
-        $DOCKER exec mydb rm -rf /home/runner/data_live/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels
       elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
         freqtrade_total_profit 8082
