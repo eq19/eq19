@@ -267,14 +267,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   else
   
-    curl -L -s -X PATCH \
-      -H "Accept: application/vnd.github+json" \
-      -H "Authorization: Bearer $GH_TOKEN" \
-      -H "X-GitHub-Api-Version: 2022-11-28" \
-      -d "$(jq -n '{name:"PARAMS_DRY", value:$value}' \
-      --arg value "$($DOCKER exec mydb cat /home/runner/data_dry/strategies/fibbo.json)")" \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY
-
     if echo "$STATUS" | grep -q "STOPPED"; then
       echo -e "$hr\nLive mode is worse than dry-run.\nLet dry-run to take over the live mode."
             
@@ -299,6 +291,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_LIVE
       $DOCKER exec mydb sed -i "s|$TRADING_BOT_TOKEN|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
+
+      curl -L -s -X PATCH \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        -d "$(jq -n '{name:"PARAMS_DRY", value:$value}' \
+        --arg value "$($DOCKER exec mydb cat /home/runner/data_dry/strategies/fibbo.json)")" \
+        https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY
 
       curl -L -s -X PATCH \
         -H "Accept: application/vnd.github+json" \
