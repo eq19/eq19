@@ -158,7 +158,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         freqtrade_total_profit 8082 Live
         TOTAL2=$TOTAL
 
-        if [ -n "$TOTAL1" ] && [ -n "$TOTAL2" ] && [ $(echo "$TOTAL2 > $TOTAL1" | bc) -eq 1 ]; then
+        if [ -n "$TOTAL1" ] && [ -n "$TOTAL2" ] && \
+          [ $(echo "$TOTAL1 > 0" | bc) -eq 1 ] && \
+          [ $(echo "$TOTAL2 > 0" | bc) -eq 1 ] && \
+          [ $(echo "$TOTAL2 > $TOTAL1" | bc) -eq 1 ]; then
           echo "Live mode is better than dry-run"
           $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
           $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry /home/runner/tradesv3_dry.*'
