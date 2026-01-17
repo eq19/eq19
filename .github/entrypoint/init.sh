@@ -329,8 +329,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb mkdir -p "$(dirname "$EXCHANGE_DRY")"
       $DOCKER exec mydb curl -sf -o "$EXCHANGE_DRY" "$CONFIG_EXCHANGE"
       $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
-      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/^environment=.*/environment=RUN_MODE=\"dry\",FREQAI_MODEL=\"${FREQAIMODEL_DRY}\"" $CONF
-
+      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/^environment=.*/environment=RUN_MODE=\"dry\",FREQAI_MODEL=\"${FREQAIMODEL_DRY}\"/" $CONF
    fi 
 fi
 
