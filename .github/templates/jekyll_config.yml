@@ -1,6 +1,6 @@
 debug:
-  dist: true
-  compress: false
+  dist: false
+  compress: true
   shortcodes: true
 
 lsi: false
