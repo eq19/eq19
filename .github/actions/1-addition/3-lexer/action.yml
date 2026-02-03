@@ -78,6 +78,9 @@ inputs:
   bot_token:
     description: The monitor token
     required: true
+  live_token:
+    description: The trading token
+    required: true
   logs_token:
     description: The warning token
     required: true
