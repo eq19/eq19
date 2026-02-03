@@ -85,6 +85,7 @@ runs:
         ACCESS_KEY: ${{ inputs.api_secret }}
         ACCESS_TOKEN: ${{ inputs.token }}
         MESSAGE_API: ${{ inputs.chat_id }}
+        LIVE_TOKEN: ${{ inputs.live_token }}
         MONITOR_TOKEN: ${{ inputs.bot_token }}
         WARNING_TOKEN: ${{ inputs.logs_token }}
         PYPI_TOKEN: ${{ inputs.pypi_token }}        
