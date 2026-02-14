@@ -1,4 +1,4 @@
-<!--
+l<!--
 
 Thank you if you like this profile README!
 
@@ -45,7 +45,7 @@ Python          3 hrs 24 mins   🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜�
 
 ### 🏠 [Architecture Overview](https://github.com/eq19/eq19/blob/v2/.github/workflows/main.yml)
 
-Assign prime identity as the _[Standard Model](https://github.com/bin-wu-phys/StandardModel/blob/master/python/manual_v2.ipynb)_ to [stimulate](https://github.com/featureform/featureform) a quantum field model called **eQuantum** for [the four (4) known fundamental forces](https://en.wikipedia.org/wiki/Fundamental_interaction) per IREE's plan:
+Assign prime identity as the _[Standard Model](https://github.com/bin-wu-phys/StandardModel/blob/master/python/manual_v2.ipynb)_ to [stimulate](https://github.com/featureform/featureform) a [quantum field model](https://en.wikipedia.org/wiki/Quantum_field_theory) called **eQuantum** for [the four (4) known fundamental forces](https://en.wikipedia.org/wiki/Fundamental_interaction) per IREE's plan:
 
 <!-- TODO(scotttodd): switch to <picture> once better supported? https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/ -->
 
