@@ -119,13 +119,13 @@ runs:
           echo "Job 1 was cancelled (timeout confirmed)."
 
           if [ "$REDUCE_EPOCH" = "false" ]; then
-            REDUCE_EPOCHS="2"
+            REDUCE_EPOCH="2"
           else
           # Multiply by 2 (assuming it's a number)
-            REDUCE_EPOCHS=$((REDUCE_EPOCH * 2))
+            REDUCE_EPOCH=$((REDUCE_EPOCH * 2))
           fi
           
-          gh workflow run "main.yml" --repo $REPO_NAME --raw-field "FREQAI_MODEL=$FREQAI_MODEL" --raw-field "REDUCE_EPOCH=$REDUCE_EPOCHS"
+          gh workflow run "main.yml" --repo $REPO_NAME --raw-field "FREQAI_MODEL=$FREQAI_MODEL" --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH"
         else
           echo "Job 1 was NOT cancelled."
         fi
