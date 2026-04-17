@@ -121,6 +121,7 @@ jobs:
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
           FREQAI_MODEL: ${{ fromJson(inputs.matrix_json).freqai }}
+          FREQAI_NEXT: ${{ fromJson(inputs.matrix_json).freqai_next }}
           REDUCE_EPOCH: ${{ fromJson(inputs.matrix_json).reduce_epoch }}
         run: |
           echo "Running hyperopt..."
