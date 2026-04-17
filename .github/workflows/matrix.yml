@@ -118,6 +118,7 @@ jobs:
         timeout-minutes: 360
         env:
           HYPEROPT: ${{ matrix.hyperopts }}
+          ID: ${{ fromJson(inputs.matrix_json).repo_id }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
           FREQAI_MODEL: ${{ fromJson(inputs.matrix_json).freqai }}
