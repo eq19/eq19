@@ -124,7 +124,7 @@ jobs:
           FREQAI_NEXT: ${{ fromJson(inputs.matrix_json).freqai_next }}
           REDUCE_EPOCH: ${{ fromJson(inputs.matrix_json).reduce_epoch }}
         run: |
-          echo "Running hyperopt..."
           echo "Score: $SCORE"
+          echo "Running hyperopt..."
           echo "Reduce epoch: $REDUCE_EPOCH"
           bash user_data/ft_client/test_client/feed.sh hyperopt
