@@ -193,6 +193,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
   STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live)
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
+  PARAMS_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/pythonCode/params.py"
 
   # Get the config value and save to file.json
   curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
@@ -225,6 +226,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   # Strict handling
   set -euo pipefail
   $DOCKER exec mydb rm -rf "$CONFIG"
+  
   $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
   $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
