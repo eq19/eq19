@@ -26,7 +26,12 @@ on:
         default: 'false'
         required: false
         type: string
-        
+      BYPASS_LEXER:
+        description: 'bypass lexer if is set true'
+        default: 'false'
+        required: false
+        type: string
+
 concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}
@@ -40,6 +45,7 @@ env:
   RERUN_RUNNER: ${{ vars.RERUN_RUNNER }}
   RUNNER_TITLE: "Google-optimized-instance"
   TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
+  BYPASS_LEXER: ${{ github.event.inputs.BYPASS_LEXER }}
 
 jobs:
   lexering:
