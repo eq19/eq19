@@ -216,6 +216,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_BASIC="$BASE_URL/config_examples/config_basic.example.json"
   CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
   CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
+  BASE_PARAMS="/home/runner/user_data/ft_client/test_client/pythonCode/params.py"
   EXCHANGE_DRY="/home/runner/data_dry/config_examples/config_exchange.example.json"
   EXCHANGE_LIVE="/home/runner/data_live/config_examples/config_exchange.example.json"
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
@@ -226,7 +227,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   # Strict handling
   set -euo pipefail
   $DOCKER exec mydb rm -rf "$CONFIG"
-  
+  $DOCKER exec mydb curl -sf -o "$BASE_PARAMS" "$PARAMS_URL"  
   $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
   $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
