@@ -227,11 +227,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   # Strict handling
   set -euo pipefail
   $DOCKER exec mydb rm -rf "$CONFIG"
-  $DOCKER exec mydb curl -sf -o "$BASE_PARAMS" "$PARAMS_URL"  
   $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
+  $DOCKER exec mydb curl -sf -o "$BASE_PARAMS" "$PARAMS_URL"  
   $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
-  if [[ "$RERUN_RUNNER" == "true" ]]; then
+  if [[ "$RERUN_RUNNER" == "true" || $BYPASS_LEXER == "true" ]]; then
     DIRS=(
       "data_dry"
       "data_live"
