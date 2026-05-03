@@ -1,9 +1,14 @@
 name: Freqtrade Hyperopt Matrix
-run-name: "Build #${{ github.run_number }} on ${{ github.ref_name }}"
+run-name: "Freqtrade Matrix: ${{ inputs.run_name }}"
 
 on:
   workflow_dispatch:
     inputs:
+      run_name:
+        description: 'Custom run name'
+        required: false
+        type: string
+        default: 'Hyperopt'
       matrix_json:
         description: "Matrix JSON (as string)"
         required: true
