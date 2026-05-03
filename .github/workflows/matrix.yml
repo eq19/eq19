@@ -1,4 +1,5 @@
 name: Freqtrade Hyperopt Matrix
+run-name: "Build #${{ github.run_number }} on ${{ github.ref_name }}"
 
 on:
   workflow_dispatch:
