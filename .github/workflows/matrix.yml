@@ -6,9 +6,9 @@ on:
     inputs:
       run_name:
         description: 'Custom run name'
+        default: 'Hyperopt'
         required: false
         type: string
-        default: 'Hyperopt'
       matrix_json:
         description: "Matrix JSON (as string)"
         required: true
