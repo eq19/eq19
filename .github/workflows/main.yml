@@ -46,12 +46,12 @@ permissions: write-all
         
 # 🕸️ Global Environment
 env:
-  RUN_MODE: ${{ inputs.RUN_MODE }}
   REPO_NAME: ${{ github.repository }}
   GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   RERUN_RUNNER: ${{ vars.RERUN_RUNNER }}
   RUNNER_TITLE: "Google-optimized-instance"
   TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
+  RUN_MODE: ${{ inputs.RUN_MODE != 'false' && inputs.RUN_MODE || 'Hyperopt' }}
 
 jobs:
   lexering:
