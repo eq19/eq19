@@ -29,6 +29,7 @@ jobs:
         fields: ${{ fromJson(inputs.matrix_json).fields }}
 
     env:
+      RUN_MODE: ${{ inputs.run_mode }}
       GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       RUNNER_TITLE: "Google-optimized-instance"
       TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
@@ -134,4 +135,4 @@ jobs:
           echo "Score: $SCORE"
           echo "Running hyperopt..."
           echo "Reduce epoch: $REDUCE_EPOCH"
-          bash user_data/ft_client/test_client/feed.sh hyperopt
+          bash user_data/ft_client/test_client/feed.sh $RUN_MODE
