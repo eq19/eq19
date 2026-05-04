@@ -1,6 +1,6 @@
 # 💎 Main Workflow: eQuantum MEC30
 name: COmpendium of RElations Modulo 6
-run-name: "${{ inputs.RUN_MODE != '' && inputs.RUN_MODE || 'Hyperopt' }}"
+run-name: "COmpendium of RElations: ${{ inputs.RUN_MODE != 'false' && inputs.RUN_MODE || 'Hyperopt' }}"
 
 on:
   #push:
@@ -46,6 +46,7 @@ permissions: write-all
         
 # 🕸️ Global Environment
 env:
+  RUN_MODE: ${{ inputs.RUN_MODE }}
   REPO_NAME: ${{ github.repository }}
   GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   RERUN_RUNNER: ${{ vars.RERUN_RUNNER }}
