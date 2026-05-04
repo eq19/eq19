@@ -1,4 +1,4 @@
-name: Freqtrade Hyperopt Matrix
+name: Freqtrade Matrix Jobs
 run-name: "Freqtrade Matrix: ${{ inputs.run_mode }}"
 
 on:
