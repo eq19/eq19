@@ -124,8 +124,7 @@ jobs:
       - name: 🧠 Run Hyperopt
         timeout-minutes: 360
         env:
-          HYPEROPT: ${{ matrix.fields }}
-          FREQAI_MODEL: ${{ matrix.fields }}
+          MATRIX_INPUT: ${{ matrix.fields }}
           ID: ${{ fromJson(inputs.matrix_json).repo_id }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
