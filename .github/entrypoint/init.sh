@@ -237,7 +237,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   $DOCKER exec mydb curl -sf -o "$BASE_PARAMS" "$PARAMS_URL"  
   $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
-  if ! $DOCKER exec mydb test -f "$LIVE_LOG"; then
+  if ! $DOCKER exec mydb ls "$LIVE_LOG" &>/dev/null; then
 
     DIRS=(
       "data_dry"
