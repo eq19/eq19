@@ -91,8 +91,8 @@ jekyll_build() {
   if [[ $1 == "Chetabahana.github.io" ]]; then
     SITEID=1
   # the 7 units of user is not part of orgs
-  elif [[ $1 == "eq19.github.io" ]]; then
-    SITEID=170
+  #elif [[ $1 == "eq19.github.io" ]]; then
+    #SITEID=170
   else
     SITEID=$(( $3 + 2 ))
   fi
