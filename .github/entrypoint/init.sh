@@ -338,9 +338,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "s|RUN_MODE=\"dry\",FREQAI_MODEL=\"[^\"]*\"|RUN_MODE=\"dry\",FREQAI_MODEL=\"$FREQAIMODEL_DRY\"|g" "$CONF"
       $DOCKER exec mydb mkdir -p "$(dirname "$EXCHANGE_DRY")"
       $DOCKER exec mydb curl -sf -o "$EXCHANGE_DRY" "$CONFIG_EXCHANGE"
-      $DOCKER exec mydb sed -i 's|RUN_MODE="dry",FREQAI_MODEL="[^\"]*"|RUN_MODE="dry",FREQAI_MODEL="$FREQAIMODEL_DRY"|g' $CONF
       $DOCKER exec mydb bash -c "jq --argjson pairs '$PAIRS' '.exchange.pair_whitelist = \$pairs' '$EXCHANGE_DRY' > config.tmp && mv config.tmp '$EXCHANGE_DRY'"
    fi 
 fi
