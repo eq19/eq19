@@ -306,7 +306,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i 's|"dry_run": true|"dry_run": false|g' $CONFIG_LIVE
       $DOCKER exec mydb sed -i "s|$TRADING_BOT_TOKEN|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
-      $DOCKER exec mydb bash -c "jq --argjson pairs '$PAIRS' '.exchange.pair_whitelist = \$pairs' '$EXCHANGE_LIVE' > config.tmp && mv config.tmp '$EXCHANGE_LIVE'"
 
       curl -L -s -X PATCH \
         -H "Accept: application/vnd.github+json" \
