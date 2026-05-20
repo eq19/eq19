@@ -127,7 +127,7 @@ jobs:
         env:
           MATRIX_INPUT: ${{ matrix.FIELDS }}
           ID: ${{ fromJson(inputs.MATRIX_JSON).repo_id }}
-          REDUCE_EPOCH: ${{ fromJson(inputs.matrix_json).reduce_epoch }}
+          REDUCE_EPOCH: ${{ fromJson(inputs.MATRIX_JSON).reduce_epoch }}
         run: |
           echo "Score: $SCORE"
           echo "Running $RUN_MODE..."
