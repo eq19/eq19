@@ -81,7 +81,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const matrix = JSON.parse(context.payload.inputs.matrix_json);
+            const matrix = JSON.parse(context.payload.inputs.MATRIX_JSON);
             const artifactName = 'freqtrade-data';
             const runId = matrix.run_id;
 
