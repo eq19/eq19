@@ -366,7 +366,7 @@ fi
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
       | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
 
-    $DOCKER exec mydb bash -c "bash /home/runner/user_data/ft_client/test_client/maps.sh $APP_PATH $DIR_PATH $ARTIFACT $HYPEROPT_PARAM="
+    $DOCKER exec mydb bash -c "bash /home/runner/user_data/ft_client/test_client/maps.sh $APP_PATH $DIR_PATH $ARTIFACT $HYPEROPT_PARAM"
     #$DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py \"$DIR_PATH\" \"${ID:-1}\" \"${PARAM_NAME:-nil}\" \"${EPOCHS:-100}\""
     #$DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
