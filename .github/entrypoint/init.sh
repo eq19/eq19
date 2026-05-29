@@ -364,8 +364,9 @@ fi
       | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
 
     HYPEROPT_PARAM="${DIR_PATH}/strategies/hyperopt_params.json"
-    $DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py \"$DIR_PATH\" \"${ID:-1}\" \"${PARAM_NAME:-nil}\" \"${EPOCHS:-100}\""
-    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
+    $DOCKER exec mydb bash -c "bash /home/runner/user_data/ft_client/test_client/maps.sh"
+    #$DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py \"$DIR_PATH\" \"${ID:-1}\" \"${PARAM_NAME:-nil}\" \"${EPOCHS:-100}\""
+    #$DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="${BASE_URL}/${REL_PATH}"
