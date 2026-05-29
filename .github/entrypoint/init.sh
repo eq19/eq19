@@ -326,7 +326,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
 
     elif echo "$STATUS" | grep -q "RUNNING"; then
-      echo -e "$hr\nLive mode is better than dry-run.\nLet dry-run to challenge a new config."
+      echo -e "$hr\nDry-run is not better than Live mode.\nLet dry-run to challenge a new config."
 
       DIRS=(
         "data_dry"
