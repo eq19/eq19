@@ -358,15 +358,6 @@ fi
     $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
     echo -e "$hr\nFolder: ${DIR_PATH} → Params: ${PARAM_NAME}"
 
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
-      | jq -r '.value' > $ARTIFACT"
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
-      | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
-
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="${BASE_URL}/${REL_PATH}"
       DEST_PATH="${DIR_PATH}/${REL_PATH}"
@@ -401,6 +392,14 @@ fi
       done
     done
 
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > $ARTIFACT"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
+      | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
     $DOCKER exec mydb bash -c "bash /home/runner/user_data/ft_client/test_client/maps.sh $APP_PATH $DIR_PATH $ARTIFACT $HYPEROPT_PARAM"
     #$DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py \"$DIR_PATH\" \"${ID:-1}\" \"${PARAM_NAME:-nil}\" \"${EPOCHS:-100}\""
     #$DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
