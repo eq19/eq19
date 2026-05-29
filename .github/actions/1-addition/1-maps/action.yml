@@ -205,6 +205,7 @@ runs:
         done
 
         # Run your pipeline
+        export DIR_PATH="user_data"
         bash user_data/ft_client/test_client/maps.sh
         ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
         ##python ${{ github.workspace }}/.github/entrypoint/artifact/python/gellmann.py
