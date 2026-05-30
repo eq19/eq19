@@ -400,7 +400,7 @@ fi
       "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
       | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
-    $DOCKER docker exec -e BEARER="$BEARER" mydb bash -c \
+    $DOCKER exec -e BEARER="$BEARER" mydb bash -c \
       "bash /home/runner/user_data/ft_client/test_client/maps.sh \
       $ID $JOBS_ID $APP_PATH $DIR_PATH $PARAM_NAME $ARTIFACT $HYPEROPT_PARAM"
 
