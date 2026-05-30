@@ -242,14 +242,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   if ! $DOCKER exec mydb ls "$LIVE_LOG" &>/dev/null; then
 
     DIRS=(
-      "data_dry"
-      "data_live"
       "user_data"
+      "data_live"
+      "data_dry"
     )
     PARAMS=(
-      "PARAMS_DRY"
-      "PARAMS_LIVE"
       "PARAMS_JSON"
+      "PARAMS_LIVE"
+      "PARAMS_DRY"
     )
 
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
@@ -330,12 +330,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       echo -e "$hr\nDry-run is not better than Live mode.\nLet dry-run to challenge a new config."
 
       DIRS=(
-        "data_dry"
         "user_data"
+        "data_dry"
       )
       PARAMS=(
-        "PARAMS_JSON"
         "PARAMS_DRY"
+        "PARAMS_JSON"
       )
 
       $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
