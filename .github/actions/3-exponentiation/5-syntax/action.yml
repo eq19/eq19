@@ -87,6 +87,11 @@ runs:
       shell: bash
       run: |
         # Bring GitHub Env Variables in to the config file on another container usong docker from the attached deeplearning image
+        gist.sh ${BASE} $(pwd)
+        if [[ "${WIKI}" != "${BASE}" ]]; then
+          find . -type d -name "$(yq '.span' _config.yml)" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
+        fi
+        echo -e "\n$hr\nWORKSPACE\n$hr" && ls -alR .
 
     - name: 💎 Connect to Redis
       # Runs a script that creates a Redis client, populates
