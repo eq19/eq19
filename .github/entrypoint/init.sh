@@ -353,6 +353,7 @@ fi
     PARAM_NAME="${PARAMS[$idx]}"
     DIR_PATH="/home/runner/${DIRS[$idx]}"
     APP_PATH="${DIR_PATH}/ft_client/test_client/app.py"
+    SCRIPT_PATH="${DIR_PATH}/ft_client/test_client/maps.sh"
     HYPEROPT_PARAM="${DIR_PATH}/strategies/hyperopt_params.json"
     ARTIFACT="${DIR_PATH}/ft_client/test_client/results/orgs.json"
 
@@ -402,7 +403,7 @@ fi
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
       | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
     $DOCKER exec -e BEARER="$BEARER" mydb bash -c \
-      "bash ${DIR_PATH}/ft_client/test_client/maps.sh \
+      "chmod +x ${SCRIPT_PATH} && bash ${SCRIPT_PATH} \
       ${ID:-30} $JOBS_ID $APP_PATH $DIR_PATH $PARAM_NAME $ARTIFACT $HYPEROPT_PARAM"
 
   done
