@@ -402,7 +402,7 @@ fi
       | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
     $DOCKER exec -e BEARER="$BEARER" mydb bash -c \
       "bash /home/runner/user_data/ft_client/test_client/maps.sh \
-      $ID $JOBS_ID $APP_PATH $DIR_PATH $PARAM_NAME $ARTIFACT $HYPEROPT_PARAM"
+      ${ID:-30} $JOBS_ID $APP_PATH $DIR_PATH $PARAM_NAME $ARTIFACT $HYPEROPT_PARAM"
 
   done
 
