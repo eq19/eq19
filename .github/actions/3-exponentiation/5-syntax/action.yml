@@ -83,11 +83,10 @@ runs:
   steps:
     #Fill in metadata with ${{ steps.artifact.outputs.orgs_json }}
     - name: Run identity
-      if: runner.os == 'Redis'
       shell: bash
       run: |
         # Bring GitHub Env Variables in to the config file on another container usong docker from the attached deeplearning image
-        gist.sh ${BASE} $(pwd)
+        export PATH=/home/runner/_work/_actions/eq19/eq19/v2/.github/entrypoint:$PATH && gist.sh ${BASE} $(pwd)
         if [[ "${WIKI}" != "${BASE}" ]]; then
           find . -type d -name "$(yq '.span' _config.yml)" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
         fi
