@@ -153,7 +153,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry/freqaimodels /home/runner/data_dry/ft_client'
         $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_dry/'
         $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_dry/'
-        #$DOCKER exec mydb bash -c 'ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels'
       elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
         echo -e "\n$hr\nTotal Profit Dry-run vs Live Mode\n$hr"
         freqtrade_total_profit 8081 Dry
@@ -166,7 +165,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_live/freqaimodels /home/runner/data_live/ft_client'
         $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_live/'
         $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_live/'
-        #$DOCKER exec mydb bash -c 'ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels'
       elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
         echo -e "\n$hr\n"
         freqtrade_total_profit 8082 Live
@@ -194,8 +192,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry'
           $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry/freqaimodels /home/runner/data_dry/ft_client'
           $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_dry/'
-           $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_dry/'
-          #$DOCKER exec mydb bash -c 'ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels'
+          $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_dry/'
         fi
 
       fi
