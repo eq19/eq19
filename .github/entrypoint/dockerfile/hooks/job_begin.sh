@@ -149,7 +149,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
       # Setup freqtrade userdir for dry mode
       if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
-        $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry'
+        $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry 2>/dev/null'
         $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry/freqaimodels /home/runner/data_dry/ft_client'
         $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_dry/'
         $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_dry/'
@@ -161,7 +161,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
       # Setup freqtrade userdir for live mode
       if ! $DOCKER exec mydb test -d "/home/runner/data_live"; then
-        $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_live'
+        $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_live 2>/dev/null'
         $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_live/freqaimodels /home/runner/data_live/ft_client'
         $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_live/'
         $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_live/'
@@ -189,7 +189,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           echo "Dry-run is not better than Live mode"
           $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
           $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry /home/runner/tradesv3_dry.*'
-          $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry'
+          $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry 2>/dev/null'
           $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry/freqaimodels /home/runner/data_dry/ft_client'
           $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_dry/'
           $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_dry/'
