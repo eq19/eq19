@@ -181,6 +181,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           $DOCKER exec mydb mv /home/runner/data_live /home/runner/data_live_
           $DOCKER exec mydb mv /home/runner/data_dry_ /home/runner/data_live
           $DOCKER exec mydb mv /home/runner/data_live_ /home/runner/data_dry
+
+          $DOCKER exec mydb bash -c "find /home/runner/data_dry/models -type f -exec sed -i 's/data_live/data_dry/g' {} +"
+          $DOCKER exec mydb bash -c "find /home/runner/data_live/models -type f -exec sed -i 's/data_dry/data_live/g' {} +"
+
           $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_dry.*; do mv "$folder" "${folder/tradesv3_dry/tradesv3_dry_}"; done'
           $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_live.*; do mv "$folder" "${folder/tradesv3_live/tradesv3_live_}"; done'
           $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_dry_.*; do mv "$folder" "${folder/tradesv3_dry_/tradesv3_live}"; done'
