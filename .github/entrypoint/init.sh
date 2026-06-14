@@ -312,6 +312,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|$TRADING_BOT_TOKEN|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
 
+      $DOCKER exec mydb bash -c "find /home/runner/data_dry -type f -exec sed -i 's/data_live/data_dry/g' {} +"
+      $DOCKER exec mydb bash -c "find /home/runner/data_live -type f -exec sed -i 's/data_dry/data_live/g' {} +"
+
       curl -L -s -X PATCH \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer $GH_TOKEN" \
