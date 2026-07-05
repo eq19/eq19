@@ -130,7 +130,7 @@ runs:
 
         pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-plot.txt
         pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
-        if [[ "$RUN_MODE" != "FreqAI" ]]; then
+        if [[ "$RUN_MODE" == "FreqAI" ]]; then
           pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-freqai-rl.txt
           pip install -qq --no-cache-dir "torch==2.5.1" "torchvision==0.20.1" --force-reinstall
         fi
