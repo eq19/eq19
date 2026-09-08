@@ -2,7 +2,7 @@
 
 if [[ $RERUN_RUNNER == 'false' ]]; then
   echo "RERUN_RUNNER is false. Canceling the workflow..."
-  gh run cancel $GITHUB_RUN_ID
+  gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
   # Sleep briefly to ensure the cancellation goes through before the step finishes
   sleep 10 
   exit 0
