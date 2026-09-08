@@ -5,6 +5,10 @@ max_retries=10
 # Interval between checks (10 retries in 10 minutes -> 60s each)
 interval=60
 
+if [[ $RERUN_RUNNER == 'false' ]]; then
+  exit 0
+fi
+
 for ((i=1; i<=max_retries; i++)); do
     echo "Check $i of $max_retries..."
 
