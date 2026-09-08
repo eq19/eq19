@@ -1,8 +1,9 @@
 #!/bin/bash
 
 if [[ $RERUN_RUNNER == 'false' ]]; then
-  echo "RERUN_RUNNER is false. Canceling the workflow..."
-  gh workflow run "main.yml" --repo "$REPO_NAME"
+  echo "No runner is available. Continue to $TARGET_REPOSITORY"
+  gh workflow run "main.yml" --repo "$TARGET_REPOSITORY"
+  echo "Canceling the current workflow..."
   gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
   # Sleep briefly to ensure the cancellation goes through before the step finishes
   sleep 10 
