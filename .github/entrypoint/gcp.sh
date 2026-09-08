@@ -1,13 +1,17 @@
 #!/bin/bash
 
+if [[ $RERUN_RUNNER == 'false' ]]; then
+  echo "RERUN_RUNNER is false. Canceling the workflow..."
+  gh run cancel $GITHUB_RUN_ID
+  # Sleep briefly to ensure the cancellation goes through before the step finishes
+  sleep 10 
+  exit 0
+fi
+
 # Max retries
 max_retries=10
 # Interval between checks (10 retries in 10 minutes -> 60s each)
 interval=60
-
-if [[ $RERUN_RUNNER == 'false' ]]; then
-  exit 0
-fi
 
 for ((i=1; i<=max_retries; i++)); do
     echo "Check $i of $max_retries..."
