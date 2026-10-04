@@ -47,26 +47,24 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   echo -e "\n$hr\nNetwork images\n$hr"
   $DOCKER network inspect bridge
 
-  #Check if ✅ freqtrade_live is running
-  if $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+  #Check if ✅ target runner is exist 
+  REMOVE_REPOSITORY=$(curl -s \
+    -H "Authorization: token $GH_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/REMOVE_REPOSITORY" | jq -r '.value')
 
+  TARGET_REPOSITORY=$(curl -s \
+    -H "Authorization: token $GH_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TARGET_REPOSITORY" | jq -r '.value')
+
+  if [[ "$TOTAL_COUNT" -eq 0 ]]; then
     echo -e "\n$hr\nStart Network\n$hr"
-    REMOVE_REPOSITORY=$(curl -s \
-      -H "Authorization: token $GH_TOKEN" \
-      -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/REMOVE_REPOSITORY" | jq -r '.value')
-
-    TARGET_REPOSITORY=$(curl -s \
-      -H "Authorization: token $GH_TOKEN" \
-      -H "Accept: application/vnd.github.v3+json" \
-      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TARGET_REPOSITORY" | jq -r '.value')
-
     if [[ "$CONTAINER_NAME" == "runner1" ]]; then
       $DOCKER exec runner2 /home/runner/scripts/exitpoint.sh "$REMOVE_REPOSITORY" "$TARGET_REPOSITORY"
     elif [[ "$CONTAINER_NAME" == "runner2" ]]; then
       $DOCKER exec runner1 /home/runner/scripts/exitpoint.sh "$REMOVE_REPOSITORY" "$TARGET_REPOSITORY"
     fi
-
   fi
 
   echo -e "\n$hr\nRestart mydb container\n$hr"
