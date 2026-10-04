@@ -41,6 +41,12 @@ set_monitor() {
 
 if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
+  echo -e "\n$hr\nRestart mydb container\n$hr"
+  $DOCKER restart mydb
+
+  echo "Waiting container stabilization..."
+  sleep 20
+
   echo -e "\n$hr\nDocker images\n$hr"
   $DOCKER image ls
 
@@ -74,12 +80,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
   fi
 
-  echo -e "\n$hr\nRestart mydb container\n$hr"
-  $DOCKER restart mydb
-
-  echo "Waiting container stabilization..."
-  sleep 20
-
+  echo -e "\n$hr\nRestart all applications\n$hr"
   $DOCKER exec mydb supervisorctl reread
   $DOCKER exec mydb supervisorctl update
 
