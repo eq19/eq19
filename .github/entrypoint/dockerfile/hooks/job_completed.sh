@@ -56,9 +56,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   TOTAL_COUNT=$(curl -s \
     -H "Authorization: token $GH_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${TARGET_REPOSITORY}/actions/runners" \ | jq '.total_count')
+    "https://api.github.com/repos/${TARGET_REPOSITORY}/actions/runners" | jq '.total_count')
   
   if [[ "$TOTAL_COUNT" -eq 0 ]]; then
+
     echo -e "\n$hr\nStart Network\n$hr"
     REMOVE_REPOSITORY=$(curl -s \
       -H "Authorization: token $GH_TOKEN" \
@@ -70,6 +71,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     elif [[ "$CONTAINER_NAME" == "runner2" ]]; then
       $DOCKER exec runner1 /home/runner/scripts/exitpoint.sh "$REMOVE_REPOSITORY" "$TARGET_REPOSITORY"
     fi
+
   fi
 
   echo -e "\n$hr\nRestart mydb container\n$hr"
