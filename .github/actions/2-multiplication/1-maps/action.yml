@@ -189,10 +189,10 @@ runs:
         for secret in $secrets; do
           if [ -z "${!secret+x}" ]; then
             echo "❌ Error: Secret '$secret' is not defined" >&2
-            exit 1
+            gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
           elif [ -z "${!secret}" ]; then
             echo "❌ Error: Secret '$secret' is defined but empty" >&2
-            exit 1
+            gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
           fi
           gh secret set "$secret" --repo ${{ env.TARGET_REPOSITORY }} --body "${!secret}"
         done
