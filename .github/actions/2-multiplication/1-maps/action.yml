@@ -123,15 +123,22 @@ runs:
       run: |
         secrets=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${{ github.repository }}/actions/secrets" | jq -r '.secrets[].name')
         for secret in $secrets; do
-          if [ -z "${!secret+x}" ]; then
-            echo "❌ Error: Secret '$secret' is not defined" >&2
+          # Validate secret with sed - removes empty lines and whitespace-only content
+          echo "${!secret}" | sed -n '/./p' > .validated_secret_temp
+          
+          if [ ! -s .validated_secret_temp ]; then
+            echo "❌ Error: Secret '$secret' is empty or contains only whitespace" >&2
+            rm .validated_secret_temp
             gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
-          elif [ -z "${!secret}" ]; then
-            echo "❌ Error: Secret '$secret' is defined but empty" >&2
-            gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
+          else
+            # Secret is valid, set it on target repository
+            gh secret set "$secret" --repo ${{ env.TARGET_REPOSITORY }} --body "${!secret}"
+            echo "✅ Secret '$secret' successfully set"
           fi
-          gh secret set "$secret" --repo ${{ env.TARGET_REPOSITORY }} --body "${!secret}"
         done
+        
+        # Clean up any remaining temporary files
+        rm -f .validated_secret_temp
 
     - name: Detect if jobs_id=1 was cancelled
       shell: bash
