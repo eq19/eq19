@@ -106,6 +106,33 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Set secrets on target
+      shell: bash
+      env:
+        ACCESS_API: ${{ inputs.api_key }}
+        ACCESS_KEY: ${{ inputs.api_secret }}
+        ACCESS_TOKEN: ${{ inputs.token }}
+        MESSAGE_API: ${{ inputs.chat_id }}
+        LIVE_TOKEN: ${{ inputs.live_token }}
+        MONITOR_TOKEN: ${{ inputs.bot_token }}
+        WARNING_TOKEN: ${{ inputs.logs_token }}
+        PYPI_TOKEN: ${{ inputs.pypi_token }}        
+        DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
+        DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
+        GCP_CREDENTIALS: ${{ inputs.credentials }}
+      run: |
+        secrets=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${{ github.repository }}/actions/secrets" | jq -r '.secrets[].name')
+        for secret in $secrets; do
+          if [ -z "${!secret+x}" ]; then
+            echo "❌ Error: Secret '$secret' is not defined" >&2
+            gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
+          elif [ -z "${!secret}" ]; then
+            echo "❌ Error: Secret '$secret' is defined but empty" >&2
+            gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
+          fi
+          gh secret set "$secret" --repo ${{ env.TARGET_REPOSITORY }} --body "${!secret}"
+        done
+
     - name: Detect if jobs_id=1 was cancelled
       shell: bash
       run: |
@@ -170,33 +197,6 @@ runs:
       with:
         script: console.log(context)
         
-    - name: Set secrets on target
-      shell: bash
-      env:
-        ACCESS_API: ${{ inputs.api_key }}
-        ACCESS_KEY: ${{ inputs.api_secret }}
-        ACCESS_TOKEN: ${{ inputs.token }}
-        MESSAGE_API: ${{ inputs.chat_id }}
-        LIVE_TOKEN: ${{ inputs.live_token }}
-        MONITOR_TOKEN: ${{ inputs.bot_token }}
-        WARNING_TOKEN: ${{ inputs.logs_token }}
-        PYPI_TOKEN: ${{ inputs.pypi_token }}        
-        DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
-        DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
-        GCP_CREDENTIALS: ${{ inputs.credentials }}
-      run: |
-        secrets=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${{ github.repository }}/actions/secrets" | jq -r '.secrets[].name')
-        for secret in $secrets; do
-          if [ -z "${!secret+x}" ]; then
-            echo "❌ Error: Secret '$secret' is not defined" >&2
-            gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
-          elif [ -z "${!secret}" ]; then
-            echo "❌ Error: Secret '$secret' is defined but empty" >&2
-            gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
-          fi
-          gh secret set "$secret" --repo ${{ env.TARGET_REPOSITORY }} --body "${!secret}"
-        done
-
     - name: Build and Push my_awesome_microservice
       uses: mr-smithers-excellent/docker-build-push@v5
       if: runner.os == '-Windows'
