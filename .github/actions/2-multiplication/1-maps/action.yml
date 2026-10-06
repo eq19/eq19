@@ -176,10 +176,10 @@ runs:
         GCP_CREDENTIALS: ${{ inputs.credentials }}
         GCP_ACCOUNT: ${{ inputs.gcp_account }}
         GCP_ID_RSA: ${{ inputs.gcp_id_rsa }}
-        GCP_SA_KEY: ${ inputs.gcp_sa_key }}
+        GCP_SA_KEY: ${{ inputs.gcp_sa_key }}
         JEKYLL_GITHUB_OWNER: ${{ inputs.jekyll_github_owner }}
         JEKYLL_GITHUB_TOKEN: ${{ inputs.jekyll_github_token }}
-        REPO_SOURCE: $ {{ inputs.repo_source }}
+        REPO_SOURCE: ${{ inputs.repo_source }}
 
       run: |
         secrets=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${{ github.repository }}/actions/secrets" | jq -r '.secrets[].name')
