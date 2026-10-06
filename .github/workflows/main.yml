@@ -106,6 +106,12 @@ jobs:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          gcp_account: ${{ secrets.GCP_ACCOUNT }}
+          gcp_id_rsa: ${{ secrets.GCP_ID_RSA }}
+          gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
+          jekyll_github_owner: ${{ secrets.JEKYLL_GITHUB_OWNER }}
+          jekyll_github_token: ${{ secrets.JEKYLL_GITHUB_TOKEN }}
+          repo_source: ${{ secrets.REPO_SOURCE }}
         if: ${{ !(env.JOBS_ID == 1 && env.BYPASS_LEXERING == 'true') }}
 
       - name: 🪂 Feed Mapping
