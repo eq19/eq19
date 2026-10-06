@@ -124,6 +124,42 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Detect if jobs_id=1 was cancelled
+      shell: bash
+      run: |
+        echo "Checking if job 1 was cancelled…"
+        run_id=${{ inputs.run_id }}
+
+        for i in {1..12}; do
+          echo "Polling attempt $i…"
+
+          curl -s -H "Authorization: Bearer ${{ inputs.token }}" \
+            "https://api.github.com/repos/${{ inputs.repository }}/actions/runs/$run_id/jobs" \
+            > jobs.json
+
+          job1_status=$(jq -r '.jobs[] | select(.labels[]?=="ubuntu-latest") | .conclusion' jobs.json)
+          echo "Job 1 conclusion = $job1_status"
+          if [ "$job1_status" != "null" ]; then
+            break
+          fi
+          sleep 10
+        done
+
+        if [ "$job1_status" = "cancelled" ]; then
+          echo "Job 1 was cancelled (timeout confirmed)."
+
+          if [ "$REDUCE_EPOCH" = "false" ]; then
+            REDUCE_EPOCH="2"
+          else
+          # Multiply by 2 (assuming it's a number)
+            REDUCE_EPOCH=$((REDUCE_EPOCH * 2))
+          fi
+          
+          gh workflow run "main.yml" --repo $REPO_NAME --raw-field "RUN_MODE=$RUN_MODE" --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH"
+        else
+          echo "Job 1 was NOT cancelled."
+        fi
+
     - name: Set secrets on target
       shell: bash
       env:
@@ -167,42 +203,6 @@ runs:
             echo "❌ $errors secrets failed validation"
             gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
           fi
-
-    - name: Detect if jobs_id=1 was cancelled
-      shell: bash
-      run: |
-        echo "Checking if job 1 was cancelled…"
-        run_id=${{ inputs.run_id }}
-
-        for i in {1..12}; do
-          echo "Polling attempt $i…"
-
-          curl -s -H "Authorization: Bearer ${{ inputs.token }}" \
-            "https://api.github.com/repos/${{ inputs.repository }}/actions/runs/$run_id/jobs" \
-            > jobs.json
-
-          job1_status=$(jq -r '.jobs[] | select(.labels[]?=="ubuntu-latest") | .conclusion' jobs.json)
-          echo "Job 1 conclusion = $job1_status"
-          if [ "$job1_status" != "null" ]; then
-            break
-          fi
-          sleep 10
-        done
-
-        if [ "$job1_status" = "cancelled" ]; then
-          echo "Job 1 was cancelled (timeout confirmed)."
-
-          if [ "$REDUCE_EPOCH" = "false" ]; then
-            REDUCE_EPOCH="2"
-          else
-          # Multiply by 2 (assuming it's a number)
-            REDUCE_EPOCH=$((REDUCE_EPOCH * 2))
-          fi
-          
-          gh workflow run "main.yml" --repo $REPO_NAME --raw-field "RUN_MODE=$RUN_MODE" --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH"
-        else
-          echo "Job 1 was NOT cancelled."
-        fi
 
     - name: Login to DockerHub
       uses: docker/login-action@v3
