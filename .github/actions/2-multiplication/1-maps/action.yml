@@ -138,7 +138,7 @@ runs:
         DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
         DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
         GCP_CREDENTIALS: ${{ inputs.credentials }}
-        GCP_ACCOUT: ${{ inputs.gcp_account }}
+        GCP_ACCOUNT: ${{ inputs.gcp_account }}
         GCP_ID_RSA: ${{ inputs.gcp_id_rsa }}
         GCP_SA_KEY: ${ inputs.gcp_sa_key }}
         JEKYLL_GITHUB_OWNER: ${{ inputs.jekyll_github_owner }}
