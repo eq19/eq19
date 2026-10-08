@@ -235,17 +235,6 @@ runs:
       with:
         script: console.log(context)
 
-    - name: Build and Push my_awesome_microservice
-      if: ${{ env.SKIP_REMAINING_STEPS != 'true' }}
-      uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: my_awesome_microservice
-        registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ inputs.token }}
-        platform: windows/amd64
-        tags: development-latest
-
     - name: ⚧️ Rerun workflow if failed
       if: ${{ failure() && env.SKIP_REMAINING_STEPS != 'true' }}
       shell: bash
