@@ -213,16 +213,6 @@ runs:
           gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
         fi
 
-    - name: 💎 Set ID Token
-      if: ${{ env.REMOVE_RUNNER == 'true' }}
-      uses: google-github-actions/auth@v3
-      with:
-        credentials_json: ${{ inputs.credentials }}
-
-    - name: 💎 Setup Gcloud
-      if: ${{ env.REMOVE_RUNNER == 'true' }}
-      uses: google-github-actions/setup-gcloud@v3
-
     - name: 👉 Initial Setup
       if: ${{ env.SKIP_REMAINING_STEPS != 'true' }}
       shell: bash
@@ -234,6 +224,16 @@ runs:
       uses: actions/github-script@v8
       with:
         script: console.log(context)
+
+    - name: 💎 Set ID Token
+      if: ${{ env.REMOVE_RUNNER == 'true' }}
+      uses: google-github-actions/auth@v3
+      with:
+        credentials_json: ${{ inputs.credentials }}
+
+    - name: ♻️ Setup Gcloud
+      if: ${{ env.REMOVE_RUNNER == 'true' }}
+      uses: google-github-actions/setup-gcloud@v3
 
     - name: 🧲 Remove Existing Self-Hosted Runner
       if: ${{ env.REMOVE_RUNNER == 'true' }}
