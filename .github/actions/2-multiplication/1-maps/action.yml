@@ -166,7 +166,7 @@ runs:
         fi
 
     - name: Set secrets on target
-      if: ${{ env.SKIP_REMAINING_STEPS != 'true' }}
+      if: ${{ env.RUN_MODE == 'MEC30' }}
       shell: bash
       env:
         ACCESS_API: ${{ inputs.api_key }}
@@ -214,13 +214,13 @@ runs:
         fi
 
     - name: 💎 Set ID Token
-      if: ${{ env.SKIP_REMAINING_STEPS != 'true' }}
+      if: ${{ env.REMOVE_RUNNER == 'true' }}
       uses: google-github-actions/auth@v3
       with:
         credentials_json: ${{ inputs.credentials }}
 
     - name: 💎 Setup Gcloud
-      if: ${{ env.SKIP_REMAINING_STEPS != 'true' }}
+      if: ${{ env.REMOVE_RUNNER == 'true' }}
       uses: google-github-actions/setup-gcloud@v3
 
     - name: 👉 Initial Setup
@@ -236,7 +236,7 @@ runs:
         script: console.log(context)
 
     - name: 🧲 Remove Existing Self-Hosted Runner
-      if: ${{ env.RERUN_RUNNER == 'true' }}
+      if: ${{ env.REMOVE_RUNNER == 'true' }}
       shell: bash
       run: |
         for instance_uri in $(gcloud compute instances list --uri 2> /dev/null); do
