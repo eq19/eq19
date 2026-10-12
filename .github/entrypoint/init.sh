@@ -54,7 +54,10 @@ export RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: ap
 export TARGET_REPOSITORY=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
   "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TARGET_REPOSITORY" | jq -r '.value')
 
-if [[ "${BYPASS_LEXERING}" == "true" ]]; then
+if [[ "${BYPASS_LEXERING}" == "false" ]]; then
+  export FREQAIMODEL_DRY=""
+  export FREQAIMODEL_LIVE=""
+else
   export FREQAIMODEL_DRY=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/FREQAIMODEL" | jq -r '.value')
   export FREQAIMODEL_LIVE=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
