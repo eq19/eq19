@@ -234,6 +234,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
   CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
   BASE_PARAMS="/home/runner/user_data/ft_client/test_client/pythonCode/params.py"
+  BASE_COMPILE="/home/runner/user_data/ft_client/test_client/pythonCode/compile.py"
   EXCHANGE_DRY="/home/runner/data_dry/config_examples/config_exchange.example.json"
   EXCHANGE_LIVE="/home/runner/data_live/config_examples/config_exchange.example.json"
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
@@ -413,7 +414,7 @@ fi
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
       | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
     $DOCKER exec -e BEARER="$BEARER" mydb bash -c \
-      "bash ${SCRIPT_PATH} ${ID:-30} $JOBS_ID $APP_PATH $DIR_PATH $PARAM_NAME $ARTIFACT $HYPEROPT_PARAM"
+      "bash ${SCRIPT_PATH} ${ID:-30} $JOBS_ID $APP_PATH $DIR_PATH $PARAM_NAME $ARTIFACT $HYPEROPT_PARAM $BASE_COMPILE"
 
   done
 
