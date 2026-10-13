@@ -369,6 +369,7 @@ fi
     COMPILE_FILE="${DIR_PATH}/ft_client/test_client/pythonCode/compile.py"
 
     $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
+    $DOCKER exec mydb sed -i 's/^\(\s*\)#"compile",/\1"compile",/' $INIT_FILE
     [[ "${BYPASS_LEXERING}" == "false" ]] && $DOCKER exec mydb sed -i 's/^\(\s*\)"compile",/\1#"compile",/' $INIT_FILE
 
     echo -e "$hr\nFolder: ${DIR_PATH} → Params: ${PARAM_NAME}"
