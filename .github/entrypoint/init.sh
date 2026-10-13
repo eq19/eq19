@@ -234,7 +234,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
   CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
   BASE_PARAMS="/home/runner/user_data/ft_client/test_client/pythonCode/params.py"
-  COMPILE_FILE="/home/runner/user_data/ft_client/test_client/pythonCode/compile.py"
   EXCHANGE_DRY="/home/runner/data_dry/config_examples/config_exchange.example.json"
   EXCHANGE_LIVE="/home/runner/data_live/config_examples/config_exchange.example.json"
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
@@ -366,6 +365,7 @@ fi
     SCRIPT_PATH="${DIR_PATH}/ft_client/test_client/maps.sh"
     HYPEROPT_PARAM="${DIR_PATH}/strategies/hyperopt_params.json"
     ARTIFACT="${DIR_PATH}/ft_client/test_client/results/orgs.json"
+    COMPILE_FILE="${DIR_PATH}/ft_client/test_client/pythonCode/compile.py"
 
     $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
     echo -e "$hr\nFolder: ${DIR_PATH} → Params: ${PARAM_NAME}"
