@@ -365,6 +365,7 @@ fi
     SCRIPT_PATH="${DIR_PATH}/ft_client/test_client/maps.sh"
     HYPEROPT_PARAM="${DIR_PATH}/strategies/hyperopt_params.json"
     ARTIFACT="${DIR_PATH}/ft_client/test_client/results/orgs.json"
+    INIT_FILE="${DIR_PATH}/ft_client/test_client/pythonCode/__init__.py"
     COMPILE_FILE="${DIR_PATH}/ft_client/test_client/pythonCode/compile.py"
 
     $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
