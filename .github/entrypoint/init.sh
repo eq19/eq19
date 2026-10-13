@@ -369,8 +369,9 @@ fi
     COMPILE_FILE="${DIR_PATH}/ft_client/test_client/pythonCode/compile.py"
 
     $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
-    echo -e "$hr\nFolder: ${DIR_PATH} → Params: ${PARAM_NAME}"
+    [[ "${BYPASS_LEXERING}" == "false" ]] && $DOCKER exec mydb sed -i 's/^\(\s*\)"compile",/\1#"compile",/' $INIT_FILE
 
+    echo -e "$hr\nFolder: ${DIR_PATH} → Params: ${PARAM_NAME}"
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="${BASE_URL}/${REL_PATH}"
       DEST_PATH="${DIR_PATH}/${REL_PATH}"
