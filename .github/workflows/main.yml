@@ -83,6 +83,7 @@ jobs:
 
     runs-on: ${{ matrix.config.os }}
     continue-on-error: ${{ matrix.config.jobs_id != 1 }}
+    timeout-minutes: ${{ matrix.config.os == 'macos-latest' && 90 || 360 }}
 
     steps:
       - name: 📥 Checkout
