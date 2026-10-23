@@ -1,15 +1,5 @@
 #!/bin/bash
 
-if [[ $RERUN_RUNNER == 'false' ]]; then
-  echo "No runner is available. Continue to $TARGET_REPOSITORY"
-  gh workflow run "main.yml" --repo "$TARGET_REPOSITORY"
-  echo "Canceling the current workflow..."
-  gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
-  # Sleep briefly to ensure the cancellation goes through before the step finishes
-  sleep 10 
-  exit 0
-fi
-
 # Max retries
 max_retries=10
 # Interval between checks (10 retries in 10 minutes -> 60s each)
@@ -37,3 +27,11 @@ done
 SOURCE_REPOSITORY=$(gh variable get SOURCE_REPOSITORY)
 echo "Condition not fulfilled after $max_retries checks ❌"
 gh workflow run "main.yml" --repo "$SOURCE_REPOSITORY" --raw-field "RUN_MODE=MEC30" --raw-field "REMOVE_RUNNER=true"
+
+echo "Canceling the current workflow..."
+gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
+
+# Sleep briefly to ensure the cancellation goes through before the step finishes
+sleep 10 
+exit 0
+  
