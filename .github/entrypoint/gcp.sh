@@ -34,5 +34,6 @@ for ((i=1; i<=max_retries; i++)); do
     fi
 done
 
+SOURCE_REPOSITORY=$(gh variable get SOURCE_REPOSITORY)
 echo "Condition not fulfilled after $max_retries checks ❌"
-gh workflow run "main.yml" --repo "$REPO_NAME" --raw-field "RUN_MODE=MEC30" --raw-field "REMOVE_RUNNER=true"
+gh workflow run "main.yml" --repo "$SOURCE_REPOSITORY" --raw-field "RUN_MODE=MEC30" --raw-field "REMOVE_RUNNER=true"
