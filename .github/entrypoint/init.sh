@@ -338,6 +338,22 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
         https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
 
+      curl -L -s -X PATCH \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        -d "$(jq -n '{name:"PARAMS_DRY", value:$value}' \
+        --arg value "$($DOCKER exec mydb cat /home/runner/data_dry/strategies/fibbo.json)")" \
+        https://api.github.com/repos/$SOURCE_REPOSITORY/actions/variables/PARAMS_DRY
+
+      curl -L -s -X PATCH \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        -d "$(jq -n '{name:"PARAMS_LIVE", value:$value}' \
+        --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
+        https://api.github.com/repos/$SOURCE_REPOSITORY/actions/variables/PARAMS_LIVE
+
     else
       echo -e "$hr\nDry-run is not better than Live mode.\nLet dry-run to challenge a new config."
 
