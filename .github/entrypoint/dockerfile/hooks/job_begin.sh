@@ -85,7 +85,7 @@ freqtrade_total_profit() {
   $DOCKER exec mydb supervisorctl start "freqtrade_$MODE"
   # Calculate total and set as global variable
   declare -g TOTAL
-  sleep 20
+  sleep 120
 
   TOTAL=$(echo "$DAILY + $OPEN" | bc -l)
   echo "Port      : $PORT ($MODE)"
