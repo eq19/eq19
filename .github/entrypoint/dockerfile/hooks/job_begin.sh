@@ -60,6 +60,9 @@ dpkg -l | sort
 echo -e "\n$hr\nExecutables\n$hr"
 find ${PATH//:/ } -maxdepth 1 -executable | sort
 
+# Path to docker binary
+DOCKER=/mnt/disks/deeplearning/usr/bin/docker
+
 freqtrade_total_profit() {
   local PORT="$1"
   local MODE="$2"
@@ -129,8 +132,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   # Interval between checks (10 retries in 10 minutes -> 60s each)
   interval=60
 
-  # Path to docker binary
-  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
 
@@ -145,7 +146,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       echo -e "\n$hr\nDeepLearning Docker info\n$hr" && $DOCKER info
       echo -e "\n$hr\n" && $DOCKER container ls -a
 
-      if ! "$DOCKER" exec mydb sh -c 'test -d /home/runner/data_dry && test -d /home/runner/data_live'; then
+      if ! $DOCKER exec mydb sh -c 'test -d /home/runner/data_dry && test -d /home/runner/data_live'; then
 
         # Setup freqtrade userdir for dry mode
         if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
