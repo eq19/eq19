@@ -70,6 +70,9 @@ freqtrade_total_profit() {
   local PASS="YourPassword"
   local CONTAINER="mydb"
   
+  $DOCKER exec mydb supervisorctl start "freqtrade_$MODE"
+  sleep 120
+
   # Get daily profit
   local DAILY
   DAILY=$(curl -s -u "$USER:$PASS" \
@@ -82,10 +85,8 @@ freqtrade_total_profit() {
     "http://172.17.0.1:${PORT}/api/v1/status" \
     | jq '[.[].profit_abs // 0] | add // 0')
   
-  $DOCKER exec mydb supervisorctl start "freqtrade_$MODE"
   # Calculate total and set as global variable
   declare -g TOTAL
-  sleep 120
 
   TOTAL=$(echo "$DAILY + $OPEN" | bc -l)
   echo "Port      : $PORT ($MODE)"
