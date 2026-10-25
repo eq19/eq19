@@ -66,10 +66,12 @@ DOCKER=/mnt/disks/deeplearning/usr/bin/docker
 freqtrade_total_profit() {
   local PORT="$1"
   local MODE="$2"
+  local CONTAINER="mydb"
   local USER="YourUsername"
   local PASS="YourPassword"
-  local CONTAINER="mydb"
+  local CONFIG="/home/runner/data_$2/config.json"
   
+  $DOCKER exec mydb bash -c "jq '.telegram.enabled = false' '$CONFIG' > /tmp/c && mv /tmp/c '$CONFIG'"
   $DOCKER exec mydb supervisorctl start "freqtrade_$MODE"
   sleep 120
 
