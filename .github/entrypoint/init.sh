@@ -460,6 +460,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
       | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
+    $DOCKER exec mydb bash -c \
+      "jq --argjson sl "$(jq '.params.stoploss.stoploss' ${DIR_PATH}/strategies/fibbo.json)" \
+      '.stoploss = $sl' ${DIR_PATH}/config.json > config_new.json && mv config_new.json ${DIR_PATH}/config.json"
     $DOCKER exec -e BEARER="$BEARER" mydb bash -c \
       "bash ${SCRIPT_PATH} ${ID:-30} $JOBS_ID $APP_PATH $DIR_PATH $PARAM_NAME $ARTIFACT $HYPEROPT_PARAM $COMPILE_FILE $BYPASS_LEXERING"
 
