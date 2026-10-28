@@ -12,7 +12,7 @@ curl
 #dvipng
 #gettext
 #gfortran
-gh
+#gh
 git
 iputils-ping
 #lcov
