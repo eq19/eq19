@@ -358,7 +358,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         https://api.github.com/repos/$SOURCE_REPOSITORY/actions/variables/PARAMS_LIVE
 
       # Update the current file SHA of default branch
-      CONTENT=$($BASE64 -w 0 "/home/runner/data_live/strategies/fibbo.json")
+      CONTENT=$($BASE64 -w 0 "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")
       FILE_PATH="user_data/strategies/tested/fibbo.json"
       SHA=$(curl -fsSL \
         -H "Accept: application/vnd.github+json" \
