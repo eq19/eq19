@@ -208,6 +208,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   METHODS="method=${METHOD}&nonce=${NONCE}"
   DOCKER=/mnt/disks/deeplearning/usr/bin/docker
   GCLOUD=/mnt/disks/deeplearning/usr/bin/gcloud
+  BASE64=/mnt/disks/deeplearning/usr/bin/base64
   STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live)
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
   PARAMS_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/pythonCode/params.py"
@@ -357,7 +358,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         https://api.github.com/repos/$SOURCE_REPOSITORY/actions/variables/PARAMS_LIVE
 
       # Encode the file content (use -w 0 on Linux, or base64 without breaks on macOS)
-      CONTENT=$(base64 -w 0 /home/runner/data_live/strategies/fibbo.json)
+      CONTENT=$($BASE64 -w 0 /home/runner/data_live/strategies/fibbo.json)
 
       # Fetch the current SHA
       FILE_PATH="user_data/strategies/tested/fibbo.json"
