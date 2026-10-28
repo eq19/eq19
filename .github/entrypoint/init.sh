@@ -356,6 +356,17 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
         https://api.github.com/repos/$SOURCE_REPOSITORY/actions/variables/PARAMS_LIVE
 
+      curl -L -X PUT \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        "https://api.github.com/repos/eq19/maps/contents/$FILE_PATH" \
+        -d "{
+          \"message\": \"Update fibbo.json strategy config\",
+          \"content\": \"$CONTENT\",
+          \"sha\": \"$SHA\"
+        }"
+  
     else
       echo -e "$hr\nDry-run is not better than Live mode.\nLet dry-run to challenge a new config."
 
