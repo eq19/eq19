@@ -356,6 +356,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
         https://api.github.com/repos/$SOURCE_REPOSITORY/actions/variables/PARAMS_LIVE
 
+      # Encode the file content (use -w 0 on Linux, or base64 without breaks on macOS)
+      CONTENT=$(base64 -w 0 /home/runner/data_live/strategies/fibbo.json)
+
       # Fetch the current SHA
       FILE_PATH="user_data/strategies/tested/fibbo.json"
       SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
