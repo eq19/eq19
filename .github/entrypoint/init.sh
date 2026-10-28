@@ -357,25 +357,32 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
         https://api.github.com/repos/$SOURCE_REPOSITORY/actions/variables/PARAMS_LIVE
 
-      # Encode the file content (use -w 0 on Linux, or base64 without breaks on macOS)
-      CONTENT=$($BASE64 -w 0 /home/runner/data_live/strategies/fibbo.json)
-
-      # Fetch the current SHA
+      # Get the current file SHA from default branch
       FILE_PATH="user_data/strategies/tested/fibbo.json"
-      SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
-        "https://api.github.com/repos/eq19/maps/contents/$FILE_PATH" | jq -r .sha)
+      SHA=$(curl -fsSL \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        "https://api.github.com/repos/eq19/maps/contents/$FILE_PATH?ref=$MAP_BRANCH" \
+        | jq -er '.sha')
 
-      curl -L -X PUT \
+      # Base64-encode the new content
+      CONTENT=$($BASE64 -w 0 "/home/runner/data_live/strategies/fibbo.json")
+
+      curl -fsSL -X PUT \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer $GH_TOKEN" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
         "https://api.github.com/repos/eq19/maps/contents/$FILE_PATH" \
-        -d "{
-          \"message\": \"Update fibbo.json strategy config\",
-          \"content\": \"$CONTENT\",
-          \"sha\": \"$SHA\"
-        }"
-  
+        -d @- <<JSON
+      {
+        "message": "Update fibbo.json strategy config",
+        "content": "${CONTENT}",
+        "sha": "${SHA}",
+        "branch": "${MAP_BRANCH}"
+      }
+JSON
+
     else
       echo -e "$hr\nDry-run is not better than Live mode.\nLet dry-run to challenge a new config."
 
