@@ -356,6 +356,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
         https://api.github.com/repos/$SOURCE_REPOSITORY/actions/variables/PARAMS_LIVE
 
+      # Fetch the current SHA
+      FILE_PATH="user_data/strategies/tested/fibbo.json"
+      SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+        "https://api.github.com/repos/eq19/maps/contents/$FILE_PATH" | jq -r .sha)
+
       curl -L -X PUT \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer $GH_TOKEN" \
