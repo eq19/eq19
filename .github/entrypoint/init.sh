@@ -399,8 +399,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb mkdir -p "$(dirname "$EXCHANGE_DRY")"
       $DOCKER exec mydb curl -sf -o "$EXCHANGE_DRY" "$CONFIG_EXCHANGE"
       $DOCKER exec mydb bash -c "jq --argjson pairs '$PAIRS' '.exchange.pair_whitelist = \$pairs' '$EXCHANGE_DRY' > config.tmp && mv config.tmp '$EXCHANGE_DRY'"
-   fi 
-fi
+    fi 
+  fi
 
   for idx in "${!DIRS[@]}"; do
     PARAM_NAME="${PARAMS[$idx]}"
