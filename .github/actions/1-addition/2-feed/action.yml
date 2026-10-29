@@ -205,7 +205,7 @@ runs:
         done
 
     - name: ⚧️ Rerun workflow if failed
-      if: ${{ failure() }}
+      if: ${{ failure() && env.SKIP_REMAINING_STEPS != 'true' }}
       shell: bash
       run: |
         [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
