@@ -489,8 +489,9 @@ else
   done
 
   cd "$workspace"
-  find -not -path "./.git/*" -not -name ".git" -delete
-  shopt -s dotglob && mv -f "$runner_temp/gh-source/*" .
+  #find -not -path "./.git/*" -not -name ".git" -delete
+  find . -mindepth 1 -not -path "./.git/*" -not -name ".git" -delete
+  shopt -s dotglob && mv -f "$runner_temp"/gh-source/* .
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
