@@ -473,7 +473,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
 else
 
-  cd ${RUNNER_TEMP//\\//}
+  runner_temp="${RUNNER_TEMP//\\//}"
+  workspace="${GITHUB_WORKSPACE//\\//}"
+
+  cd "$runner_temp"
   rm -rf gh-base gh-source
   
   git clone https://github.com/eq19/feed gh-base
@@ -482,12 +485,12 @@ else
   cd gh-source && rm -rf .git
   # merge only the portions that we need
   for d in Gemfile assets _sass _plugins _layouts _includes; do
-    rm -rf "$d" && mv -f "${RUNNER_TEMP//\\//}/gh-base/$d" .
+    rm -rf "$d" && mv -f "$runner_temp/gh-base/$d" .
   done
 
-  cd ${GITHUB_WORKSPACE//\\//}
+  cd "$workspace"
   find -not -path "./.git/*" -not -name ".git" -delete
-  shopt -s dotglob && mv -f ${RUNNER_TEMP//\\//}/gh-source/* .
+  shopt -s dotglob && mv -f "$runner_temp/gh-source/*" .
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
