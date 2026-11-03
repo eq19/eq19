@@ -480,8 +480,8 @@ else
   git clone --single-branch --branch gh-source $TARGET_REPO gh-source
 
   cd gh-source
-  # merge only the folders we need
-  for d in _sass _plugins _layouts _includes assets Gemfile; do
+  # merge only the portions that we need
+  for d in Gemfile assets _sass _plugins _layouts _includes; do
     rm -rf $d && mv -f "${RUNNER_TEMP//\\//}/gh-base/$d" .
   done
 
