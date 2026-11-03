@@ -481,7 +481,7 @@ else
 
   cd gh-source
   # merge only the folders we need
-  for d in _plugins _layouts _includes; do
+  for d in _sass _plugins _layouts _includes assets; do
     rm -rf $d && mv -f "${RUNNER_TEMP//\\//}/gh-base/$d" .
   done
 
