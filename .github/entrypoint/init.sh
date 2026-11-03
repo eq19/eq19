@@ -478,7 +478,6 @@ else
 
   cd "$runner_temp"
   rm -rf gh-base gh-source
-  
   git clone https://github.com/eq19/feed gh-base
   git clone --single-branch --branch gh-source $TARGET_REPO gh-source
 
