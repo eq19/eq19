@@ -482,7 +482,7 @@ else
   cd gh-source
   # merge only the portions that we need
   for d in Gemfile assets _sass _plugins _layouts _includes; do
-    rm -rf $d && mv -f "${RUNNER_TEMP//\\//}/gh-base/$d" .
+    rm -rf "$d" && mv -f "${RUNNER_TEMP//\\//}/gh-base/$d" .
   done
 
   cd ${GITHUB_WORKSPACE//\\//}
