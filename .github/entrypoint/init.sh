@@ -479,8 +479,12 @@ else
   git clone https://github.com/eq19/feed gh-base
   git clone --single-branch --branch gh-source $TARGET_REPO gh-source
   
-  rm -rf gh-base/.git gh-source/.git
-  
+  cd gh-source
+  rm -rf .git _plugins _layouts _includes
+  mv -f ${RUNNER_TEMP//\\//}/gh-base/_plugins .
+  mv -f ${RUNNER_TEMP//\\//}/gh-base/_layouts .
+  mv -f ${RUNNER_TEMP//\\//}/gh-base/_includes .
+
   cd ${GITHUB_WORKSPACE//\\//}
   find -not -path "./.git/*" -not -name ".git" -delete
   shopt -s dotglob && mv -f ${RUNNER_TEMP//\\//}/gh-source/* .
