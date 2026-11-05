@@ -207,7 +207,8 @@ runs:
         fi
 
     - name: ⚧️ Rerun workflow if failed
-      if: ${{ failure() }}
+      if: runner.os == 'Linux'
+      #if: ${{ failure() }}
       shell: bash
       run: |
         [[ "$GITHUB_JOB" == "parsering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
