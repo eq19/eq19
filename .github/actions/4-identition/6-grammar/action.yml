@@ -111,16 +111,7 @@ runs:
           sed -i 's|unless site.safe|if site.safe|g' $FILE
           sed -i 's|plugins_path.each|Array(["./_plugins"]).each|g' $FILE
 
-          echo "Workspace: $PWD"
-          echo "OpenSSL entry in Gemfile.lock:"
-          grep -n -A 8 -B 3 -E '^    openssl \(' Gemfile.lock || true
-
-          echo "Why OpenSSL is included:"
-          bundle why openssl || true
-
           echo -e "\n$hr\nBuild Pages\n$hr"
-          ruby -e "require 'openssl'; puts OpenSSL::OPENSSL_VERSION"
-          bundle exec ruby -e "require 'openssl'; puts OpenSSL::OPENSSL_VERSION"
           #Jekyll Quick Reference https://gist.github.com/DrOctogon/bfb6e392aa5654c63d12
           JEKYLL_GITHUB_TOKEN=${{ inputs.token }} DISABLE_WHITELIST=true bundle exec jekyll build --profile --trace -t -d ./docs
 
