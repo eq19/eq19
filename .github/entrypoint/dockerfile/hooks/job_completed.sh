@@ -6,7 +6,7 @@ set -Eeuo pipefail
 hr='----------------------------------------------------------------------------------'
 
 DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
-FILE_PATH="/home/runner/data_dry/logs/freqtrade.log"
+FILE_PATH="/home/runner/data_live/logs/freqtrade.log"
 
 echo -e "\n$hr\nFinal Space\n$hr"
 df -h
