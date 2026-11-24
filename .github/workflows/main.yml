@@ -170,10 +170,11 @@ jobs:
   parsering:
     strategy:
       matrix:
-        config:
-          - { os: self-hosted, jobs_id: 3 }
-          - { os: windows-latest, jobs_id: 4 }
-
+        config: ${{ fromJSON(
+          github.event.inputs.BYPASS_LEXERING == 'true' &&
+          '[{"os":"windows-latest","jobs_id":4}]' ||
+          '[{"os":"self-hosted","jobs_id":3},{"os":"windows-latest","jobs_id":4}]') }}
+  
       # 💢 Completeness relations
       max-parallel: 1
       fail-fast: false
