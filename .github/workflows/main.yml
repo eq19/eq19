@@ -192,6 +192,12 @@ jobs:
     needs: lexering
     runs-on: ${{ matrix.config.os }}
     continue-on-error: ${{ matrix.config.jobs_id == 3 && true || false }}
+    if: >-
+      ${{ !cancelled() &&
+        (needs.lexering.result == 'success' ||
+         (github.event.inputs.RUN_MODE == 'MEC30' &&
+          github.event.inputs.BYPASS_LEXERING == 'true')
+      ) }}
 
     steps:
       - name: 📥 Checkout
