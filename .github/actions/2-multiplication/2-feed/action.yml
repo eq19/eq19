@@ -97,6 +97,7 @@ runs:
   using: composite
   steps:
     - name: 🪂 Get tag of dependencies
+      if: env.REMOVE_RUNNER == 'true'
       id: variables
       shell: bash
       run: |
