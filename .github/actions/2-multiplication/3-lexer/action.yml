@@ -89,7 +89,7 @@ runs:
         WIKI: "https://github.com/${{ env.TARGET_REPOSITORY }}.wiki.git"      
       run: |
         # Bring GitHub Env Variables in to the config file on another container usong docker from the attached deeplearning image
-        export PATH=/home/runner/_work/_actions/eq19/eq19/v2/.github/entrypoint:$PATH && gist.sh ${BASE} $(pwd)
+        export PATH=/Users/runner/work/_actions/eq19/eq19/v2/.github/entrypoint:$PATH && bash gist.sh ${BASE} $(pwd)
         if [[ "${WIKI}" != "${BASE}" ]]; then
           find . -type d -name "$(yq '.span' _config.yml)" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
         fi
