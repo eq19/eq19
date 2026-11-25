@@ -499,9 +499,10 @@ else
   if [[ "$BYPASS_LEXERING" == "true" ]]; then
     sed -i 's/pages-build-deployment/pages-build/g' "$1"
     # Fetch SHA, encode new content, and update in one step
-    gh api --method PUT /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml \
-      -f sha="$(gh api /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml --jq '.sha')" \
-      -f message="Rename pages-build-deployment to pages-build" -f content="$(base64 -w0 "$1")" > /dev/null
+    gh api --method PUT "repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml" \
+      -f sha="$(gh api "repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml" --jq '.sha')" \
+      -f message="Rename pages-build-deployment to pages-build" \
+      -f content="$(base64 -w0 "$1")" > /dev/null
   fi
 fi
 
