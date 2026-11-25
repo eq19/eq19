@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[[ "JOBS_ID" == "1" ]] && return 0
+
 # Max retries
 max_retries=10
 # Interval between checks (10 retries in 10 minutes -> 60s each)
