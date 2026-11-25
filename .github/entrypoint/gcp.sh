@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ "JOBS_ID" == "1" ]] && return 0
+[[ "$JOBS_ID" == "1" ]] && exit 0
 
 # Max retries
 max_retries=10
