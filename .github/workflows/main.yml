@@ -204,8 +204,8 @@ jobs:
         with:
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
-          ref: ${{ env.JOBS_ID == 4 && 'gh-pages' || '' }}
-          repository: ${{ env.JOBS_ID == 3 && env.WIKI || env.TARGET_REPOSITORY }}
+          ref: ${{ env.JOBS_ID != 3 && 'gh-pages' || '' }}
+          repository: ${{ env.JOBS_ID == 4 && env.TARGET_REPOSITORY || env.WIKI }}
 
       - name: 🚀 Setup Parser
         #if: ${{ env.PASS == 'true' }}
