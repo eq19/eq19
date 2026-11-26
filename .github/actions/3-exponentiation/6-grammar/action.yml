@@ -78,38 +78,6 @@ runs:
   using: composite
   
   steps:
-    - name: ⏪ Rewind all jobs on failure
-      shell: bash
-      run: |
-        if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
-      
-          git config --global user.name "$GITHUB_ACTOR"
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
-          REMOTE_REPO="https://$GITHUB_ACTOR:$GH_TOKEN@github.com/$GITHUB_REPOSITORY.git"
-          git clone --single-branch --branch gh-pages $REMOTE_REPO gh-pages && cd gh-pages
-          git add . && git commit --allow-empty -m "rerun due to job failure" && git push
-  
-        else      
-          
-        # Assign the environment variable correctly
-          #COMMIT="${{ env.LATEST_COMMIT }}"
-
-          # Remove double quotes
-          MESSAGE=$(echo "$LATEST_COMMIT" | tr -d '"')
-
-          # Debug output to verify
-          echo "Original: $LATEST_COMMIT"
-          echo "Processed: $MESSAGE"
-
-          # Commit and push changes
-          git add . 
-          git commit --allow-empty -m "$MESSAGE" 
-          git push
- 
-        fi
-
     - name: ⚧️ Rerun workflow if failed
       if: ${{ failure() }}
       shell: bash
