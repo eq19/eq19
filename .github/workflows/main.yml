@@ -189,6 +189,7 @@ jobs:
     ## ✔️ Completeness status
     needs: lexering
     runs-on: ${{ matrix.config.os }}
+    name: "parsering (jobs_id: ${{ matrix.config.display_id }})"
     continue-on-error: ${{ matrix.config.jobs_id == 3 && true || false }}
     if: >-
       ${{ !cancelled() &&
