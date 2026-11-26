@@ -86,8 +86,9 @@ jobs:
         uses: actions/checkout@v6
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          repository: ${{ env.JOBS_ID != 1 && env.WIKI || '' }}
+          ref: ${{ env.JOBS_ID == 2 && 'gh-source' || '' }}
           submodules: ${{ env.JOBS_ID != 1 && 'recursive' || false }}
+          repository: ${{ env.JOBS_ID == 2 && env.TARGET_REPOSITORY || '' }}
         if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
           
       - name: ⚙️ Build Maps
