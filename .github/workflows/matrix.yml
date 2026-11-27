@@ -60,6 +60,8 @@ jobs:
       - name: 🪂 Feed Mapping
         uses: eq19/feed@v6
         id: feed-mapping
+        env:
+          JOBS_ID: 1
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           chat_id: ${{ secrets.MESSAGE_API }}
