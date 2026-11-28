@@ -156,23 +156,23 @@ jobs:
         shell: bash
         id: gen_outputs
         env:
-          ACCESS_API: ${{ inputs.api_key }}
-          ACCESS_KEY: ${{ inputs.api_secret }}
-          ACCESS_TOKEN: ${{ inputs.token }}
-          MESSAGE_API: ${{ inputs.chat_id }}
-          LIVE_TOKEN: ${{ inputs.live_token }}
-          MONITOR_TOKEN: ${{ inputs.bot_token }}
-          WARNING_TOKEN: ${{ inputs.logs_token }}
-          PYPI_TOKEN: ${{ inputs.pypi_token }}
-          DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
-          DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
-          GCP_CREDENTIALS: ${{ inputs.credentials }}
+          ACCESS_API: ${{ secrets.ACCESS_API }}
+          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          MESSAGE_API: ${{ secrets.MESSAGE_API  }}
+          LIVE_TOKEN: ${{ secrets.LIVE_TOKEN }}
+          MONITOR_TOKEN: ${{ secrets.MONITOR_TOKEN }}
+          WARNING_TOKEN: ${{ secrets.WARNING_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
           GCP_ACCOUNT: ${{ inputs.gcp_account }}
           GCP_ID_RSA: ${{ inputs.gcp_id_rsa }}
           GCP_SA_KEY: ${{ inputs.gcp_sa_key }}
           JEKYLL_GITHUB_OWNER: ${{ inputs.jekyll_github_owner }}
           JEKYLL_GITHUB_TOKEN: ${{ inputs.jekyll_github_token }}
-          REPO_SOURCE: ${{ inputs.repo_source }}
+          REPO_SOURCE: ${{ secrets.REPO_SOURCE }}
         run: |
           [[ "$JOBS_ID" == "1" ]] && BASE="/home" || BASE="/Users"
           bash "$BASE/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/gcp.sh"
