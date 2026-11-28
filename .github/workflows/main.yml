@@ -113,7 +113,6 @@ jobs:
           jekyll_github_owner: ${{ secrets.JEKYLL_GITHUB_OWNER }}
           jekyll_github_token: ${{ secrets.JEKYLL_GITHUB_TOKEN }}
           repo_source: ${{ secrets.REPO_SOURCE }}
-        #if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
 
       - name: 🪂 Feed Mapping
         uses: eq19/feed@v6
@@ -131,7 +130,6 @@ jobs:
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           initiate_pauli_sum: ${{ toJSON(steps.build-parser.outputs) }}
-        if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
 
       - name: 🏃‍♂️ Lexering Runner
         uses: eq19/lexer@v4
