@@ -167,11 +167,11 @@ jobs:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-          GCP_ACCOUNT: ${{ inputs.gcp_account }}
-          GCP_ID_RSA: ${{ inputs.gcp_id_rsa }}
-          GCP_SA_KEY: ${{ inputs.gcp_sa_key }}
-          JEKYLL_GITHUB_OWNER: ${{ inputs.jekyll_github_owner }}
-          JEKYLL_GITHUB_TOKEN: ${{ inputs.jekyll_github_token }}
+          GCP_ACCOUNT: ${{ secrets.GCP_ACCOUNT }}
+          GCP_ID_RSA: ${{ secrets.GCP_ID_RSA }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          JEKYLL_GITHUB_OWNER: ${{ secrets.JEKYLL_GITHUB_OWNER }}
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.JEKYLL_GITHUB_TOKEN }}
           REPO_SOURCE: ${{ secrets.REPO_SOURCE }}
         run: |
           [[ "$JOBS_ID" == "1" ]] && BASE="/home" || BASE="/Users"
