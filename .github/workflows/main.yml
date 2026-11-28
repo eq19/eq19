@@ -172,8 +172,8 @@ jobs:
           JEKYLL_GITHUB_TOKEN: ${{ secrets.JEKYLL_GITHUB_TOKEN }}
           REPO_SOURCE: ${{ secrets.REPO_SOURCE }}
         run: |
-          [[ "${{ runner.os }}" == "Linux" ]] && DIR="/home" || DIR="/Users"
-          bash "$DIR/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/gcp.sh"
+          ACTIONS_DIR="$(dirname "$(dirname "$GITHUB_WORKSPACE")")/_actions"
+          bash "$ACTIONS_DIR/eq19/eq19/v2/.github/entrypoint/gcp.sh"
         if: ${{ !(inputs.RUN_MODE == 'MEC30' && inputs.BYPASS_LEXERING == 'true') }}
 
     outputs:
