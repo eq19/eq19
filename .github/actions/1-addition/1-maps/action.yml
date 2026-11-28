@@ -221,7 +221,7 @@ runs:
                 
 
     - name: ⚧️ Rerun workflow if failed
-      if: ${{ failure() }}
+      if: ${{ failure() && env.GITHUB_JOB == 'lexering' }}
       shell: bash
       run: |
         [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
