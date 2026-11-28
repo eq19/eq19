@@ -78,9 +78,9 @@ jobs:
 
     env:
       JOBS_ID: ${{ matrix.config.jobs_id }}
-      REDUCE_EPOCH: ${{ github.event.inputs.REDUCE_EPOCH || 'false' }}
-      REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER || 'false' }}
-      BYPASS_LEXERING: ${{ github.event.inputs.BYPASS_LEXERING || 'false' }}
+      REDUCE_EPOCH: ${{ inputs.REDUCE_EPOCH || 'false' }}
+      REMOVE_RUNNER: ${{ inputs.REMOVE_RUNNER || 'false' }}
+      BYPASS_LEXERING: ${{ inputs.BYPASS_LEXERING || 'false' }}
 
     steps:
       - name: 📥 Checkout
