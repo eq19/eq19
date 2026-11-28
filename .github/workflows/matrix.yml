@@ -136,7 +136,7 @@ jobs:
       - name: Show contents
         run: ls -R user_data/data
 
-      - name: 🧠 Run Script
+      - name: 🧠 Run Freqtrade
         timeout-minutes: 360
         env:
           MATRIX_INPUT: ${{ matrix.FIELDS }}
