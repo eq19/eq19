@@ -189,8 +189,8 @@ jobs:
       matrix:
         config: >-
           ${{ fromJSON(
-            (github.event.inputs.RUN_MODE == 'MEC30' &&
-             github.event.inputs.BYPASS_LEXERING == 'true') &&
+            (inputs.RUN_MODE == 'MEC30' &&
+             inputs.BYPASS_LEXERING == 'true') &&
             '[{"os":"windows-latest","jobs_id":4,"display_id":3}]' ||
             '[{"os":"self-hosted","jobs_id":3,"display_id":3},{"os":"windows-latest","jobs_id":4,"display_id":4}]'
           ) }}
@@ -201,8 +201,8 @@ jobs:
     if: >-
       ${{ !cancelled() &&
         (needs.lexering.result == 'success' ||
-         (github.event.inputs.RUN_MODE == 'MEC30' &&
-          github.event.inputs.BYPASS_LEXERING == 'true')
+         (inputs.RUN_MODE == 'MEC30' &&
+          inputs.BYPASS_LEXERING == 'true')
       ) }}
     continue-on-error: ${{ matrix.config.jobs_id == 3 && true || false }}
     name: "parsering (${{ matrix.config.os }}, ${{ matrix.config.display_id }})"
@@ -210,11 +210,11 @@ jobs:
     env:
       JOBS_ID: ${{ matrix.config.jobs_id }}
       WIKI: '${{ vars.TARGET_REPOSITORY }}.wiki'
+      REDUCE_EPOCH: ${{ inputs.REDUCE_EPOCH }}
+      REMOVE_RUNNER: ${{ inputs.REMOVE_RUNNER }}
+      BYPASS_LEXERING: ${{ inputs.BYPASS_LEXERING }}
       IP_ADDRESS: '${{ needs.lexering.outputs.address }}'
-      REDUCE_EPOCH: ${{ github.event.inputs.REDUCE_EPOCH }}
-      REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
       PASS: ${{ contains(needs.lexering.result, 'success') }}
-      BYPASS_LEXERING: ${{ github.event.inputs.BYPASS_LEXERING }}
 
     steps:
       - name: 📥 Checkout
